@@ -1,0 +1,120 @@
+services:
+  dev_postgres:
+    # ... bez zmian
+    build:
+      context: ./postgreSQL
+      dockerfile: postgresDB.Dockerfile
+      args:
+        DB_USER: ${POSTGRES_USER}
+        DB_PASSWORD: ${POSTGRES_PASSWORD}
+        DB_NAME: ${POSTGRES_DB}
+    container_name: dev_postgres
+    restart: unless-stopped
+    ports:
+      - ${POSTGRES_PORT_EX}:${POSTGRES_PORT_NATIVE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - dev_network
+
+  dev_pgadmin:
+    # ... bez zmian
+    build:
+      context: ./postgreSQL
+      dockerfile: pgAdmin.Dockerfile
+      args:
+        PGADMIN_EMAIL: ${PGADMIN_EMAIL}
+        PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+    container_name: dev_pgadmin
+    restart: unless-stopped
+    ports:
+      - ${PGADMIN_PORT_EX}:${PGADMIN_PORT_NATIVE}
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - dev_postgres
+    networks:
+      - dev_network
+
+  dev_frontend_server_vite:
+    # Frontend Vite server
+    build:
+      context: ./frontend
+      dockerfile: frontend.Dockerfile
+      args:
+        PORT_REFERENCE: ${PORT_REFERENCE}
+        HOST_REFERENCE: ${HOST_REFERENCE}
+    container_name: dev_frontend_server_vite
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT_EX}:${FRONTEND_PORT_NATIVE}" # Vite dev server port
+    volumes:
+      - ./frontend:/app
+      - node_modules_cache:/app/node_modules
+    depends_on:
+      - dev_backend_server_caddy
+    networks:
+      - dev_network
+
+  dev_php:
+    # ... bez zmian
+    build:
+      context: ./backend
+      dockerfile: php-manager.Dockerfile
+      args:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+    container_name: dev_php
+    restart: unless-stopped
+    volumes:
+      - ./backend/php:/var/www/php
+    depends_on:
+      - dev_postgres
+    networks:
+      - dev_network
+
+  dev_backend_server_caddy:
+    # Backend Caddy server
+    build:
+      context: ./backend
+      dockerfile: caddy-server.Dockerfile
+    container_name: dev_backend_server_caddy
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_CADDY_PORT_EX}:${BACKEND_CADDY_PORT_NATIVE}" # Backend API port
+    volumes:
+      - ./backend/php:/var/www/php
+    depends_on:
+      - dev_php
+    networks:
+      - dev_network
+
+  dev_cdn:
+    # CDN static assets server
+    build:
+      context: ./CDN
+      dockerfile: caddy-cdn.Dockerfile
+    container_name: dev_cdn
+    ports:
+      - "${CDN_PORT_EX}:${CDN_PORT_NATIVE}" # CDN static assets port
+    volumes:
+      - ./CDN/assets:/srv/assets:ro
+    networks:
+      - dev_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  node_modules_cache:
+
+networks:
+  dev_network:
+    driver: bridge
