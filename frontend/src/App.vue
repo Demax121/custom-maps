@@ -1,9 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import MapViewer_component from './components/mapViewer_component.vue'
+
+
 </script>
 
 <template>
-  <HelloWorld/>
+  <MapViewer_component />
 </template>
 
 <style lang = "scss">

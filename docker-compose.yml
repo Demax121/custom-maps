@@ -1,5 +1,5 @@
 services:
-  dev_postgres:
+  custom_maps_db:
     # ... bez zmian
     build:
       context: ./postgreSQL
@@ -8,12 +8,12 @@ services:
         DB_USER: ${POSTGRES_USER}
         DB_PASSWORD: ${POSTGRES_PASSWORD}
         DB_NAME: ${POSTGRES_DB}
-    container_name: dev_postgres
+    container_name: custom_maps_db
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT_EX}:${POSTGRES_PORT_NATIVE}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - custom_maps_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 30s
@@ -21,9 +21,9 @@ services:
       retries: 3
       start_period: 60s
     networks:
-      - dev_network
+      - custom_maps_network
 
-  dev_pgadmin:
+  custom_maps_admin:
     # ... bez zmian
     build:
       context: ./postgreSQL
@@ -31,18 +31,18 @@ services:
       args:
         PGADMIN_EMAIL: ${PGADMIN_EMAIL}
         PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
-    container_name: dev_pgadmin
+    container_name: custom_maps_admin
     restart: unless-stopped
     ports:
       - ${PGADMIN_PORT_EX}:${PGADMIN_PORT_NATIVE}
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - custom_maps_admin_data:/var/lib/pgadmin
     depends_on:
-      - dev_postgres
+      - custom_maps_db
     networks:
-      - dev_network
+      - custom_maps_network
 
-  dev_frontend_server_vite:
+  custom_maps_frontend:
     # Frontend Vite server
     build:
       context: ./frontend
@@ -50,19 +50,19 @@ services:
       args:
         PORT_REFERENCE: ${PORT_REFERENCE}
         HOST_REFERENCE: ${HOST_REFERENCE}
-    container_name: dev_frontend_server_vite
+    container_name: custom_maps_frontend
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT_EX}:${FRONTEND_PORT_NATIVE}" # Vite dev server port
     volumes:
       - ./frontend:/app
-      - node_modules_cache:/app/node_modules
+      - custom_maps_node_modules_cache:/app/node_modules
     depends_on:
-      - dev_backend_server_caddy
+      - custom_maps_api
     networks:
-      - dev_network
+      - custom_maps_network
 
-  dev_php:
+  custom_maps_php:
     # ... bez zmian
     build:
       context: ./backend
@@ -71,50 +71,50 @@ services:
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_DB: ${POSTGRES_DB}
-    container_name: dev_php
+    container_name: custom_maps_php
     restart: unless-stopped
     volumes:
       - ./backend/php:/var/www/php
     depends_on:
-      - dev_postgres
+      - custom_maps_db
     networks:
-      - dev_network
+      - custom_maps_network
 
-  dev_backend_server_caddy:
+  custom_maps_api:
     # Backend Caddy server
     build:
       context: ./backend
       dockerfile: caddy-server.Dockerfile
-    container_name: dev_backend_server_caddy
+    container_name: custom_maps_api
     restart: unless-stopped
     ports:
       - "${BACKEND_CADDY_PORT_EX}:${BACKEND_CADDY_PORT_NATIVE}" # Backend API port
     volumes:
       - ./backend/php:/var/www/php
     depends_on:
-      - dev_php
+      - custom_maps_php
     networks:
-      - dev_network
+      - custom_maps_network
 
-  dev_cdn:
+  custom_maps_cdn:
     # CDN static assets server
     build:
       context: ./CDN
       dockerfile: caddy-cdn.Dockerfile
-    container_name: dev_cdn
+    container_name: custom_maps_cdn
     ports:
       - "${CDN_PORT_EX}:${CDN_PORT_NATIVE}" # CDN static assets port
     volumes:
       - ./CDN/assets:/srv/assets:ro
     networks:
-      - dev_network
+      - custom_maps_network
     restart: unless-stopped
 
 volumes:
-  postgres_data:
-  pgadmin_data:
-  node_modules_cache:
+  custom_maps_postgres_data:
+  custom_maps_admin_data:
+  custom_maps_node_modules_cache:
 
 networks:
-  dev_network:
+  custom_maps_network:
     driver: bridge

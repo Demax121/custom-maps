@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 try {
     $pdo = new PDO(
-        "pgsql:host=dev_postgres;dbname=basePostgresDB",
+        "pgsql:host=custom_maps_db;dbname=basePostgresDB",
         getenv('POSTGRES_USER'),
         getenv('POSTGRES_PASSWORD')
     );

@@ -21,5 +21,8 @@ build/
 *.log
 
 # Docker volumes
-postgres_data/
-pgadmin_data/
+custom_maps_postgres_data/
+custom_maps_admin_data/
+CDN/assets/tiles
+frontend/public/assets
+
