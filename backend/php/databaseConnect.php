@@ -3,7 +3,7 @@
 abstract class Db {
 private static $username ="postgresAdmin";
 private static $password ="postgres123";
-private static $dsn ="pgsql:host=custom_maps_db;port=5432;dbname=basePostgresDB;";
+private static $dsn ="pgsql:host=custom_maps_db;port=5432;dbname=maps_db;";
 public static $affected_rows;
 
 

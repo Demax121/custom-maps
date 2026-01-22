@@ -1,4 +1,4 @@
-FROM dpage/pgadmin4
+FROM elestio/pgadmin:REL-9_11
 
 ARG PGADMIN_EMAIL
 ARG PGADMIN_PASSWORD

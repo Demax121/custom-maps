@@ -23,6 +23,6 @@ build/
 # Docker volumes
 custom_maps_postgres_data/
 custom_maps_admin_data/
-CDN/assets/tiles
+CDN/assets/maps
 frontend/public/assets
 
