@@ -1,0 +1,59 @@
+@use'@/scss/colors.scss' as *;
+
+
+
+$pane-width-1200: 420px;
+$pane-width-992: 350px;
+$pane-width-768: 265px;
+$pane-margin-desktop: 3rem;
+
+.sidebar__pane {
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding: 1rem 2rem;
+}
+
+.sidebar__pane-title {
+    width: 100%;
+    display: inline;
+}
+
+.sidebar__pane-header {
+    width: 100%;
+    height: 3rem;
+    border-bottom: 2px solid $font-crl-primary;
+    text-align: center;
+    padding-top: .75rem;
+}
+
+.sidebar__pane-body {
+    margin-top: 1rem;
+}
+
+
+
+
+@media (min-width: 768px) {
+  .sidebar__pane {}
+  .sidebar__content{}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .sidebar__pane {}
+  .sidebar__content{}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .sidebar__pane {}
+  .sidebar__content{}
+}
+
+@media (min-width: 1200px) {
+    .sidebar__pane {
+      min-width: $pane-width-1200;
+    }
+    .sidebar__content{
+      left: $pane-margin-desktop;
+    }
+}

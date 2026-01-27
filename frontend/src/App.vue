@@ -1,5 +1,6 @@
 <script setup>
-import MapViewer from './locationBookmark_pane.vue/mapViewer.vue'
+import MapViewer from './components/mapViewer.vue'
+import Sidebar from './components/sidebar.vue'
 
 
 
@@ -8,6 +9,7 @@ import MapViewer from './locationBookmark_pane.vue/mapViewer.vue'
 
 <template>
 <MapViewer />
+<Sidebar />
 </template>
 
 <style lang = "scss">

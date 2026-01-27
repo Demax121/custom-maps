@@ -1,15 +1,10 @@
-<template>
-    <div id="map">
 
-    </div>
-</template>
 
 <script setup>
+
 import { onMounted, shallowRef } from 'vue';
 import L from 'leaflet';
-
 const map = shallowRef(null)
-
 const fullmap = L.tileLayer('http://127.0.0.1:8885/maps/Barovia/{z}/{y}/{x}.webp', {
   minZoom: 1,
   maxZoom: 5,
@@ -40,11 +35,24 @@ onMounted(() => {
 })
 </script>
 
+
+<template>
+
+
+    <div id="map">
+
+    </div>
+</template>
+
+
+
 <style lang="scss" scoped>
 #map{
     width: 100%;
     height: 100vh;
     background-color: #1F1F1F;
 }
+
+
 
 </style>
