@@ -2,7 +2,7 @@
 
 
 
-$pane-width-1200: 480px;
+$pane-width-1200: 500px;
 $pane-width-992: 350px;
 $pane-width-768: 265px;
 $pane-margin-desktop: 3rem;
@@ -28,6 +28,11 @@ $pane-margin-desktop: 3rem;
 
 .sidebar__pane-body {
     margin-top: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 8rem);
+    scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
+    scrollbar-width: thin;
+    padding-right: 0.5rem;
 }
 
 .sidebar__pane-img {

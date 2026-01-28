@@ -133,6 +133,7 @@ $sidebar-width-768: 305px;
     bottom: 0;
     background-color: $sidebar-pane-crl-primary;
     overflow-x: hidden;
+    overflow-y: hidden;
 
     &-close{
       max-width: 2.5rem;
