@@ -5,19 +5,24 @@
           </div>
           <div class="sidebar__pane-body">
 
-            <div class="sidebar__overlay" v-for="overlay in overlays" :key="overlay.overlay_id">
-              <button class="sidebar__overlay-button" @click="toggleOverlay(overlay.overlay_id)">
+            <div class="sidebar__overlay" v-for="overlay in overlays" :key="overlay.overlay_name">
+              <button class="sidebar__overlay-button" @click="toggleOverlay(overlay.overlay_name)" :style=" openOverlays[overlay.overlay_name] ? activeColor : {}">
                 {{ overlay.overlay_name }}
               </button>
               <Transition name="slide-fade">
-                <ul class="sidebar__overlay-list" v-show="openOverlays[overlay.overlay_id]">
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
-                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                <ul class="sidebar__overlay-list" v-show="openOverlays[overlay.overlay_name]">
+                    <template  v-for="marker in markers" :key="marker.marker_name">
+                      <li 
+                        class="sidebar__overlay-list-item" 
+                        v-if="marker.overlay_name === overlay.overlay_name">
+                       <button class="sidebar__overlay-item-button"> 
+                        {{ marker.marker_name }}
+                       </button>
+                      </li>
+                    </template>
+
+
+
                 </ul>
               </Transition>
             </div>
@@ -30,10 +35,16 @@
 import { onMounted, ref, watch, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useOverlaysDataStore } from '../../stores/overlaysDataStore';
+import { useMarkersDataStore } from '../../stores/markersDataStore';
 const overlaysDataStore = useOverlaysDataStore();
+const markersDataStore = useMarkersDataStore();
 const { overlays } = storeToRefs(overlaysDataStore);
+const { markers } = storeToRefs(markersDataStore);
 
 const openOverlays = reactive({});
+const activeColor = reactive({
+backgroundColor: 'rgba(124, 124, 124, 0.5)'
+});
 
 const toggleOverlay = (overlayId) => {
   openOverlays[overlayId] = !openOverlays[overlayId];
@@ -69,6 +80,7 @@ const toggleOverlay = (overlayId) => {
   padding: 0.5rem;
   margin: 0;
   background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 
@@ -81,6 +93,19 @@ const toggleOverlay = (overlayId) => {
   }
 }
 
+.sidebar__overlay-item-button {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  color: $font-crl-primary;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  text-align: left;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
 /* Transition styles */
 .slide-fade-enter-active,
