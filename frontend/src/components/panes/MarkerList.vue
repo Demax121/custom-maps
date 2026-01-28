@@ -2,18 +2,100 @@
         <div class="sidebar__pane">
           <div class="sidebar__pane-header">
             <h1 class="sidebar__pane-title">Marker List</h1>
-            <span class="sidebar__pane-close"></span>
           </div>
           <div class="sidebar__pane-body">
-            <p> </p>
+
+            <div class="sidebar__overlay" v-for="overlay in overlays" :key="overlay.overlay_id">
+              <button class="sidebar__overlay-button" @click="toggleOverlay(overlay.overlay_id)">
+                {{ overlay.overlay_name }}
+              </button>
+              <Transition name="slide-fade">
+                <ul class="sidebar__overlay-list" v-show="openOverlays[overlay.overlay_id]">
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                  <li class="sidebar__overlay-list-item">aaaaaa</li>
+                </ul>
+              </Transition>
+            </div>
+
           </div>
         </div>
 </template>
 
 <script setup>
+import { onMounted, ref, watch, reactive } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useOverlaysDataStore } from '../../stores/overlaysDataStore';
+const overlaysDataStore = useOverlaysDataStore();
+const { overlays } = storeToRefs(overlaysDataStore);
+
+const openOverlays = reactive({});
+
+const toggleOverlay = (overlayId) => {
+  openOverlays[overlayId] = !openOverlays[overlayId];
+};
 
 </script>
 
 <style lang="scss" scoped>
+@use '@/scss/colors.scss' as *;
+
+.sidebar__overlay {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.sidebar__overlay-button {
+  width: 100%;
+  height: 3rem;
+  background-color: rgba(0, 0, 0, 0);
+  color: $font-crl-primary;
+  cursor: pointer;
+  border: none;
+  padding: 0.75rem;
+  text-align: left;
+  
+  &:hover {
+    background-color: rgba(124, 124, 124, 0.3);
+  }
+}
+
+.sidebar__overlay-list {
+  list-style: none;
+  padding: 0.5rem;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.sidebar__overlay-list-item {
+  padding: 0.5rem 0rem 0 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+
+/* Transition styles */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-enter-from {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
 
 </style>

@@ -6,14 +6,19 @@ header('Content-Type: application/json');
 $sql =
 "
 SELECT 
-marker_name, marker_lat, marker_lng, marker_description, marker_icon,
-public.overlays.overlay_name
-FROM public.markers
-JOIN public.overlays
-    ON public.markers.overlay_id = public.overlays.overlay_id
-JOIN public.maps
-    ON public.maps.map_id = public.markers.map_id
-WHERE public.maps.map_name = ?;
+marker_name,
+marker_lat, 
+marker_lng, 
+marker_desc, 
+marker_icon, 
+marker_img,
+overlays.overlay_name
+FROM markers
+JOIN overlays
+    ON markers.overlay_id = overlays.overlay_id
+JOIN maps
+    ON maps.map_id = markers.map_id
+WHERE maps.map_name = ?;
 ";
 
 $binding_values = [$_GET['map_name']];

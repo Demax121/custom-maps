@@ -9,6 +9,7 @@ import SavedLocations from './components/panes/SavedLocations.vue'
 import { ref, onMounted } from 'vue'
 import { useMapDataStore } from './stores/mapDataStore'
 import { useOverlaysDataStore } from './stores/overlaysDataStore'
+import { useMarkersDataStore } from './stores/markersDataStore'
 
 const currentPane = ref('MapDesc');
 const panes = {
@@ -24,10 +25,11 @@ const handlePaneChange = (paneName) => {
 
 const mapDataStore = useMapDataStore();
 const overlaysDataStore = useOverlaysDataStore();
-
+const markersDataStore = useMarkersDataStore();
 onMounted(async () => {
     await mapDataStore.getMapData();
     await overlaysDataStore.getOverlaysData();
+    await markersDataStore.getMarkersData();
 });
 
 </script>
