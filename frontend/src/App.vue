@@ -35,14 +35,11 @@ onMounted(async () => {
 </script>
 
 <template>
-    <MapViewer />
+    <MapViewer @changePane="handlePaneChange" />
     <Sidebar :activePane="currentPane" @changePane="handlePaneChange">
-
         <KeepAlive>
-            <component :is="panes[currentPane]" />
+            <component :is="panes[currentPane]" @changePane="handlePaneChange" />
         </KeepAlive>
-
-
     </Sidebar>
 </template>
 

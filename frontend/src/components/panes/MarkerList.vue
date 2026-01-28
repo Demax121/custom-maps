@@ -15,7 +15,9 @@
                       <li 
                         class="sidebar__overlay-list-item" 
                         v-if="marker.overlay_name === overlay.overlay_name">
-                       <button class="sidebar__overlay-item-button"> 
+                       <button class="sidebar__overlay-item-button"
+                       @click="focusOnMarker(marker.marker_name);
+                       openMarkerDescription(marker.marker_name);"> 
                         {{ marker.marker_name }}
                        </button>
                       </li>
@@ -36,6 +38,9 @@ import { onMounted, ref, watch, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useOverlaysDataStore } from '../../stores/overlaysDataStore';
 import { useMarkersDataStore } from '../../stores/markersDataStore';
+
+const emit = defineEmits(['changePane']);
+
 const overlaysDataStore = useOverlaysDataStore();
 const markersDataStore = useMarkersDataStore();
 const { overlays } = storeToRefs(overlaysDataStore);
@@ -49,6 +54,15 @@ backgroundColor: 'rgba(124, 124, 124, 0.5)'
 const toggleOverlay = (overlayId) => {
   openOverlays[overlayId] = !openOverlays[overlayId];
 };
+
+const focusOnMarker = (markerName) => {
+  markersDataStore.focusMarker(markerName);
+};
+
+const openMarkerDescription = (markerName) => {
+  markersDataStore.selectedMarker(markerName);
+  emit('changePane', 'MarkerDesc');
+}
 
 </script>
 

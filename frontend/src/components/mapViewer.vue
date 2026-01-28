@@ -9,12 +9,14 @@ import { useOverlaysDataStore } from '../stores/overlaysDataStore';
 import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 
+const emit = defineEmits(['changePane']);
+
 const overlaysDataStore = useOverlaysDataStore();
 const { overlays } = storeToRefs(overlaysDataStore);
 const mapDataStore = useMapDataStore();
 const { mapTilesLink, mapMinZoom, mapMaxZoom } = storeToRefs(mapDataStore);
 const markersDataStore = useMarkersDataStore();
-const { markers } = storeToRefs(markersDataStore);
+const { markers, focusedMarker } = storeToRefs(markersDataStore);
 
 const map = shallowRef(null);
 let mapTiles = null;
@@ -93,6 +95,7 @@ function addMarkersToMap(mapOverlay) {
   for (const marker of markers.value) {
     const markerIcon = createCustomIcon(marker.marker_icon);
     const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
+      title: marker.marker_name,
       icon: markerIcon,
       draggable: false,
     });
@@ -102,12 +105,17 @@ function addMarkersToMap(mapOverlay) {
     if (targetGroup) {
       newMarker.addTo(targetGroup);
     } 
-    // else {
-    //   // Fallback: add to map if overlay group not found
-    //   newMarker.addTo(mapOverlay);
-    // }
 
     newMarker.bindPopup(marker.marker_name || "No name available.");
+    
+    // Add click event listener to marker
+    newMarker.on('click', () => {
+      markersDataStore.selectedMarker(marker.marker_name);
+      emit('changePane', 'MarkerDesc');
+    });
+    
+    // Store reference to the marker
+    markersDataStore.setMarkerRef(marker.marker_name, newMarker);
   }
 }
 
@@ -138,6 +146,17 @@ watch(overlays, (newValue) => {
 watch(markers, (newValue) => {
   if (newValue && map.value && Object.keys(overlayGroups.value).length > 0) {
     addMarkersToMap(map.value);
+  }
+});
+
+watch(focusedMarker, (markerName) => {
+  if (markerName && map.value && markersDataStore.markerRefs[markerName]) {
+    const marker = markersDataStore.markerRefs[markerName];
+    const latLng = marker.getLatLng();
+    map.value.flyTo(latLng, Math.max(map.value.getZoom(), 3), {
+      duration: 1.5
+    });
+    marker.openPopup();
   }
 });
 
