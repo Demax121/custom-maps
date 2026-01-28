@@ -1,0 +1,49 @@
+@use'@/scss/colors.scss' as *;
+
+
+.leaflet-bar a:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom: none !important;
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: $leaflet-control-bg-crl-primary !important;
+  color: $leaflet-control-font-crl-primary !important;
+  font-size: 1.15rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.leaflet-bar a:hover {
+  background-color: $leaflet-hover-crl !important;
+}
+
+.leaflet-control-layers {
+  font-family: "abhaya_libreregular";
+  background-color: $leaflet-control-bg-crl-primary !important;
+  color: $leaflet-control-font-crl-primary !important;
+  font-size: 1.15rem;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  width: 3rem !important;
+  height: 3rem !important;
+  line-height: 3rem !important;
+  font-size: 1.75rem !important;
+}
+
+.leaflet-control {
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .leaflet-control-zoom-in,
+  .leaflet-control-zoom-out {
+    width: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+  }
+}

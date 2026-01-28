@@ -2,7 +2,7 @@
 
 
 
-$pane-width-1200: 420px;
+$pane-width-1200: 480px;
 $pane-width-992: 350px;
 $pane-width-768: 265px;
 $pane-margin-desktop: 3rem;
@@ -11,27 +11,32 @@ $pane-margin-desktop: 3rem;
     left: 0;
     right: 0;
     box-sizing: border-box;
-    padding: 1rem 2rem;
+    padding: 0rem 1rem 1rem 1rem;
 }
 
 .sidebar__pane-title {
     width: 100%;
-    display: inline;
+    display: inline-block;
 }
 
 .sidebar__pane-header {
     width: 100%;
-    height: 3rem;
+    height: 1.75rem;
     border-bottom: 2px solid $font-crl-primary;
     text-align: center;
-    padding-top: .75rem;
 }
 
 .sidebar__pane-body {
     margin-top: 1rem;
 }
 
-
+.sidebar__pane-img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
 
 
 @media (min-width: 768px) {

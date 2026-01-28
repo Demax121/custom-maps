@@ -4,56 +4,42 @@
     <div class="sidebar__tabs">
       <ul role="tablist" class="sidebar__tab-list">
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" @click="toggle">
+          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MapDesc' && isVisible }"
+            @click="togglePane('MapDesc')">
             <img class="sidebar__btn-img" src="/assets/bars-icon.svg" alt="menu"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" @click="toggle">
-            <img class="sidebar__btn-img" src="/assets/map-icon.svg" alt="menu"></img>
+          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerList' && isVisible }"
+            @click="togglePane('MarkerList')">
+            <img class="sidebar__btn-img" src="/assets/map-icon.svg" alt="map"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" @click="toggle">
-            <img class="sidebar__btn-img" src="/assets/marker-icon.svg" alt="menu"></img>
+          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerDesc' && isVisible }"
+            @click="togglePane('MarkerDesc')">
+            <img class="sidebar__btn-img" src="/assets/marker-icon.svg" alt="marker"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" @click="toggle">
-            <img class="sidebar__btn-img" src="/assets/list-icon.svg" alt="menu"></img>
+          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'SavedLocations' && isVisible }"
+            @click="togglePane('SavedLocations')">
+            <img class="sidebar__btn-img" src="/assets/list-icon.svg" alt="list"></img>
           </button>
         </li>
       </ul>
-      <!-- 
-      <ul role="tablist" class="sidebar__tab-list">
-        <li class="sidebar__tab-item sidebar__tabs-item--disabled"></li>
-      </ul> -->
     </div>
     <!-- Tab panes -->
 
     <Transition name="slide">
       <div class="sidebar__content" v-show="isVisible">
-        <div class="sidebar__pane">
-          <div class="sidebar__pane-header">
-            <h1 class="sidebar__pane-title"></h1>
-            <span class="sidebar__pane-close"></span>
-          </div>
-          <div class="sidebar__pane-body">
-            <p> </p>
-          </div>
+        <div class="sidebar__content-header">
+          <button class="sidebar__content-close" @click="togglePane(activePane)">
+            <img src="/assets/close-icon.svg" alt="Close">
+          </button>
         </div>
+        <slot />
       </div>
-
-
-
-
-
-
-
-
-
-
-      
     </Transition>
 
 
@@ -62,14 +48,24 @@
 
 <script setup>
 
-import { ref } from 'vue'
+import { ref, computed, defineProps } from 'vue';
 
 const isVisible = ref(true)
 
-function toggle() {
-  isVisible.value = !isVisible.value
-}
+const emit = defineEmits(['changePane']);
 
+const props = defineProps({
+  activePane: { type: String, default: 'MapDesc' }
+});
+
+const togglePane = (pane) => {
+  if (props.activePane === pane && isVisible.value) {
+    isVisible.value = false;
+  } else {
+    isVisible.value = true;
+    emit('changePane', pane);
+  }
+};
 
 
 
@@ -100,7 +96,7 @@ $sidebar-width-768: 305px;
   left: 0;
   z-index: 2000;
   box-shadow: 0 1px 5px $box-shadow-sidebar;
-  background-color: $sidebar-crl-primary;
+  background-color: $sidebar-bg-crl-primary;
   padding: 2rem 0rem;
   color: $font-crl-primary;
 
@@ -111,10 +107,15 @@ $sidebar-width-768: 305px;
     border: none;
     padding: 0.25rem;
     margin-bottom: 1rem;
-    
+
 
     &:hover {
       background-color: $active-hover-crl;
+    }
+
+    &--active {
+      background-color: $active-hover-crl;
+      border-left: 3px solid $font-crl-primary;
     }
 
   }
@@ -123,15 +124,29 @@ $sidebar-width-768: 305px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+
   }
 
   &__content {
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: $sidebar-crl-primary;
+    background-color: $sidebar-pane-crl-primary;
     overflow-x: hidden;
+
+    &-close{
+      max-width: 2.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      &:hover{
+        opacity: 0.7;
+      }
+    }
+    &-header{
+      display: flex;
+      justify-content: flex-end;
+  }
   }
 }
 
@@ -179,9 +194,11 @@ $sidebar-width-768: 305px;
     top: 0;
     bottom: 0;
     max-width: $sidebar-sizing-desktop;
+
     &__pane {
       min-width: $pane-width-1200;
     }
+
     &__content{
       left: $sidebar-sizing-desktop;
     }

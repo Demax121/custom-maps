@@ -2,15 +2,31 @@
 
 <script setup>
 
-import { onMounted, shallowRef } from 'vue';
+import { onMounted, shallowRef, watch } from 'vue';
 import L from 'leaflet';
-const map = shallowRef(null)
-const fullmap = L.tileLayer('http://127.0.0.1:8885/maps/Barovia/{z}/{y}/{x}.webp', {
-  minZoom: 1,
-  maxZoom: 5,
-  continuousWorld: false,
-  noWrap: true,
-})
+import { useMapDataStore } from '../stores/mapDataStore';
+import { useOverlaysDataStore } from '../stores/overlaysDataStore';
+import { storeToRefs } from 'pinia';
+
+const overlaysDataStore = useOverlaysDataStore();
+const { overlays } = storeToRefs(overlaysDataStore);
+const mapDataStore = useMapDataStore();
+const { mapTilesLink, mapMinZoom, mapMaxZoom } = storeToRefs(mapDataStore);
+
+const map = shallowRef(null);
+let mapTiles = null;
+const layerControl = shallowRef(null);
+
+function createOverlay(overlayMap, layerControl) {
+  if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
+    return;
+  }
+  
+  for (const overlay of overlays.value) {
+    const newLayerGroup = L.layerGroup([]).addTo(overlayMap);
+    layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
+  }
+}
 
 const createCustomIcon = (shape) =>
   new L.Icon({
@@ -20,25 +36,64 @@ const createCustomIcon = (shape) =>
     iconAnchor: [22, 94],
     shadowAnchor: [4, 62],
     popupAnchor: [-3, -76],
-  })
+  });
 
-onMounted(() => {
+const initializeMap = () => {
+  if (!mapTilesLink.value || !mapMinZoom.value || !mapMaxZoom.value) {
+    return;
+  }
+
+  mapTiles = L.tileLayer(`${mapTilesLink.value}`, {
+    minZoom: mapMinZoom.value,
+    maxZoom: mapMaxZoom.value,
+    continuousWorld: false,
+    noWrap: true,
+  });
+
   map.value = L.map('map', {
-    layers: [fullmap],
+    layers: [mapTiles],
     zoomSnap: 0.25,
     zoomControl: false,
-  }).setView([0, 0], 2)
+  }).setView([0, 0], mapMinZoom.value);
 
   L.marker([0, 0], { icon: createCustomIcon('leaf-green.png') })
     .addTo(map.value)
-    .bindPopup('Działa')
+    .bindPopup('Działa');
+
+  L.control.zoom({position: "topright",}).addTo(map.value);
+  layerControl.value = L.control
+  .layers(null, null, { collapsed: false })
+  .addTo(map.value);  
+};
+
+
+
+
+onMounted(() => {
+  // Try to initialize immediately if data is already loaded
+  if (mapTilesLink.value) {
+    initializeMap();
+    
+  }
+});
+
+// Watch for when the data becomes available
+watch(mapTilesLink, (newValue) => {
+  if (newValue && !map.value) {
+    initializeMap();
+    
+  }
 })
+watch(overlays, (newValue) => {
+  if (newValue && map.value && layerControl.value) {
+    createOverlay(map.value, layerControl.value);
+  }
+});
+
 </script>
 
 
 <template>
-
-
     <div id="map">
 
     </div>
@@ -49,8 +104,17 @@ onMounted(() => {
 <style lang="scss" scoped>
 #map{
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background-color: #1F1F1F;
+}
+
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  width: 3rem !important;
+  height: 3rem !important;
+  line-height: 3rem !important;
+  font-size: 1.75rem !important;
 }
 
 

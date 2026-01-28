@@ -16,7 +16,7 @@ JOIN public.maps
 WHERE public.maps.map_name = ?;
 ";
 
-$binding_values = ["test name"];
+$binding_values = [$_GET['map_name']];
 echo Db::selectData($sql, $binding_values);
 
 

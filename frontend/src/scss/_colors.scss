@@ -2,9 +2,15 @@ $title-crl-secondary: rgb(34, 37, 43);
 $title-crl-primary: rgb(255,20,147);
 $background-crl-primary: rgb(255, 255, 0);
 
-$sidebar-crl-primary: rgba(0, 0, 0, .8);
+$sidebar-bg-crl-primary: rgba(0, 0, 0, .9);
+$sidebar-pane-crl-primary: rgba(0, 0, 0, .8);
 $font-crl-primary: rgb(255, 255, 255);
 $box-shadow-sidebar: rgba(0, 0, 0, 0.65);
 $sidebar-crl-border: rgba(0, 0, 0, 0.2);
 $tab-crl-primary: rgba(63, 63, 63, 0.5);
 $active-hover-crl: rgba(255, 255, 255, 0.2);
+
+
+$leaflet-control-bg-crl-primary: rgba(0, 0, 0, 0.9);
+$leaflet-control-font-crl-primary: rgb(255, 255, 255);
+$leaflet-hover-crl: rgba(255, 255, 255, 0.2);

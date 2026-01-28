@@ -1,21 +1,26 @@
 <template>
-      <div class="sidebar__content" v-show="isVisible">
         <div class="sidebar__pane">
           <div class="sidebar__pane-header">
-            <h1 class="sidebar__pane-title">Map name</h1>
-            <span class="sidebar__pane-close"></span>
+            <h1 class="sidebar__pane-title">{{ mapDataStore.mapName }}</h1>
           </div>
           <div class="sidebar__pane-body">
-            <p> </p>
+            <img class="sidebar__pane-img" :src="mapDataStore.mapImg" alt="">
+            <p>{{ mapDataStore.mapDescription }}</p>
           </div>
         </div>
-      </div>
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+import { useMapDataStore } from '../../stores/mapDataStore';
+const mapDataStore = useMapDataStore();
+
 
 </script>
 
 <style lang="scss" scoped>
+
+
+
 
 </style>
