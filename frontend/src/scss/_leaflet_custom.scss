@@ -34,7 +34,9 @@
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out,
-.leaflet-control-zoom-fullscreen {
+.leaflet-control-zoom-fullscreen,
+.get-location-toggle,
+.my-layers-toggle {
   width: 3rem !important;
   height: 3rem !important;
   line-height: 3rem !important;
@@ -67,20 +69,11 @@
 
 
 .my-layers-toggle {
-  width: 3rem !important;
-  height: 3rem !important;
-  line-height: 3rem !important;
-  font-size: 1.75rem !important;
   background-image: url('/assets/layer-icon.svg');
   background-size: 70%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-.my-layers-control {
-  width: 3rem !important;
-  height: 3rem !important;
-  line-height: 3rem !important;
-  font-size: 1.75rem !important;
 }
 
-
+.get-location-toggle {
+  background-image: url('/assets/location-crosshairs-icon.svg');
+  background-size: 70%;
+}

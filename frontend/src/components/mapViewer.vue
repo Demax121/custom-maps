@@ -63,6 +63,58 @@ function createOverlay(overlayMap, layerControl) {
   }
 }
 
+
+const getLocation = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const btn = L.DomUtil.create('a', 'get-location-toggle', container);
+    btn.href = '#';
+    btn.title = 'get location';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Get current location');
+    
+    let Cords = null;
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      
+      if (Cords) {
+        // If marker exists, remove it
+        map.removeLayer(Cords);
+        Cords = null;
+      } else {
+        // If marker doesn't exist, create it
+        Cords = L.marker([7, 7], {
+          icon: createCustomIcon('leaf-red'),
+          draggable: true,
+          zIndexOffset: 9998,
+        });
+
+        Cords.bindPopup("");
+
+        Cords.on("dragend", () => {
+          let latLng = Cords.getLatLng();
+          let lat = latLng.lat.toFixed(2);
+          let lng = latLng.lng.toFixed(2);
+          let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
+          Cords.getPopup().setContent(coordinates).openOn(map);
+        });
+        
+        Cords.addTo(map);
+      }
+    });
+
+    return container;
+  }
+});
+const getLocationControl = new getLocation();
+
+
+
 const createCustomIcon = (shape) =>
   new L.Icon({
     iconUrl: `http://127.0.0.1:8885/icons/${shape}.png`,
@@ -104,6 +156,7 @@ const initializeMap = () => {
 		position: 'topright',
 		fullscreenElement: document.getElementById('app-container')
 	}));
+  getLocationControl.addTo(map.value);
   myLayersControl.addTo(map.value);
   layerControl.value = L.control
   .layers(null, null, { collapsed: false})
@@ -114,23 +167,6 @@ const initializeMap = () => {
 
 
 };
-
-
-let Cords = L.marker([7, 7], {
-  icon: createCustomIcon('leaf-red'),
-  draggable: true,
-  zIndexOffset: 9998,
-});
-
-Cords.bindPopup("");
-
-Cords.on("dragend", () => {
-  let latLng = Cords.getLatLng();
-  let lat = latLng.lat.toFixed(2);
-  let lng = latLng.lng.toFixed(2);
-  let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
-   Cords.getPopup().setContent(coordinates).openOn(map.value);
-});
 
 
 function addMarkersToMap(mapOverlay) {
@@ -170,7 +206,6 @@ onMounted(() => {
   // Try to initialize immediately if data is already loaded
   if (mapTilesLink.value) {
     initializeMap();
-    Cords.addTo(map.value);
     addMarkersToMap(map.value);
   }
 });
@@ -179,7 +214,6 @@ onMounted(() => {
 watch(mapTilesLink, (newValue) => {
   if (newValue && !map.value) {
     initializeMap();
-    Cords.addTo(map.value);
   }
 })
 watch(overlays, (newValue) => {
@@ -188,7 +222,6 @@ watch(overlays, (newValue) => {
     addMarkersToMap(map.value);
   }
 });
-
 watch(markers, (newValue) => {
   if (newValue && map.value && Object.keys(overlayGroups.value).length > 0) {
     addMarkersToMap(map.value);

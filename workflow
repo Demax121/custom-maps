@@ -11,5 +11,5 @@
 10. Wypełnaine marker description danymi wybranego markera - zrobione
 11. searchbar dla listy markerów - zrobione
 12. rozwijane listy overlayów w marker list - zrobione
-
+13. fullscreen map - zrobione
 
