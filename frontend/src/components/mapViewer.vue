@@ -7,9 +7,12 @@ import { useOverlaysDataStore } from '../stores/overlaysDataStore';
 import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { FullScreen } from 'leaflet.fullscreen';
-import { useAppSettingsStore } from '../stores/appSettingsStore';
+import { usePaneNavigation } from '../composables/usePaneNavigation';
+
+
 
 const emit = defineEmits(['changePane']);
+const { navigateToPane } = usePaneNavigation(emit);
 
 const overlaysDataStore = useOverlaysDataStore();
 const { overlays } = storeToRefs(overlaysDataStore);
@@ -23,7 +26,7 @@ let mapTiles = null;
 const layerControl = shallowRef(null);
 const overlayGroups = shallowRef({});
 
-const appSettingsStore = useAppSettingsStore();
+
 
 const myLayers = L.Control.extend({
   options: {
@@ -196,9 +199,7 @@ function addMarkersToMap(mapOverlay) {
     // Add click event listener to marker
     newMarker.on('click', () => {
       markersDataStore.selectedMarker(marker.marker_name);
-      if (appSettingsStore.automaticPaneChange === true) {
-        emit('changePane', 'MarkerDesc');
-      }
+      navigateToPane('MarkerDesc');
     });
     
     // Store reference to the marker

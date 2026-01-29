@@ -47,22 +47,22 @@
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch, reactive, computed } from 'vue';
 import { useMarkersDataStore } from '../../stores/markersDataStore';
-import { useAppSettingsStore } from '../../stores/appSettingsStore';
+import { usePaneNavigation } from '../../composables/usePaneNavigation';
 
 const markersDataStore = useMarkersDataStore();
 const { savedMarkers } = storeToRefs(markersDataStore);
 
-const appSettingsStore = useAppSettingsStore();
+
 
 const emit = defineEmits(['changePane']);
+const { navigateToPane } = usePaneNavigation(emit);
+
 const removeSavedMarker = (markerName) => {
   markersDataStore.removeSavedMarker(markerName);
 };
 const openMarkerDescription = (markerName) => {
   markersDataStore.selectedMarker(markerName);
-  if (appSettingsStore.automaticPaneChange === true) {
-    emit('changePane', 'MarkerDesc');
-  }
+  navigateToPane('MarkerDesc');
 };
 const focusOnMarker = (markerName) => {
   markersDataStore.focusMarker(markerName);
