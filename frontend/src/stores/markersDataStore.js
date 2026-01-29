@@ -4,6 +4,9 @@ export const useMarkersDataStore = defineStore('markersData', {
     state: () => {
         return  {
         markers: [],
+        markerRefs: {},
+        focusedMarker: null,
+        targetMarker: null,
         }
      },
     getters: { 
@@ -23,6 +26,16 @@ export const useMarkersDataStore = defineStore('markersData', {
           console.error('Error fetching markers data:', error);
           throw error;
         }
+        },
+        setMarkerRef(markerName, leafletMarker) {
+          this.markerRefs[markerName] = leafletMarker;
+        },
+        focusMarker(markerName) {
+          this.focusedMarker = markerName;
+        },
+        selectedMarker(markerName) {
+          this.targetMarker = this.markers.find(marker => marker.marker_name === markerName);
+          return this.targetMarker;
         },
     },
 });
