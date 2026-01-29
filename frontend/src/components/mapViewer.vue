@@ -101,7 +101,8 @@ const initializeMap = () => {
 
   L.control.zoom({position: "topright",}).addTo(map.value);
     map.value.addControl(new FullScreen({
-		position: 'topright'
+		position: 'topright',
+		fullscreenElement: document.getElementById('app-container')
 	}));
   myLayersControl.addTo(map.value);
   layerControl.value = L.control
