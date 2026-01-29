@@ -8,6 +8,7 @@
         "@primeuix/themes": "^2.0.2",
         "@primevue/themes": "^4.5.4",
         "leaflet": "^1.9.4",
+        "leaflet.fullscreen": "^5.3.0",
         "pinia": "^3.0.4",
         "primevue": "^4.5.4",
         "vite-plugin-static-copy": "^3.1.4",
@@ -358,6 +359,8 @@
     "kolorist": ["kolorist@1.8.0", "", {}, "sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ=="],
 
     "leaflet": ["leaflet@1.9.4", "", {}, "sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA=="],
+
+    "leaflet.fullscreen": ["leaflet.fullscreen@5.3.0", "", { "peerDependencies": { "leaflet": "^1.7.0 || >=2.0.0-alpha.1" } }, "sha512-ZWlu30qf9qNysYtJtI8d1Akw9tpQcELBHvizhlE2vNKlnn0dt7vgg5xM81oalqd5QRf/JyJ1M9fu+I9NjJsS6Q=="],
 
     "lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
 

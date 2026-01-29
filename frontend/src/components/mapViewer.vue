@@ -6,6 +6,7 @@ import { useMapDataStore } from '../stores/mapDataStore';
 import { useOverlaysDataStore } from '../stores/overlaysDataStore';
 import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
+import { FullScreen } from 'leaflet.fullscreen';
 
 const emit = defineEmits(['changePane']);
 
@@ -27,9 +28,8 @@ const myLayers = L.Control.extend({
   options: {
     position: 'topright',
   },
-
   onAdd: function (map) {
-    const container = L.DomUtil.create('div', 'leaflet-bar my-layers-control');
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'my-layers-toggle', container);
     btn.href = '#';
     btn.title = 'Toggle layers';
@@ -52,6 +52,58 @@ const myLayers = L.Control.extend({
 const myLayersControl = new myLayers();
 
 
+const getLocation = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const btn = L.DomUtil.create('a', 'get-location-toggle', container);
+    btn.href = '#';
+    btn.title = 'get location';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Get current location');
+    
+    let Cords = null;
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      
+      if (Cords) {
+        // If marker exists, remove it
+        map.removeLayer(Cords);
+        Cords = null;
+      } else {
+        // If marker doesn't exist, create it
+        Cords = L.marker([7, 7], {
+          icon: createCustomIcon('leaf-red'),
+          draggable: true,
+          zIndexOffset: 9998,
+        });
+
+        Cords.bindPopup("");
+
+        Cords.on("dragend", () => {
+          let latLng = Cords.getLatLng();
+          let lat = latLng.lat.toFixed(2);
+          let lng = latLng.lng.toFixed(2);
+          let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
+          Cords.getPopup().setContent(coordinates).openOn(map);
+        });
+        
+        Cords.addTo(map);
+      }
+    });
+
+    return container;
+  }
+});
+const getLocationControl = new getLocation();
+
+
+
+
 function createOverlay(overlayMap, layerControl) {
   if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
     return;
@@ -63,6 +115,7 @@ function createOverlay(overlayMap, layerControl) {
     overlayGroups.value[overlay.overlay_name] = newLayerGroup;
   }
 }
+
 
 const createCustomIcon = (shape) =>
   new L.Icon({
@@ -89,6 +142,7 @@ const initializeMap = () => {
     minZoom: mapMinZoom.value,
     maxZoom: mapMaxZoom.value,
     continuousWorld: false,
+    attribution: ' <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> | <a href="https://github.com/Demax121/custom-maps" target="_blank" rel="noopener">Custom maps project</a>',
     noWrap: true,
   });
 
@@ -96,32 +150,25 @@ const initializeMap = () => {
     layers: [mapTiles],
     zoomSnap: 0.25,
     zoomControl: false,
+    
   }).setView([0, 0], mapMinZoom.value);
 
   L.control.zoom({position: "topright",}).addTo(map.value);
-  layerControl.value = L.control
-  .layers(null, null, { collapsed: false})
-  .addTo(map.value)  
+    map.value.addControl(new FullScreen({
+		position: 'topright',
+		fullscreenElement: document.getElementById('app-container')
+	}));
+  getLocationControl.addTo(map.value);
   myLayersControl.addTo(map.value);
+  layerControl.value = L.control
+  .layers(null, null, { collapsed: true})
+  .addTo(map.value)  
   
+  map.value.attributionControl.setPrefix(false);
+
+
+
 };
-
-
-let Cords = L.marker([7, 7], {
-  icon: createCustomIcon('leaf-red'),
-  draggable: true,
-  zIndexOffset: 9998,
-});
-
-Cords.bindPopup("");
-
-Cords.on("dragend", () => {
-  let latLng = Cords.getLatLng();
-  let lat = latLng.lat.toFixed(2);
-  let lng = latLng.lng.toFixed(2);
-  let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
-   Cords.getPopup().setContent(coordinates).openOn(map.value);
-});
 
 
 function addMarkersToMap(mapOverlay) {
@@ -161,7 +208,6 @@ onMounted(() => {
   // Try to initialize immediately if data is already loaded
   if (mapTilesLink.value) {
     initializeMap();
-    Cords.addTo(map.value);
     addMarkersToMap(map.value);
   }
 });
@@ -170,7 +216,6 @@ onMounted(() => {
 watch(mapTilesLink, (newValue) => {
   if (newValue && !map.value) {
     initializeMap();
-    Cords.addTo(map.value);
   }
 })
 watch(overlays, (newValue) => {
@@ -179,7 +224,6 @@ watch(overlays, (newValue) => {
     addMarkersToMap(map.value);
   }
 });
-
 watch(markers, (newValue) => {
   if (newValue && map.value && Object.keys(overlayGroups.value).length > 0) {
     addMarkersToMap(map.value);

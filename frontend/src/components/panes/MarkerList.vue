@@ -12,10 +12,15 @@
           <ul class="sidebar__overlay-list">
             <template v-for="marker in filteredMarkers" :key="marker.marker_name">
               <li class="sidebar__overlay-list-item">
-                <button class="sidebar__overlay-item-button" @mousedown="focusOnMarker(marker.marker_name);
+                <button class="sidebar__overlay-item-button item-button--search" @mousedown="focusOnMarker(marker.marker_name);
                 openMarkerDescription(marker.marker_name);">
                   {{ marker.marker_name }}
                 </button>
+                <span class="sidebar__overlay-item-buttons-group">
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search" @click="saveMarker(marker.marker_name)">
+                  Save Location
+                </button>
+                </span>
               </li>
             </template>
           </ul>
@@ -26,6 +31,7 @@
           :style="openOverlays[overlay.overlay_name] ? activeColor : {}">
           {{ overlay.overlay_name }}
         </button>
+        
         <Transition name="slide-fade">
           <ul class="sidebar__overlay-list" v-show="openOverlays[overlay.overlay_name]">
             <template v-for="marker in markers" :key="marker.marker_name">
@@ -34,6 +40,12 @@
                 openMarkerDescription(marker.marker_name);">
                   {{ marker.marker_name }}
                 </button>
+                <span class="sidebar__overlay-item-buttons-group">
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="saveMarker(marker.marker_name)">
+                  Save Location
+                </button>
+
+                </span>
               </li>
             </template>
 
@@ -89,6 +101,15 @@ markersDataStore.selectedMarker(markerName);
   emit('changePane', 'MarkerDesc');
 };
 
+const saveMarker = (markerName) => {
+  markersDataStore.saveMarker(markerName);
+};
+
+const removeSavedMarker = (markerName) => {
+  markersDataStore.removeSavedMarker(markerName);
+};
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -97,21 +118,6 @@ markersDataStore.selectedMarker(markerName);
 .sidebar__overlay {
   width: 100%;
   margin-bottom: 1rem;
-}
-
-.sidebar__overlay-button {
-  width: 100%;
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0);
-  color: $font-crl-primary;
-  cursor: pointer;
-  border: none;
-  padding: 0.75rem;
-  text-align: left;
-
-  &:hover {
-    background-color: rgba(124, 124, 124, 0.3);
-  }
 }
 
 .sidebar__overlay-list {
@@ -126,25 +132,20 @@ markersDataStore.selectedMarker(markerName);
 .sidebar__overlay-list-item {
   padding: 0.5rem 0rem 0 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+    
 
   &:last-child {
     border-bottom: none;
   }
+
 }
 
-.sidebar__overlay-item-button {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0);
-  color: $font-crl-primary;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  text-align: left;
 
-  &:hover {
-    text-decoration: underline;
-  }
-}
+
 
 /* Transition styles */
 .slide-fade-enter-active,
@@ -189,6 +190,10 @@ markersDataStore.selectedMarker(markerName);
 .sidebar__pane-search-result {
   color: $font-crl-primary;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.5rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
+  scrollbar-width: thin;
+  padding-right: 0.5rem;
 }
 </style>

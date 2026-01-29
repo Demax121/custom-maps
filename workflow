@@ -8,5 +8,8 @@
 7. opracować dodawanie markerów z bazy do layers w sidebar - zrobione
 8. klikanie na marker w sidebar robi zoom na marker, otwiera tooltip i marker description pane - zrobione
 9. klikanie na marker na mapie otwiera tooltip i marker description pane - zrobione
-
+10. Wypełnaine marker description danymi wybranego markera - zrobione
+11. searchbar dla listy markerów - zrobione
+12. rozwijane listy overlayów w marker list - zrobione
+13. fullscreen map - zrobione
 

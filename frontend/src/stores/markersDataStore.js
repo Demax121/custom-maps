@@ -7,6 +7,7 @@ export const useMarkersDataStore = defineStore('markersData', {
         markerRefs: {},
         focusedMarker: null,
         targetMarker: null,
+        savedMarkers: [],
         }
      },
     getters: { 
@@ -37,5 +38,19 @@ export const useMarkersDataStore = defineStore('markersData', {
           this.targetMarker = this.markers.find(marker => marker.marker_name === markerName);
           return this.targetMarker;
         },
+        saveMarker(markerName) {
+          const marker = this.markers.find(marker => marker.marker_name === markerName);
+          if (marker && !this.savedMarkers.includes(marker.marker_name))
+          this.savedMarkers.push(marker);
+
+        },
+        removeSavedMarker(markerName) {
+          const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
+          if (marker) {
+            const index = this.savedMarkers.indexOf(marker);
+            this.savedMarkers.splice(index, 1);
+          }
+
+        }
     },
 });
