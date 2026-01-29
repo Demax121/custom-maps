@@ -6,6 +6,7 @@ import { useMapDataStore } from '../stores/mapDataStore';
 import { useOverlaysDataStore } from '../stores/overlaysDataStore';
 import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
+import { FullScreen } from 'leaflet.fullscreen';
 
 const emit = defineEmits(['changePane']);
 
@@ -27,9 +28,8 @@ const myLayers = L.Control.extend({
   options: {
     position: 'topright',
   },
-
   onAdd: function (map) {
-    const container = L.DomUtil.create('div', 'leaflet-bar my-layers-control');
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'my-layers-toggle', container);
     btn.href = '#';
     btn.title = 'Toggle layers';
@@ -50,7 +50,6 @@ const myLayers = L.Control.extend({
   }
 });
 const myLayersControl = new myLayers();
-
 
 function createOverlay(overlayMap, layerControl) {
   if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
@@ -101,11 +100,18 @@ const initializeMap = () => {
   }).setView([0, 0], mapMinZoom.value);
 
   L.control.zoom({position: "topright",}).addTo(map.value);
+    map.value.addControl(new FullScreen({
+		position: 'topright'
+	}));
+  myLayersControl.addTo(map.value);
   layerControl.value = L.control
   .layers(null, null, { collapsed: false})
   .addTo(map.value)  
-  myLayersControl.addTo(map.value);
+  
   map.value.attributionControl.setPrefix(false);
+
+
+
 };
 
 
