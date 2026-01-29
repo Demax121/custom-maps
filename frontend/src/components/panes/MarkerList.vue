@@ -11,7 +11,7 @@
         <div class="sidebar__pane-search-result" v-show="showResult && searchQuery">
           <ul class="sidebar__overlay-list">
             <template v-for="marker in filteredMarkers" :key="marker.marker_name">
-              <li class="sidebar__overlay-list-item sidebar__overlay-list-item">
+              <li class="sidebar__overlay-list-item">
                 <button class="sidebar__overlay-item-button item-button--search" @mousedown="focusOnMarker(marker.marker_name);
                 openMarkerDescription(marker.marker_name);">
                   {{ marker.marker_name }}
@@ -19,9 +19,6 @@
                 <span class="sidebar__overlay-item-buttons-group">
                 <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search" @click="saveMarker(marker.marker_name)">
                   Save Location
-                </button>
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search" @click="removeSavedMarker(marker.marker_name)">
-                  Remove Saved
                 </button>
                 </span>
               </li>
@@ -47,9 +44,7 @@
                 <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="saveMarker(marker.marker_name)">
                   Save Location
                 </button>
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="removeSavedMarker(marker.marker_name)">
-                  Remove Saved
-                </button>
+
                 </span>
               </li>
             </template>
@@ -125,34 +120,6 @@ const removeSavedMarker = (markerName) => {
   margin-bottom: 1rem;
 }
 
-.sidebar__overlay-button {
-  width: 100%;
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0);
-  color: $font-crl-primary;
-  cursor: pointer;
-  border: none;
-  padding: 0.75rem;
-  text-align: left;
-  font-size: 14pt;
-
-  &:hover {
-    background-color: rgba(124, 124, 124, 0.3);
-  }
-
-}
-
-.sidebar__overlay-item-buttons-group {
-  display: flex;
-  flex-direction: row;
-  gap: 0.25rem;
-  margin-left: 1rem;
-
-}
-
-
-
-
 .sidebar__overlay-list {
   list-style: none;
   padding: 0.5rem;
@@ -177,41 +144,6 @@ const removeSavedMarker = (markerName) => {
 
 }
 
-.sidebar__overlay-item-button {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0);
-  color: $font-crl-primary;
-  text-align: left;
-  cursor: pointer;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  font-size: 12pt;
-  width: fit-content;
-  &:hover {
-    text-decoration: underline;
-  }
-    &--action{
-    align-self: flex-end;
-    font-size: 10pt;
-    background-color: rgba(124, 124, 124, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 0.25rem;
-    flex-grow: 0;
-    &:hover {
-      background-color: rgba(124, 124, 124, 0.1);
-      text-decoration: none;
-    }
-  }
-
-}
-.action-button--search{
-    font-size: 10pt;
-    flex-grow: 0;
-    flex-shrink: 0;
-  }
-.item-button--search{
-  font-size: 11pt;
-}
 
 
 
@@ -258,6 +190,10 @@ const removeSavedMarker = (markerName) => {
 .sidebar__pane-search-result {
   color: $font-crl-primary;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.5rem;
+  max-height: 15rem;
+  overflow-y: auto;
+  scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
+  scrollbar-width: thin;
+  padding-right: 0.5rem;
 }
 </style>

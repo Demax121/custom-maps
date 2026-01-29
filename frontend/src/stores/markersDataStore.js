@@ -40,8 +40,9 @@ export const useMarkersDataStore = defineStore('markersData', {
         },
         saveMarker(markerName) {
           const marker = this.markers.find(marker => marker.marker_name === markerName);
-          if (marker && !this.savedMarkers.includes(marker))
+          if (marker && !this.savedMarkers.includes(marker.marker_name))
           this.savedMarkers.push(marker);
+
         },
         removeSavedMarker(markerName) {
           const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
