@@ -51,18 +51,6 @@ const myLayers = L.Control.extend({
 });
 const myLayersControl = new myLayers();
 
-function createOverlay(overlayMap, layerControl) {
-  if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
-    return;
-  }
-  overlayGroups.value = {};
-  for (const overlay of overlays.value) {
-    const newLayerGroup = L.featureGroup([]).addTo(overlayMap);
-    layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
-    overlayGroups.value[overlay.overlay_name] = newLayerGroup;
-  }
-}
-
 
 const getLocation = L.Control.extend({
   options: {
@@ -115,6 +103,20 @@ const getLocationControl = new getLocation();
 
 
 
+
+function createOverlay(overlayMap, layerControl) {
+  if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
+    return;
+  }
+  overlayGroups.value = {};
+  for (const overlay of overlays.value) {
+    const newLayerGroup = L.featureGroup([]).addTo(overlayMap);
+    layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
+    overlayGroups.value[overlay.overlay_name] = newLayerGroup;
+  }
+}
+
+
 const createCustomIcon = (shape) =>
   new L.Icon({
     iconUrl: `http://127.0.0.1:8885/icons/${shape}.png`,
@@ -159,7 +161,7 @@ const initializeMap = () => {
   getLocationControl.addTo(map.value);
   myLayersControl.addTo(map.value);
   layerControl.value = L.control
-  .layers(null, null, { collapsed: false})
+  .layers(null, null, { collapsed: true})
   .addTo(map.value)  
   
   map.value.attributionControl.setPrefix(false);
