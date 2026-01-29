@@ -47,8 +47,12 @@
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch, reactive, computed } from 'vue';
 import { useMarkersDataStore } from '../../stores/markersDataStore';
+import { useAppSettingsStore } from '../../stores/appSettingsStore';
+
 const markersDataStore = useMarkersDataStore();
 const { savedMarkers } = storeToRefs(markersDataStore);
+
+const appSettingsStore = useAppSettingsStore();
 
 const emit = defineEmits(['changePane']);
 const removeSavedMarker = (markerName) => {
@@ -56,7 +60,9 @@ const removeSavedMarker = (markerName) => {
 };
 const openMarkerDescription = (markerName) => {
   markersDataStore.selectedMarker(markerName);
-  emit('changePane', 'MarkerDesc');
+  if (appSettingsStore.automaticPaneChange === true) {
+    emit('changePane', 'MarkerDesc');
+  }
 };
 const focusOnMarker = (markerName) => {
   markersDataStore.focusMarker(markerName);

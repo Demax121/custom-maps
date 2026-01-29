@@ -64,11 +64,13 @@ import { onMounted, ref, watch, reactive, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useOverlaysDataStore } from '../../stores/overlaysDataStore';
 import { useMarkersDataStore } from '../../stores/markersDataStore';
+import { useAppSettingsStore } from '../../stores/appSettingsStore';
 
 const emit = defineEmits(['changePane']);
 
 const overlaysDataStore = useOverlaysDataStore();
 const markersDataStore = useMarkersDataStore();
+const appSettingsStore = useAppSettingsStore();
 const { overlays } = storeToRefs(overlaysDataStore);
 const { markers } = storeToRefs(markersDataStore);
 
@@ -98,7 +100,9 @@ const focusOnMarker = (markerName) => {
 
 const openMarkerDescription = (markerName) => {
 markersDataStore.selectedMarker(markerName);
+if (appSettingsStore.automaticPaneChange === true) {
   emit('changePane', 'MarkerDesc');
+}
 };
 
 const saveMarker = (markerName) => {
