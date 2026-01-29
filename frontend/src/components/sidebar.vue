@@ -11,7 +11,7 @@
         </li>
         <li class="sidebar__tab-item">
           <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerList' && isVisible }"
-            @click="togglePane('MarkerList')">
+            @click="togglePane('MarkerList')" >
             <img class="sidebar__btn-img" src="/assets/map-icon.svg" alt="map"></img>
           </button>
         </li>
@@ -27,7 +27,16 @@
             <img class="sidebar__btn-img" src="/assets/list-icon.svg" alt="list"></img>
           </button>
         </li>
+         <li class="sidebar__tab-item">
+          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'SettingsPane' && isVisible }"
+            @click="togglePane('SettingsPane')">
+            <img class="sidebar__btn-img" src="/assets/settings-icon.svg" alt="settings"></img>
+          </button>
+        </li>
       </ul>
+
+
+
     </div>
     <!-- Tab panes -->
 
@@ -117,12 +126,17 @@ $sidebar-width-768: 305px;
       background-color: $active-hover-crl;
       border-left: 3px solid $font-crl-primary;
     }
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
 
   }
 
   &__tabs {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: auto;
+    align-content: space-between;
     align-items: center;
 
   }
@@ -150,6 +164,7 @@ $sidebar-width-768: 305px;
   }
   }
 }
+
 
 // Transition classes
 .slide-enter-active,

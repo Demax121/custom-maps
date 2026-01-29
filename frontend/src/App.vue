@@ -5,6 +5,7 @@ import MapDesc from './components/panes/MapDesc.vue'
 import MarkerDesc from './components/panes/MarkerDesc.vue'
 import MarkerList from './components/panes/MarkerList.vue'
 import SavedLocations from './components/panes/SavedLocations.vue'
+import SettingsPane from './components/panes/SettingsPane.vue'
 
 import { ref, onMounted } from 'vue'
 import { useMapDataStore } from './stores/mapDataStore'
@@ -16,7 +17,8 @@ const panes = {
     MapDesc,
     MarkerDesc,
     MarkerList,
-    SavedLocations
+    SavedLocations,
+    SettingsPane: SettingsPane
 };
 
 const handlePaneChange = (paneName) => {
