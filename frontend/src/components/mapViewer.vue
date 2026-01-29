@@ -89,6 +89,7 @@ const initializeMap = () => {
     minZoom: mapMinZoom.value,
     maxZoom: mapMaxZoom.value,
     continuousWorld: false,
+    attribution: ' <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> | <a href="https://github.com/Demax121/custom-maps" target="_blank" rel="noopener">Custom maps project</a>',
     noWrap: true,
   });
 
@@ -96,6 +97,7 @@ const initializeMap = () => {
     layers: [mapTiles],
     zoomSnap: 0.25,
     zoomControl: false,
+    
   }).setView([0, 0], mapMinZoom.value);
 
   L.control.zoom({position: "topright",}).addTo(map.value);
@@ -103,7 +105,7 @@ const initializeMap = () => {
   .layers(null, null, { collapsed: false})
   .addTo(map.value)  
   myLayersControl.addTo(map.value);
-  
+  map.value.attributionControl.setPrefix(false);
 };
 
 
