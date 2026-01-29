@@ -34,6 +34,16 @@
   font-size: 1.75rem !important;
 }
 
+.leaflet-control-layers-toggle{
+  display: none !important;
+}
+
+.leaflet-control-layers-toggle:hover + .leaflet-control-layers {
+  display: none;
+}
+
+
+
 .leaflet-control {
   cursor: pointer;
 }
@@ -46,4 +56,22 @@
     line-height: 0 !important;
     font-size: 0 !important;
   }
+}
+
+
+.my-layers-toggle {
+  width: 3rem !important;
+  height: 3rem !important;
+  line-height: 3rem !important;
+  font-size: 1.75rem !important;
+  background-image: url('/assets/layer-icon.svg');
+  background-size: 70%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+.my-layers-control {
+  width: 3rem !important;
+  height: 3rem !important;
+  line-height: 3rem !important;
+  font-size: 1.75rem !important;
 }

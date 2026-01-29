@@ -1,5 +1,3 @@
-
-
 <script setup>
 
 import { onMounted, shallowRef, watch } from 'vue';
@@ -23,6 +21,37 @@ let mapTiles = null;
 const layerControl = shallowRef(null);
 const overlayGroups = shallowRef({});
 
+
+
+const myLayers = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar my-layers-control');
+    const btn = L.DomUtil.create('a', 'my-layers-toggle', container);
+    btn.href = '#';
+    btn.title = 'Toggle layers';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Toggle map layers');
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      if (layerControl.value) {
+        const controlContainer = layerControl.value.getContainer();
+        const isExpanded = controlContainer.classList.contains('leaflet-control-layers-expanded');
+        isExpanded ? layerControl.value.collapse() : layerControl.value.expand();
+      }
+    });
+
+    return container;
+  }
+});
+const myLayersControl = new myLayers();
+
+
 function createOverlay(overlayMap, layerControl) {
   if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
     return;
@@ -45,6 +74,12 @@ const createCustomIcon = (shape) =>
     popupAnchor: [-3, -76],
 });
 
+
+
+
+
+
+
 const initializeMap = () => {
   if (!mapTilesLink.value || !mapMinZoom.value || !mapMaxZoom.value) {
     return;
@@ -65,8 +100,10 @@ const initializeMap = () => {
 
   L.control.zoom({position: "topright",}).addTo(map.value);
   layerControl.value = L.control
-  .layers(null, null, { collapsed: false })
-  .addTo(map.value);  
+  .layers(null, null, { collapsed: false})
+  .addTo(map.value)  
+  myLayersControl.addTo(map.value);
+  
 };
 
 
@@ -178,14 +215,6 @@ watch(focusedMarker, (markerName) => {
     background-color: #1F1F1F;
 }
 
-
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
-  width: 3rem !important;
-  height: 3rem !important;
-  line-height: 3rem !important;
-  font-size: 1.75rem !important;
-}
 
 
 
