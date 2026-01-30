@@ -12,4 +12,12 @@
 11. searchbar dla listy markerów - zrobione
 12. rozwijane listy overlayów w marker list - zrobione
 13. fullscreen map - zrobione
+14. dodawanie markerów do "saved locations" - zrobione
+15. wyświetlanie "saved locations" w sidebar - zrobione
+16. usuwanie "saved locations" z sidebar - zrobione
+17. Export/Import "saved locations" jako JSON - zrobione
+18. Automatic pane chane toggle - zrobione
+19. Marker get location - dodaje lokacje do saved locations 
+(nazwa lokacji, warstwa do jakiej należy (dropdown), koordynaty lat lng, ikona markera (dropdown))
+20. Saved locations mają notatki użytkownika - zrobione
 

@@ -7,8 +7,12 @@ import { useOverlaysDataStore } from '../stores/overlaysDataStore';
 import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { FullScreen } from 'leaflet.fullscreen';
+import { usePaneNavigation } from '../composables/usePaneNavigation';
+import MarkerPopup from '../components/markerPopup.vue'
+
 
 const emit = defineEmits(['changePane']);
+const { navigateToPane } = usePaneNavigation(emit);
 
 const overlaysDataStore = useOverlaysDataStore();
 const { overlays } = storeToRefs(overlaysDataStore);
@@ -195,7 +199,7 @@ function addMarkersToMap(mapOverlay) {
     // Add click event listener to marker
     newMarker.on('click', () => {
       markersDataStore.selectedMarker(marker.marker_name);
-      emit('changePane', 'MarkerDesc');
+      navigateToPane('MarkerDesc');
     });
     
     // Store reference to the marker
@@ -246,7 +250,6 @@ watch(focusedMarker, (markerName) => {
 
 <template>
     <div id="map">
-
     </div>
 </template>
 

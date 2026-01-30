@@ -91,7 +91,7 @@ $sidebar-position-1200: 470px;
 $sidebar-position-992: 400px;
 $sidebar-position-768: 315px;
 
-$sidebar-width-1200: 530px;
+$sidebar-width-1200: 400px;
 $sidebar-width-992: 390px;
 $sidebar-width-768: 305px;
 
@@ -210,10 +210,6 @@ $sidebar-width-768: 305px;
     top: 0;
     bottom: 0;
     max-width: $sidebar-sizing-desktop;
-
-    &__pane {
-      min-width: $pane-width-1200;
-    }
 
     &__content{
       left: $sidebar-sizing-desktop;
