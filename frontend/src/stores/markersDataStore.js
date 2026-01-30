@@ -41,6 +41,11 @@ export const useMarkersDataStore = defineStore('markersData', {
         saveMarker(markerName) {
           const marker = this.markers.find(marker => marker.marker_name === markerName);
           if (marker && !this.savedMarkers.includes(marker.marker_name))
+          Object.defineProperty(marker, 'note', {
+            value: '',
+            writable: true,
+            enumerable: true,
+          });
           this.savedMarkers.push(marker);
 
         },
@@ -95,6 +100,19 @@ export const useMarkersDataStore = defineStore('markersData', {
             console.error('Error importing saved markers:', error);
             throw error; // Re-throw so the component can show user feedback
           }
-        }
+        },
+        saveMarkerNote(markerName, noteData) {
+          const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
+          if (marker) {
+            marker.note = noteData;
+          }
+        },
+        deleteMarkerNote(markerName) {
+          const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
+          if (marker && marker.note) {
+            marker.note = '';
+          }
+        },
+
     },
 });

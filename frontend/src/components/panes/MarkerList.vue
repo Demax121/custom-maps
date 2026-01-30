@@ -198,4 +198,15 @@ const removeSavedMarker = (markerName) => {
   scrollbar-width: thin;
   padding-right: 0.5rem;
 }
+
+.item-button--search{
+  font-size: 10pt;
+}
+
+.action-button--search{
+  font-size: 9pt;
+}
+
+
+
 </style>
