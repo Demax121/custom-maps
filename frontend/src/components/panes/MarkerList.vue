@@ -41,10 +41,16 @@
                   {{ marker.marker_name }}
                 </button>
                 <span class="sidebar__overlay-item-buttons-group">
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="saveMarker(marker.marker_name)">
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" 
+                @click="saveMarker(marker.marker_name)"
+                v-show="!isLocationSaved(marker.marker_name)">
                   Save Location
                 </button>
-
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
+                @click="removeSavedMarker(marker.marker_name)" title="Remove location from list"
+                v-show="isLocationSaved(marker.marker_name)">
+                Remove Saved
+              </button>
                 </span>
               </li>
             </template>
@@ -77,6 +83,10 @@ const { markers } = storeToRefs(markersDataStore);
 const openOverlays = reactive({});
 const searchQuery = ref('');
 const showResult = ref(false);
+
+const isLocationSaved = (markerName) => {
+  return markersDataStore.savedMarkers.some(m => m.marker_name === markerName);
+};
 
 const filteredMarkers = computed(() => {
   if (!searchQuery.value) return [];
