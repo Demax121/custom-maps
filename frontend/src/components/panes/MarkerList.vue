@@ -12,7 +12,7 @@
           <ul class="sidebar__overlay-list">
             <template v-for="marker in filteredMarkers" :key="marker.marker_name">
               <li class="sidebar__overlay-list-item">
-                <button class="sidebar__overlay-item-button item-button--search" @mousedown="focusOnMarker(marker.marker_name);
+                <button class="sidebar__overlay-item-button item-button--search" @click="focusOnMarker(marker.marker_name);
                 openMarkerDescription(marker.marker_name);">
                   {{ marker.marker_name }}
                 </button>

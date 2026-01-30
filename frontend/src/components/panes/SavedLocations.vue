@@ -18,7 +18,14 @@
       <p v-if="savedMarkers.length === 0">
         No saved locations.
       </p>
-      <ul class="sidebar__overlay-list" v-else>
+      <div class="sidebar__pane__locations-container" v-else>
+
+        <button class="sidebar__overlay-button" @click="toggleSavedLocations()">
+          Saved Locations
+        </button>
+
+      <Transition name="slide-fade" >
+      <ul class="sidebar__overlay-list sidebar__overlay-list-saved" v-show="savedLocationsBtn">
         <template v-for="marker in savedMarkers" :key="marker.marker_name">
           <li class="sidebar__overlay-list-item">
             <button class="sidebar__overlay-item-button" @click="focusOnMarker(marker.marker_name);
@@ -40,6 +47,36 @@
           />
         </template>
       </ul>
+      </Transition>
+        <button class="sidebar__overlay-button" v-if="customMarkers.length > 0" @click="toggleCreatedLocations()">
+          Created Locations
+        </button>
+      <Transition name="slide-fade" >
+        <ul class="sidebar__overlay-list sidebar__overlay-list-custom" v-show="createdLocationsBtn">
+            <template v-for="marker in customMarkers" :key="marker.marker_name">
+              <li class="sidebar__overlay-list-item">
+                <button class="sidebar__overlay-item-button" @click="focusOnMarker(marker.marker_name);
+                openMarkerDescription(marker.marker_name);">
+                  {{ marker.marker_name }}
+                </button>
+                <span class="sidebar__overlay-item-buttons-group">
+                  <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="openNoteDialog(marker.marker_name)" title="Add/View Note">
+                    <img src="/assets/note-icon.svg" alt="add note" class="note__icon"  />
+                  </button>
+                  <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
+                    @click="removeCreatedMarker(marker.marker_name)" title="Remove location from list">
+                    Remove created
+                  </button>
+                </span>
+              </li>
+              <NoteDialog v-show="showNoteDialog.includes(marker.marker_name)" @closeNoteDialog="closeNoteDialog(marker.marker_name)"
+                  :markerName = marker.marker_name
+              />
+            </template>
+        </ul>
+      </Transition>
+</div>
+
     </div>
   </div>
 
@@ -58,9 +95,13 @@ import NoteDialog from '../noteDialog.vue';
 
 const markersDataStore = useMarkersDataStore();
 const { savedMarkers } = storeToRefs(markersDataStore);
+const { customMarkers } = storeToRefs(markersDataStore);
 const showNoteDialog = ref([]);
 
 const markerNote = ref('');
+
+const savedLocationsBtn = ref(true);
+const createdLocationsBtn = ref(false);
 
 const emit = defineEmits(['changePane', 'closeNoteDialog']);
 const { navigateToPane } = usePaneNavigation(emit);
@@ -111,6 +152,14 @@ function closeNoteDialog(markerName) {
   showNoteDialog.value = showNoteDialog.value.filter(name => name !== markerName);
 }
 
+
+function toggleSavedLocations() {
+  savedLocationsBtn.value = !savedLocationsBtn.value;
+}
+
+function toggleCreatedLocations() {
+  createdLocationsBtn.value = !createdLocationsBtn.value;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -161,10 +210,34 @@ function closeNoteDialog(markerName) {
   }
 }
 
-
 .note__icon {
   width: 1.25rem;
 }
+
+
+.sidebar__overlay-list-saved,
+.sidebar__overlay-list-custom{
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  padding-bottom: 1.25rem;
+}
+
+
+/* Transition styles */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-enter-from {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
 
 
 

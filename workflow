@@ -19,6 +19,5 @@
 18. Automatic pane chane toggle - zrobione
 19. Marker get location - dodaje lokacje do saved locations 
 (nazwa lokacji, warstwa do jakiej należy (dropdown), koordynaty lat lng, ikona markera (dropdown))
-
-20. Saved locations mają notatki użytkownika
+20. Saved locations mają notatki użytkownika - zrobione
 
