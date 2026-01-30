@@ -84,18 +84,23 @@ const getLocation = L.Control.extend({
           icon: createCustomIcon('leaf-red'),
           draggable: true,
           zIndexOffset: 9998,
+          interactive: true,
         });
 
         Cords.bindPopup("");
+        Cords.bindTooltip('Hello', {permanent: false});
 
         Cords.on("dragend", () => {
           let latLng = Cords.getLatLng();
           let lat = latLng.lat.toFixed(2);
           let lng = latLng.lng.toFixed(2);
           let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
-          Cords.getPopup().setContent(coordinates).openOn(map);
+          Cords.getPopup()
+          .setContent(coordinates)
+          .openOn(map);
         });
-        
+        Cords.on('mouseover', () => Cords.openTooltip());
+        Cords.on('mouseout', () => Cords.closeTooltip());
         Cords.addTo(map);
       }
     });
@@ -183,7 +188,7 @@ function addMarkersToMap(mapOverlay) {
   for (const marker of markers.value) {
     const markerIcon = createCustomIcon(marker.marker_icon);
     const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
-      title: marker.marker_name,
+      interactive: true,
       icon: markerIcon,
       draggable: false,
     });
@@ -195,13 +200,17 @@ function addMarkersToMap(mapOverlay) {
     } 
 
     newMarker.bindPopup(marker.marker_name || "No name available.");
+    newMarker.bindTooltip(marker.marker_name || "No name available.", {permanent: false});
     
     // Add click event listener to marker
     newMarker.on('click', () => {
       markersDataStore.selectedMarker(marker.marker_name);
       navigateToPane('MarkerDesc');
     });
-    
+
+  newMarker.on('mouseover', () => newMarker.openTooltip());
+  newMarker.on('mouseout', () => newMarker.closeTooltip());
+
     // Store reference to the marker
     markersDataStore.setMarkerRef(marker.marker_name, newMarker);
   }
