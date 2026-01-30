@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { FullScreen } from 'leaflet.fullscreen';
 import { usePaneNavigation } from '../composables/usePaneNavigation';
-
+import MarkerPopup from '../components/markerPopup.vue'
 
 
 const emit = defineEmits(['changePane']);
@@ -250,7 +250,6 @@ watch(focusedMarker, (markerName) => {
 
 <template>
     <div id="map">
-
     </div>
 </template>
 

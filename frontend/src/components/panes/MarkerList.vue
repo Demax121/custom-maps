@@ -204,17 +204,17 @@ const removeSavedMarker = (markerName) => {
   border: 1px solid rgba(255, 255, 255, 0.2);
   max-height: 15rem;
   overflow-y: auto;
-  scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
-  scrollbar-width: thin;
+  // scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
+  // scrollbar-width: thin;
   padding-right: 0.5rem;
 }
 
 .item-button--search{
-  font-size: 10pt;
+  font-size: 0.9rem;
 }
 
 .action-button--search{
-  font-size: 9pt;
+  font-size: 0.8rem;
 }
 
 

@@ -136,7 +136,7 @@ const saveMarkerNote = (markerName, noteData) => {
         &-button {
             padding: 0.5rem 0.25rem;
             width: fit-content;
-            font-size: 10pt;
+            font-size: 1rem;
             background-color: rgba(124, 124, 124, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 0.25rem;

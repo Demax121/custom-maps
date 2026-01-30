@@ -197,7 +197,7 @@ function toggleCreatedLocations() {
   cursor: pointer;
   border: none;
   padding: 0.25rem 0.5rem;
-  font-size: 12pt;
+  font-size: 1rem;
   background-color: rgba(124, 124, 124, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.25rem;

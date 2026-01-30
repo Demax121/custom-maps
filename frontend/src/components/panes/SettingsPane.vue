@@ -103,7 +103,7 @@ const appSettingsStore = useAppSettingsStore();
 }
 
 .checkbox-label {
-  font-size: 13pt;
+  font-size: 1rem;
   color: $font-crl-primary;
 }
 </style>

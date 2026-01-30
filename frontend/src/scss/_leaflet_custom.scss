@@ -32,6 +32,12 @@
   font-size: 1.15rem;
 }
 
+.leaflet-control-layers-overlays{
+  font-size: 1rem;
+    max-height: 16rem;
+    overflow-y: auto;
+}
+
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out,
 .leaflet-control-zoom-fullscreen,
