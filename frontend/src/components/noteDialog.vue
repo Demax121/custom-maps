@@ -83,7 +83,7 @@ const saveMarkerNote = (markerName, noteData) => {
 
     &__dialog {
 
-        background-color: $sidebar-pane-crl-primary;
+        background-color: $note-dialog-bg-crl-primary;
         padding: 1rem;
         z-index: 1000;
         -webkit-box-shadow: $box-shadow-dialog;

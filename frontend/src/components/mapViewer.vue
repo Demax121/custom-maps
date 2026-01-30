@@ -1,6 +1,6 @@
 <script setup>
 
-import { onMounted, shallowRef, watch } from 'vue';
+import { onMounted, shallowRef, watch, ref } from 'vue';
 import L from 'leaflet';
 import { useMapDataStore } from '../stores/mapDataStore';
 import { useOverlaysDataStore } from '../stores/overlaysDataStore';
@@ -8,10 +8,10 @@ import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { FullScreen } from 'leaflet.fullscreen';
 import { usePaneNavigation } from '../composables/usePaneNavigation';
-import MarkerPopup from '../components/markerPopup.vue'
+import CreateMarker from './createMarker.vue'
 
 
-const emit = defineEmits(['changePane']);
+const emit = defineEmits(['changePane', 'closeCords']);
 const { navigateToPane } = usePaneNavigation(emit);
 
 const overlaysDataStore = useOverlaysDataStore();
@@ -25,8 +25,9 @@ const map = shallowRef(null);
 let mapTiles = null;
 const layerControl = shallowRef(null);
 const overlayGroups = shallowRef({});
-
-
+const createMarkerDialog = ref(false);
+let Cords = null;
+let coordinates = ref('');
 
 const myLayers = L.Control.extend({
   options: {
@@ -68,7 +69,9 @@ const getLocation = L.Control.extend({
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Get current location');
     
-    let Cords = null;
+    let latLng = null;
+    let lat = null;
+    let lng = null;
     
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.on(btn, 'click', function(e) {
@@ -78,9 +81,10 @@ const getLocation = L.Control.extend({
         // If marker exists, remove it
         map.removeLayer(Cords);
         Cords = null;
+        createMarkerDialog.value = false;
       } else {
         // If marker doesn't exist, create it
-        Cords = L.marker([7, 7], {
+        Cords = L.marker([0, 0], {
           icon: createCustomIcon('leaf-red'),
           draggable: true,
           zIndexOffset: 9998,
@@ -88,20 +92,28 @@ const getLocation = L.Control.extend({
         });
 
         Cords.bindPopup("");
-        Cords.bindTooltip('Hello', {permanent: false});
+        Cords.bindTooltip('location marker', {
+          permanent: false,
+        });
+
+          latLng = Cords.getLatLng();
+          lat = latLng.lat.toFixed(2);
+          lng = latLng.lng.toFixed(2);
+          coordinates.value = `Lat: ${lat}, Lng: ${lng}`;
 
         Cords.on("dragend", () => {
-          let latLng = Cords.getLatLng();
-          let lat = latLng.lat.toFixed(2);
-          let lng = latLng.lng.toFixed(2);
-          let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
+          latLng = Cords.getLatLng();
+          lat = latLng.lat.toFixed(2);
+          lng = latLng.lng.toFixed(2);
+          coordinates.value = `Lat: ${lat}, Lng: ${lng}`;
           Cords.getPopup()
-          .setContent(coordinates)
+          .setContent(coordinates.value)
           .openOn(map);
         });
         Cords.on('mouseover', () => Cords.openTooltip());
         Cords.on('mouseout', () => Cords.closeTooltip());
         Cords.addTo(map);
+        createMarkerDialog.value = true;
       }
     });
 
@@ -110,7 +122,13 @@ const getLocation = L.Control.extend({
 });
 const getLocationControl = new getLocation();
 
-
+function closeCords() {
+  if (Cords) {
+   map.value.removeLayer(Cords);
+    Cords = null;
+    createMarkerDialog.value = false;
+  }
+}
 
 
 function createOverlay(overlayMap, layerControl) {
@@ -175,7 +193,9 @@ const initializeMap = () => {
   
   map.value.attributionControl.setPrefix(false);
 
-
+  const newLayerGroup = L.featureGroup([]).addTo(map.value);
+  layerControl.value.addOverlay(newLayerGroup, "Custom markers");
+  
 
 };
 
@@ -217,6 +237,8 @@ function addMarkersToMap(mapOverlay) {
 }
 
 
+
+
 onMounted(() => {
   // Try to initialize immediately if data is already loaded
   if (mapTilesLink.value) {
@@ -254,24 +276,25 @@ watch(focusedMarker, (markerName) => {
   }
 });
 
+
 </script>
 
 
 <template>
     <div id="map">
     </div>
+   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" :coordinates="coordinates" />
 </template>
 
 
 
 <style lang="scss" scoped>
+@use '@/scss/colors.scss' as *;
+
 #map{
     width: 100%;
     height: 100dvh;
-    background-color: #1F1F1F;
+    background-color: $background-crl-primary;
 }
-
-
-
 
 </style>

@@ -118,6 +118,12 @@ export const useMarkersDataStore = defineStore('markersData', {
             marker.note = '';
           }
         },
+        createLocation(){
+          
+        },
+        deleteLocation(){
+
+        },
 
     },
 });
