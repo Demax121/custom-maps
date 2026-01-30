@@ -8,6 +8,7 @@ export const useMarkersDataStore = defineStore('markersData', {
         focusedMarker: null,
         targetMarker: null,
         savedMarkers: [],
+        savedMarkersSet: new Set(),
         }
      },
     getters: { 
@@ -40,13 +41,14 @@ export const useMarkersDataStore = defineStore('markersData', {
         },
         saveMarker(markerName) {
           const marker = this.markers.find(marker => marker.marker_name === markerName);
-          if (marker && !this.savedMarkers.includes(marker.marker_name))
+          if (marker && !this.savedMarkersSet.has(markerName))
           Object.defineProperty(marker, 'note', {
             value: '',
             writable: true,
             enumerable: true,
           });
           this.savedMarkers.push(marker);
+          this.savedMarkersSet.add(markerName);
 
         },
         removeSavedMarker(markerName) {
@@ -54,6 +56,7 @@ export const useMarkersDataStore = defineStore('markersData', {
           if (marker) {
             const index = this.savedMarkers.indexOf(marker);
             this.savedMarkers.splice(index, 1);
+            this.savedMarkersSet.delete(markerName);
           }
         },
         exportSavedMarkers() {
@@ -92,7 +95,7 @@ export const useMarkersDataStore = defineStore('markersData', {
             // Combine existing and imported markers, avoiding duplicates
             const existingNames = new Set(this.savedMarkers.map(m => m.marker_name));
             const newMarkers = importedMarkers.filter(m => !existingNames.has(m.marker_name));
-            
+            this.savedMarkersSet = new Set([...this.savedMarkersSet, ...newMarkers.map(m => m.marker_name)]);
             // Merge arrays (more memory efficient than pushing one by one)
             this.savedMarkers = [...this.savedMarkers, ...newMarkers];
             
