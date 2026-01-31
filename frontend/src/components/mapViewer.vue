@@ -147,7 +147,6 @@ const resetMap= L.Control.extend({
     L.DomEvent.on(btn, 'click', function(e) {
       L.DomEvent.preventDefault(e);
       map.setView([0, 0], mapMinZoom.value);
-      map.viewreset();
     });
 
     return container;
