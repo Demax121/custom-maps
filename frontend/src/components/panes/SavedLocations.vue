@@ -15,7 +15,7 @@
       </button>
     </div>
     <div class="sidebar__pane-body">
-      <p v-if="savedMarkers.length === 0">
+      <p v-if="savedMarkers.length === 0 && customMarkers.length === 0">
         No saved locations.
       </p>
       <div class="sidebar__pane__locations-container" v-else>
@@ -64,7 +64,7 @@
                     <img src="/assets/note-icon.svg" alt="add note" class="note__icon"  />
                   </button>
                   <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
-                    @click="removeCreatedMarker(marker.marker_name)" title="Remove location from list">
+                    @click="deleteLocation(marker.marker_name)" title="Remove location from list">
                     Remove created
                   </button>
                 </span>
@@ -94,8 +94,7 @@ import { usePaneNavigation } from '../../composables/usePaneNavigation';
 import NoteDialog from '../noteDialog.vue';
 
 const markersDataStore = useMarkersDataStore();
-const { savedMarkers } = storeToRefs(markersDataStore);
-const { customMarkers } = storeToRefs(markersDataStore);
+const { savedMarkers, customMarkers } = storeToRefs(markersDataStore);
 const showNoteDialog = ref([]);
 
 const markerNote = ref('');
@@ -134,7 +133,9 @@ const handleFileImport = (event) => {
   // Reset input so same file can be selected again
   event.target.value = '';
 };
-
+const deleteLocation = (markerName) => {
+  markersDataStore.deleteLocation(markerName);
+};
 
 function openNoteDialog(markerName) {
   const marker = savedMarkers.value.find(marker => marker.marker_name === markerName);

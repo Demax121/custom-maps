@@ -10,20 +10,19 @@
         </span>
         <span class="custom__marker-container-input-set">
             <label for="marker-icon" class="custom__marker-container-input-label ">Location icon:</label>
-            <select name="marker-icon" type="text" class="custom__marker-container-input"
-                placeholder="Enter location icon" v-model="customLocationIcon" >
+            <button name="marker-icon" type="text" 
+            class="custom__marker-container-input custom__marker-container-input-select"
+            @click="dropdownRef?.toggleListVisibility()">
+                <span v-if="!customLocationIcon">Select marker icon</span>
+                <span v-else>{{ customLocationIconName }}</span>
+            </button>
             
-                <option value="leaf-red">Leaf Red</option>
-                <option value="leaf-green">Leaf Green</option>
-                <option value="leaf-orange">Leaf Orange</option>
-            
-            
-            </select>
         </span>
+        <Dropdown ref="dropdownRef" @itemSelected="handleItemSelected" />
         <span class="custom__marker-container-input-set">
             <label for="marker-img" class="custom__marker-container-input-label">Location img:</label>
             <input name="marker-img" type="text" class="custom__marker-container-input"
-                placeholder="Enter location img" v-model="customLocationImg" />
+                placeholder="Enter location img link" v-model="customLocationImg" />
         </span>
         <span class="custom__marker-container-input-set">
             <label for="marker-description" class="custom__marker-container-input-label custom__marker-container-input-label--desc">Location description:</label>
@@ -33,27 +32,67 @@
 
         <div class="custom__marker-button-container">
             <button class="custom__marker-button" @click="$emit('closeCords')">Close</button>
-            <button class="custom__marker-button" @click="saveMarker">Save marker</button>
+            <button class="custom__marker-button" @click="createMarker()">Save marker</button>
         </div>
 
     </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useMarkersDataStore } from '../stores/markersDataStore';
+import Dropdown from './Dropdown.vue'
 const markersDataStore = useMarkersDataStore();
 
-const emit = defineEmits(['closeCords']);
+const customLocationName = ref('');
+const customLocationDescription = ref('');
+const customLocationIcon = ref('');
+const customLocationIconName = ref('');
+const customLocationImg = ref('');
+const dropdownRef = ref(null);
+
+const emit = defineEmits(['closeCords', 'toggleListVisibility']);
+
+
+function handleItemSelected(item) {
+    customLocationIcon.value = item.value;
+    customLocationIconName.value = item.text;
+}
 
 const props = defineProps({
-    coordinates: {
+    lat: {
+        type: String,
+        required: true
+    },
+    lng: {
         type: String,
         required: true
     }
 });
 
+const coordinates = computed(() => `Lat: ${props.lat}, Lng: ${props.lng}`);
 
+const createMarker = () => {
+    const customMarker = {
+        marker_name: customLocationName.value,
+        marker_lat: props.lat,
+        marker_lng: props.lng,
+        marker_desc: customLocationDescription.value,
+        marker_icon: customLocationIcon.value,
+        marker_img: customLocationImg.value,
+        overlay_name: "Custom markers",
+        note: null,
+    };
+    
+    markersDataStore.createLocation(customMarker);
+    customLocationName.value = '';
+    customLocationDescription.value = '';
+    customLocationIcon.value = '';
+    customLocationIconName.value = '';
+    customLocationImg.value = '';
+    dropdownRef.value = null;
+    emit('toggleListVisibility');
+}
 
 
 </script>
@@ -129,7 +168,7 @@ $box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
     &-label{
         width: min-content;
         padding-right: 1rem;
-        // outline: 1px solid red;
+        height: fit-content;
 
         &--desc{
             padding-right: 0rem;
@@ -143,4 +182,12 @@ $box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
         min-width: 12.5rem;
     }
 }
+
+.custom__marker-container-input-select{
+    cursor: pointer;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.5);
+    display: block;
+}
+
 </style>

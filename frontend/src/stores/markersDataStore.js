@@ -39,7 +39,14 @@ export const useMarkersDataStore = defineStore('markersData', {
           this.focusedMarker = markerName;
         },
         selectedMarker(markerName) {
+          // Search in regular markers first
           this.targetMarker = this.markers.find(marker => marker.marker_name === markerName);
+          
+          // If not found, search in custom markers
+          if (!this.targetMarker) {
+            this.targetMarker = this.customMarkers.find(marker => marker.marker_name === markerName);
+          }
+          
           return this.targetMarker;
         },
         saveMarker(markerName) {
@@ -119,11 +126,21 @@ export const useMarkersDataStore = defineStore('markersData', {
             marker.note = '';
           }
         },
-        createLocation(){
-          
+        createLocation(marker){
+          if (marker && !this.customMarkersSet.has(marker.marker_name)) {
+            this.customMarkers.push(marker);
+            this.customMarkersSet.add(marker.marker_name);
+          }else{
+            console.warn(`Marker with name ${marker.marker_name} already exists in custom markers.`);
+          }
         },
-        deleteLocation(){
-
+        deleteLocation(markerName){
+          const marker = this.customMarkers.find(marker => marker.marker_name === markerName);
+          if (marker) {
+            const index = this.customMarkers.indexOf(marker);
+            this.customMarkers.splice(index, 1);
+            this.customMarkersSet.delete(markerName);
+          }
         },
 
     },

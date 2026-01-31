@@ -11,7 +11,7 @@ import { usePaneNavigation } from '../composables/usePaneNavigation';
 import CreateMarker from './createMarker.vue'
 
 
-const emit = defineEmits(['changePane', 'closeCords']);
+const emit = defineEmits(['changePane', 'closeCords', ]);
 const { navigateToPane } = usePaneNavigation(emit);
 
 const overlaysDataStore = useOverlaysDataStore();
@@ -19,7 +19,7 @@ const { overlays } = storeToRefs(overlaysDataStore);
 const mapDataStore = useMapDataStore();
 const { mapTilesLink, mapMinZoom, mapMaxZoom } = storeToRefs(mapDataStore);
 const markersDataStore = useMarkersDataStore();
-const { markers, focusedMarker } = storeToRefs(markersDataStore);
+const { markers, focusedMarker, customMarkers } = storeToRefs(markersDataStore);
 
 const map = shallowRef(null);
 let mapTiles = null;
@@ -28,6 +28,9 @@ const overlayGroups = shallowRef({});
 const createMarkerDialog = ref(false);
 let Cords = null;
 let coordinates = ref('');
+let lat = ref('0');
+let lng = ref('0');
+let latLng = ref(null);
 
 const myLayers = L.Control.extend({
   options: {
@@ -69,13 +72,9 @@ const getLocation = L.Control.extend({
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Get current location');
     
-    let latLng = null;
-    let lat = null;
-    let lng = null;
-    
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.on(btn, 'click', function(e) {
-      L.DomEvent.preventDefault(e);
+    L.DomEvent.preventDefault(e);
       
       if (Cords) {
         // If marker exists, remove it
@@ -85,7 +84,7 @@ const getLocation = L.Control.extend({
       } else {
         // If marker doesn't exist, create it
         Cords = L.marker([0, 0], {
-          icon: createCustomIcon('leaf-red'),
+          icon: createCustomIcon('leaf-red.png'),
           draggable: true,
           zIndexOffset: 9998,
           interactive: true,
@@ -97,15 +96,15 @@ const getLocation = L.Control.extend({
         });
 
           latLng = Cords.getLatLng();
-          lat = latLng.lat.toFixed(2);
-          lng = latLng.lng.toFixed(2);
-          coordinates.value = `Lat: ${lat}, Lng: ${lng}`;
+          lat.value = latLng.lat.toFixed(2);
+          lng.value = latLng.lng.toFixed(2);
+          coordinates.value = `Lat: ${lat.value}, Lng: ${lng.value}`;
 
         Cords.on("dragend", () => {
           latLng = Cords.getLatLng();
-          lat = latLng.lat.toFixed(2);
-          lng = latLng.lng.toFixed(2);
-          coordinates.value = `Lat: ${lat}, Lng: ${lng}`;
+          lat.value = latLng.lat.toFixed(2);
+          lng.value = latLng.lng.toFixed(2);
+          coordinates.value = `Lat: ${lat.value}, Lng: ${lng.value}`;
           Cords.getPopup()
           .setContent(coordinates.value)
           .openOn(map);
@@ -135,18 +134,21 @@ function createOverlay(overlayMap, layerControl) {
   if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
     return;
   }
-  overlayGroups.value = {};
+  // Don't reset overlayGroups to preserve Custom markers layer
   for (const overlay of overlays.value) {
-    const newLayerGroup = L.featureGroup([]).addTo(overlayMap);
-    layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
-    overlayGroups.value[overlay.overlay_name] = newLayerGroup;
+    // Only add if not already added
+    if (!overlayGroups.value[overlay.overlay_name]) {
+      const newLayerGroup = L.featureGroup([]).addTo(overlayMap);
+      layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
+      overlayGroups.value[overlay.overlay_name] = newLayerGroup;
+    }
   }
 }
 
 
 const createCustomIcon = (shape) =>
   new L.Icon({
-    iconUrl: `http://127.0.0.1:8885/icons/${shape}.png`,
+    iconUrl: `http://127.0.0.1:8885/icons/${shape}`,
     iconSize: [38, 95],
     shadowSize: [50, 64],
     iconAnchor: [22, 94],
@@ -195,17 +197,18 @@ const initializeMap = () => {
 
   const newLayerGroup = L.featureGroup([]).addTo(map.value);
   layerControl.value.addOverlay(newLayerGroup, "Custom markers");
+  overlayGroups.value["Custom markers"] = newLayerGroup;
   
 
 };
 
 
-function addMarkersToMap(mapOverlay) {
-  if (!markers.value || markers.value.length === 0) {
+function addMarkersToMap(mapOverlay, markersTable) {
+  if (!markersTable || markersTable.length === 0) {
     return;
   }
 
-  for (const marker of markers.value) {
+  for (const marker of markersTable) {
     const markerIcon = createCustomIcon(marker.marker_icon);
     const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
       interactive: true,
@@ -256,12 +259,12 @@ watch(mapTilesLink, (newValue) => {
 watch(overlays, (newValue) => {
   if (newValue && map.value && layerControl.value) {
     createOverlay(map.value, layerControl.value);
-    addMarkersToMap(map.value);
+    addMarkersToMap(map.value, markers.value);
   }
 });
 watch(markers, (newValue) => {
   if (newValue && map.value && Object.keys(overlayGroups.value).length > 0) {
-    addMarkersToMap(map.value);
+    addMarkersToMap(map.value, markers.value);
   }
 });
 
@@ -277,13 +280,19 @@ watch(focusedMarker, (markerName) => {
 });
 
 
+watch(customMarkers, (newValue) => {
+  if (newValue && map.value && overlayGroups.value["Custom markers"]) {
+    addMarkersToMap(map.value, customMarkers.value);
+  }
+}, { deep: true });
+
 </script>
 
 
 <template>
     <div id="map">
     </div>
-   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" :coordinates="coordinates" />
+   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" :lat="lat" :lng="lng" />
 </template>
 
 

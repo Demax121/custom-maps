@@ -1,0 +1,106 @@
+<template>
+    <div class="dropdown__container">
+        <ul class="dropdown__combobox" v-show="listIsVisible">
+            <li class="dropdown__combobox-item" v-for="item in items" :key="item.value" @click="selectItem(item)">
+                {{ item.text }}
+            </li>
+        </ul>
+
+    </div>
+</template>
+
+<script setup>
+import { ref, reactive } from 'vue';
+
+const listIsVisible = ref(false);
+const selectedItem = ref(null);
+
+
+
+function toggleListVisibility() {
+    listIsVisible.value = !listIsVisible.value;
+}
+
+function selectItem(item) {
+    emit('itemSelected', item);
+    toggleListVisibility();
+}
+
+defineExpose({ toggleListVisibility });
+
+const emit = defineEmits(['toggleListVisibility', 'itemSelected']);
+
+let items = [
+    { value: 'leaf-green.png', text: 'Leaf green' },
+    { value: 'leaf-red.png', text: 'Leaf red' },
+    { value: 'leaf-orange.png', text: 'Leaf orange' },
+];
+
+
+</script>
+
+<style lang="scss" scoped>
+.dropdown {
+    &__container {
+
+        position: relative;
+        color: $font-crl-primary;
+        margin-left: 5rem;
+        
+
+    }
+
+    &__combobox {
+        list-style: none;
+        overflow-y: auto;
+        background-color: rgba(48, 48, 48, 1);
+        
+        width: 100%;
+        max-height: 6rem;
+
+        &-item {
+            text-align: left;
+            width: 100%;
+            &:hover{
+                
+                background-color: rgba(124, 124, 124, 1);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+
+// }
+
+// .dropdown__combobox{
+
+//             
+//         
+//         
+//         
+
+
+//     &-item {
+//     cursor: pointer;
+//     text-align: left;
+//     list-style: none;
+//     position: absolute;
+//     width: 100%;
+//     overflow-y: auto;
+//     margin: 0;
+//     padding: 0;
+//     list-style: none;
+//     border: 1px solid #ccc;
+//     &:hover {
+//         
+//     }
+// }
+// }
+
+// .custom__marker-container-input-select {
+//     cursor: pointer;
+//     text-align: left;
+//     display: block;
+// }</style>
