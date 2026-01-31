@@ -9,7 +9,6 @@ export const useMarkersDataStore = defineStore('markersData', {
         targetMarker: null,
         savedMarkers: [],
         savedMarkersSet: new Set(),
-        customMarkers: [],
         customMarkersSet: new Set(),
         }
      },
@@ -38,14 +37,10 @@ export const useMarkersDataStore = defineStore('markersData', {
           this.focusedMarker = markerName;
         },
         selectedMarker(markerName) {
-          // Search in regular markers first
           this.targetMarker = this.markers.find(marker => marker.marker_name === markerName);
-          
-          // If not found, search in custom markers
           if (!this.targetMarker) {
-            this.targetMarker = this.customMarkers.find(marker => marker.marker_name === markerName);
+            this.targetMarker = this.savedMarkers.find(marker => marker.marker_name === markerName);
           }
-          
           return this.targetMarker;
         },
         saveMarker(markerName) {
@@ -68,79 +63,51 @@ export const useMarkersDataStore = defineStore('markersData', {
             this.savedMarkersSet.delete(markerName);
           }
         },
-
-
-exportSavedMarkers() {
-  if (this.savedMarkers.length > 0) {
-    const data = {
-      savedMarkers: this.savedMarkers,
-      createdMarkers: this.customMarkers
-    }
-
-    const jsonString = JSON.stringify(data, null, 2)
-    const blob = new Blob([jsonString], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'saved_locations.json'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-
-    URL.revokeObjectURL(url)
-  }
-},
-
-
-
-importSavedMarkers(jsonString) {
-  try {
-    const data = JSON.parse(jsonString)
-
-    if (!data || typeof data !== 'object') {
-      throw new Error('Invalid format: expected object')
-    }
-
-    const { savedMarkers = [], createdMarkers = [] } = data
-
-    if (!Array.isArray(savedMarkers) || !Array.isArray(createdMarkers)) {
-      throw new Error('Invalid format: markers must be arrays')
-    }
-
-    const isValidSaved = savedMarkers.every(m =>
-      m && typeof m === 'object' && m.marker_name
-    )
-
-    const isValidCreated = createdMarkers.every(m =>
-      m && typeof m === 'object' && m.marker_name
-    )
-
-    if (!isValidSaved || !isValidCreated) {
-      throw new Error('Invalid marker format in imported data')
-    }
-
-    const existingNames = new Set(this.savedMarkers.map(m => m.marker_name))
-    const newSaved = savedMarkers.filter(m => !existingNames.has(m.marker_name))
-
-    this.savedMarkersSet = new Set([
-      ...this.savedMarkersSet,
-      ...newSaved.map(m => m.marker_name)
-    ])
-
-    this.savedMarkers = [...this.savedMarkers, ...newSaved]
-    this.customMarkers = [...this.customMarkers, ...createdMarkers]
-
-  } catch (error) {
-    console.error('Error importing saved markers:', error)
-    throw error
-  }
-},
-
-
-
-
-
+        exportSavedMarkers() {
+          if (this.savedMarkers.length > 0){
+            const jsonString = JSON.stringify(this.savedMarkers, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'saved_locations.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          }
+          
+        },
+        importSavedMarkers(jsonString) {
+          try {
+            const importedMarkers = JSON.parse(jsonString);
+            
+            // Validate it's an array
+            if (!Array.isArray(importedMarkers)) {
+              throw new Error('Invalid format: expected an array');
+            }
+            
+            // Validate each object has required marker properties
+            const isValid = importedMarkers.every(marker => 
+              marker && typeof marker === 'object' && marker.marker_name
+            );
+            
+            if (!isValid) {
+              throw new Error('Invalid marker format in imported data');
+            }
+            
+            // Combine existing and imported markers, avoiding duplicates
+            const existingNames = new Set(this.savedMarkers.map(m => m.marker_name));
+            const newMarkers = importedMarkers.filter(m => !existingNames.has(m.marker_name));
+            this.savedMarkersSet = new Set([...this.savedMarkersSet, ...newMarkers.map(m => m.marker_name)]);
+            // Merge arrays (more memory efficient than pushing one by one)
+            this.savedMarkers = [...this.savedMarkers, ...newMarkers];
+            
+          } catch (error) {
+            console.error('Error importing saved markers:', error);
+            throw error; // Re-throw so the component can show user feedback
+          }
+        },
         saveMarkerNote(markerName, noteData) {
           const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
           if (marker) {
@@ -155,18 +122,18 @@ importSavedMarkers(jsonString) {
         },
         createLocation(marker){
           if (marker && !this.customMarkersSet.has(marker.marker_name)) {
-            this.customMarkers.push(marker);
+            this.savedMarkers.push(marker);
             this.customMarkersSet.add(marker.marker_name);
           }else{
             console.warn(`Marker with name ${marker.marker_name} already exists in custom markers.`);
           }
         },
         deleteLocation(markerName){
-          const marker = this.customMarkers.find(marker => marker.marker_name === markerName);
+          const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
           if (marker) {
-            const index = this.customMarkers.indexOf(marker);
-            this.customMarkers.splice(index, 1);
-            this.customMarkersSet.delete(markerName);
+            const index = this.savedMarkers.indexOf(marker);
+            this.savedMarkers.splice(index, 1);
+            this.savedMarkersSet.delete(markerName);
           }
         },
 

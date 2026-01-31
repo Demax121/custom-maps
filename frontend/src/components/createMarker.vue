@@ -81,6 +81,7 @@ const createMarker = () => {
         marker_icon: customLocationIcon.value,
         marker_img: customLocationImg.value,
         overlay_name: "Custom markers",
+        marker_tag: "custom marker",
         note: null,
     };
     

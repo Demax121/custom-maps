@@ -72,35 +72,5 @@ let items = [
 
 
 
-// }
 
-// .dropdown__combobox{
-
-//             
-//         
-//         
-//         
-
-
-//     &-item {
-//     cursor: pointer;
-//     text-align: left;
-//     list-style: none;
-//     position: absolute;
-//     width: 100%;
-//     overflow-y: auto;
-//     margin: 0;
-//     padding: 0;
-//     list-style: none;
-//     border: 1px solid #ccc;
-//     &:hover {
-//         
-//     }
-// }
-// }
-
-// .custom__marker-container-input-select {
-//     cursor: pointer;
-//     text-align: left;
-//     display: block;
-// }</style>
+</style>

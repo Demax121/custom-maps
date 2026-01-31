@@ -19,7 +19,7 @@ const { overlays } = storeToRefs(overlaysDataStore);
 const mapDataStore = useMapDataStore();
 const { mapTilesLink, mapMinZoom, mapMaxZoom } = storeToRefs(mapDataStore);
 const markersDataStore = useMarkersDataStore();
-const { markers, focusedMarker, customMarkers } = storeToRefs(markersDataStore);
+const { markers, focusedMarker, savedMarkers } = storeToRefs(markersDataStore);
 
 const map = shallowRef(null);
 let mapTiles = null;
@@ -287,14 +287,14 @@ watch(focusedMarker, (markerName) => {
 });
 
 
-watch(customMarkers, (newValue) => {
+watch(savedMarkers, (newValue) => {
   if (map.value && overlayGroups.value["Custom markers"]) {
     // Clear all existing custom markers from the layer
     clearLayerMarkers("Custom markers");
     
     // Re-add all custom markers
     if (newValue && newValue.length > 0) {
-      addMarkersToMap(map.value, customMarkers.value);
+      addMarkersToMap(map.value, savedMarkers.value);
     }
   }
 }, { deep: true });
