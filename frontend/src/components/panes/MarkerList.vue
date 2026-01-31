@@ -18,7 +18,7 @@
                 </button>
                 <span class="sidebar__overlay-item-buttons-group">
                 <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search" @click="saveMarker(marker.marker_name)">
-                  Save Location
+                  Bookmark
                 </button>
                 </span>
               </li>
@@ -44,12 +44,12 @@
                 <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" 
                 @click="saveMarker(marker.marker_name)"
                 v-show="!isLocationSaved(marker.marker_name)">
-                  Save Location
+                  Bookmark
                 </button>
                 <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
                 @click="removeSavedMarker(marker.marker_name)" title="Remove location from list"
                 v-show="isLocationSaved(marker.marker_name)">
-                Remove Saved
+                Remove bookmark
               </button>
                 </span>
               </li>

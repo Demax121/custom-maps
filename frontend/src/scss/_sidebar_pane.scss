@@ -18,11 +18,11 @@ $pane-margin-desktop: 3rem;
     &-title {
       width: 100%;
       display: inline-block;
+      font-size: 1.5rem;
     }
 
     &-header {
       width: 100%;
-      height: 1.75rem;
       border-bottom: 2px solid $font-crl-primary;
       text-align: center;
     }

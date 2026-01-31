@@ -40,7 +40,7 @@ const myLayers = L.Control.extend({
     const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'my-layers-toggle', container);
     btn.href = '#';
-    btn.title = 'Toggle layers';
+    btn.title = 'Show/hide map layers container';
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Toggle map layers');
     
@@ -68,7 +68,7 @@ const getLocation = L.Control.extend({
     const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'get-location-toggle', container);
     btn.href = '#';
-    btn.title = 'get location';
+    btn.title = 'Create a custom marker ';
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Get current location');
     
@@ -91,7 +91,7 @@ const getLocation = L.Control.extend({
         });
 
         Cords.bindPopup("Get location");
-        Cords.bindTooltip('location marker', {
+        Cords.bindTooltip('I`m draggable', {
           permanent: false,
         });
 
@@ -139,7 +139,7 @@ const resetMap= L.Control.extend({
     const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'reset-map-toggle', container);
     btn.href = '#';
-    btn.title = 'Reset map';
+    btn.title = 'Reset map view, remove visual bugs';
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Reset map');
     

@@ -34,7 +34,7 @@
               </button>
               <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
                 @click="removeSavedMarker(marker.marker_name)" title="Remove location from list">
-                Remove Saved
+                Remove bookmark
               </button>
             </span>
           </li>
