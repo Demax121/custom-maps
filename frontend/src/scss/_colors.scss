@@ -17,3 +17,11 @@ $active-hover-crl: rgba(255, 255, 255, 0.2);
 $leaflet-control-bg-crl-primary: rgba(0, 0, 0, 0.9);
 $leaflet-control-font-crl-primary: rgb(255, 255, 255);
 $leaflet-hover-crl: rgba(255, 255, 255, 0.2);
+
+// Markdown colors
+$markdown-link-crl: $font-crl-primary;
+$markdown-code-bg-crl: rgba(0, 0, 0, 0.1);
+$markdown-blockquote-border-crl: $font-crl-primary;
+$markdown-hr-crl: $font-crl-primary;
+$markdown-table-bg-crl: rgba(106, 106, 106, 0.7);
+$markdown-table-border-crl: rgba(106, 106, 106, 0.5);

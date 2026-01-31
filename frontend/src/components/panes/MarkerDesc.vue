@@ -18,9 +18,11 @@
               </button>
             </span>
             </div>
-          <div class="sidebar__pane-body sidebar__pane-body-container">
-            <img class="sidebar__pane-img" alt="" :src="markersDataStore.targetMarker?.marker_img">
-           <div class="marker-description" v-html="locationDesc"></div>
+          <div class="sidebar__pane-body">
+            <img class="sidebar__pane-img" alt="" :src="markersDataStore.targetMarker?.marker_img"></img>
+            <div class="sidebar__pane-body-container">
+           <div class="sidebar__pane-body-description" v-html="locationDesc"></div>
+           </div>
           </div>
         </div>
 
@@ -34,7 +36,10 @@ import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
 const markersDataStore = useMarkersDataStore();
 const { markers } = storeToRefs(markersDataStore);
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+  linkify: true,
+  typographer: true
+})
 
 
 
@@ -82,20 +87,16 @@ const locationDesc = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+@use '@/scss/_markdown.scss';
+
 
 .sidebar__pane-desc-buttons {
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  // margin-top: 1rem;
-}
-
-.sidebar__pane-body-container {
-    // margin-top: 3.5rem;
 }
 
 .sidebar__pane-header--desc{
-  
   margin-top: 1rem;
 }
 
