@@ -6,9 +6,29 @@
         <span class="custom__marker-container-input-set">
             <label for="marker-label" class="custom__marker-container-input-label">Location name:</label>
             <input name="marker-label" type="text" class="custom__marker-container-input"
-                placeholder="Enter location name" maxlength="50" 
-                v-model="customLocationName"
-                />
+                placeholder="Enter location name" maxlength="50" v-model="customLocationName" />
+        </span>
+        <span class="custom__marker-container-input-set">
+            <label for="marker-icon" class="custom__marker-container-input-label ">Location icon:</label>
+            <select name="marker-icon" type="text" class="custom__marker-container-input"
+                placeholder="Enter location icon" v-model="customLocationIcon" >
+            
+                <option value="leaf-red">Leaf Red</option>
+                <option value="leaf-green">Leaf Green</option>
+                <option value="leaf-orange">Leaf Orange</option>
+            
+            
+            </select>
+        </span>
+        <span class="custom__marker-container-input-set">
+            <label for="marker-img" class="custom__marker-container-input-label">Location img:</label>
+            <input name="marker-img" type="text" class="custom__marker-container-input"
+                placeholder="Enter location img" v-model="customLocationImg" />
+        </span>
+        <span class="custom__marker-container-input-set">
+            <label for="marker-description" class="custom__marker-container-input-label custom__marker-container-input-label--desc">Location description:</label>
+            <textarea name="marker-description" type="text" class="custom__marker-container-input custom__marker-container-input--desc"
+                placeholder="Enter location description"  v-model="customLocationDescription"></textarea>
         </span>
 
         <div class="custom__marker-button-container">
@@ -32,6 +52,8 @@ const props = defineProps({
         required: true
     }
 });
+
+
 
 
 </script>
@@ -98,9 +120,27 @@ $box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
     &::placeholder {
         color: rgba(255, 255, 255, 0.5);
     }
-    &:focus{
+
+    &:focus {
         outline: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    &-label{
+        width: min-content;
+        padding-right: 1rem;
+        // outline: 1px solid red;
+
+        &--desc{
+            padding-right: 0rem;
+        }
+    }
+
+    &--desc{
+        max-width: 19rem;
+        max-height: 19rem;
+        min-height: 5rem;
+        min-width: 12.5rem;
     }
 }
 </style>

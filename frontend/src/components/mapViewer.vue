@@ -91,7 +91,7 @@ const getLocation = L.Control.extend({
           interactive: true,
         });
 
-        Cords.bindPopup("");
+        Cords.bindPopup("Get location");
         Cords.bindTooltip('location marker', {
           permanent: false,
         });
