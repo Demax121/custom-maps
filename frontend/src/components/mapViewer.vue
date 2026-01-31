@@ -203,6 +203,13 @@ const initializeMap = () => {
 };
 
 
+function clearLayerMarkers(layerName) {
+  const targetGroup = overlayGroups.value[layerName];
+  if (targetGroup) {
+    targetGroup.clearLayers();
+  }
+}
+
 function addMarkersToMap(mapOverlay, markersTable) {
   if (!markersTable || markersTable.length === 0) {
     return;
@@ -281,8 +288,14 @@ watch(focusedMarker, (markerName) => {
 
 
 watch(customMarkers, (newValue) => {
-  if (newValue && map.value && overlayGroups.value["Custom markers"]) {
-    addMarkersToMap(map.value, customMarkers.value);
+  if (map.value && overlayGroups.value["Custom markers"]) {
+    // Clear all existing custom markers from the layer
+    clearLayerMarkers("Custom markers");
+    
+    // Re-add all custom markers
+    if (newValue && newValue.length > 0) {
+      addMarkersToMap(map.value, customMarkers.value);
+    }
   }
 }, { deep: true });
 
