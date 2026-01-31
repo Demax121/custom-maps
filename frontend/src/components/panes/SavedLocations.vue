@@ -5,7 +5,7 @@
       <span class="sidebar__pane-close"></span>
     </div>
     <div class="sidebar__pane-buttons-container">
-      <button v-if="savedMarkers.length > 0" class="sidebar__pane-container-button"
+      <button v-if="savedMarkers.length > 0 || customMarkers.length > 0" class="sidebar__pane-container-button"
         @click="markersDataStore.exportSavedMarkers()">
         Export Saved Locations
       </button>
@@ -20,7 +20,7 @@
       </p>
       <div class="sidebar__pane__locations-container" v-else>
 
-        <button class="sidebar__overlay-button" @click="toggleSavedLocations()">
+        <button class="sidebar__overlay-button" @click="toggleSavedLocations()" v-if="savedMarkers.length > 0">
           Saved Locations
         </button>
 
@@ -52,7 +52,7 @@
           Created Locations
         </button>
       <Transition name="slide-fade" >
-        <ul class="sidebar__overlay-list sidebar__overlay-list-custom" v-show="createdLocationsBtn">
+        <ul class="sidebar__overlay-list sidebar__overlay-list-custom" v-show="createdLocationsBtn" v-if="customMarkers.length > 0">
             <template v-for="marker in customMarkers" :key="marker.marker_name">
               <li class="sidebar__overlay-list-item">
                 <button class="sidebar__overlay-item-button" @click="focusOnMarker(marker.marker_name);
@@ -138,7 +138,8 @@ const deleteLocation = (markerName) => {
 };
 
 function openNoteDialog(markerName) {
-  const marker = savedMarkers.value.find(marker => marker.marker_name === markerName);
+  const marker = savedMarkers.value.find(marker => marker.marker_name === markerName) ||
+                 customMarkers.value.find(marker => marker.marker_name === markerName);
   if (marker) {
     markerNote.value = markerName;
     markersDataStore.selectedMarker(markerName);

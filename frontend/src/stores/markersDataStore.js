@@ -9,7 +9,6 @@ export const useMarkersDataStore = defineStore('markersData', {
         targetMarker: null,
         savedMarkers: [],
         savedMarkersSet: new Set(),
-        // customMarker: null,
         customMarkers: [],
         customMarkersSet: new Set(),
         }
