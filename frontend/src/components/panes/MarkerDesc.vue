@@ -5,8 +5,8 @@
             <h1 class="sidebar__pane-title">{{ locationName }}</h1>
           </div>
            <div class="sidebar__pane-desc-buttons">
-            <span class="sidebar__overlay-item-buttons-group sidebar__overlay-item-buttons-group--desc">
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc" 
+            <span class="sidebar__overlay-item-buttons-group sidebar__overlay-item-buttons-group--desc" v-show="markersDataStore.targetMarker !== null">
+              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc" 
                 @click="saveMarker(locationName)"
                 v-show="!isLocationSaved(locationName)">
                   Bookmark

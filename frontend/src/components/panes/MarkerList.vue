@@ -128,6 +128,7 @@ const saveMarker = (markerName) => {
 
 const removeSavedMarker = (markerName) => {
   markersDataStore.removeSavedMarker(markerName);
+  markersDataStore.targetMarker = null;
 };
 
 

@@ -76,6 +76,7 @@ const { navigateToPane } = usePaneNavigation(emit);
 
 const removeSavedMarker = (markerName) => {
   markersDataStore.removeSavedMarker(markerName);
+  markersDataStore.targetMarker = null;
 };
 const openMarkerDescription = (markerName) => {
   markersDataStore.selectedMarker(markerName);
@@ -101,9 +102,6 @@ const handleFileImport = (event) => {
   }
   // Reset input so same file can be selected again
   event.target.value = '';
-};
-const deleteLocation = (markerName) => {
-  markersDataStore.deleteLocation(markerName);
 };
 
 function openNoteDialog(markerName) {

@@ -128,14 +128,6 @@ export const useMarkersDataStore = defineStore('markersData', {
             console.warn(`Marker with name ${marker.marker_name} already exists in custom markers.`);
           }
         },
-        deleteLocation(markerName){
-          const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
-          if (marker) {
-            const index = this.savedMarkers.indexOf(marker);
-            this.savedMarkers.splice(index, 1);
-            this.savedMarkersSet.delete(markerName);
-          }
-        },
 
     },
 });
