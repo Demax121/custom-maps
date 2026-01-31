@@ -5,7 +5,9 @@
           </div>
           <div class="sidebar__pane-body">
             <img class="sidebar__pane-img" :src="mapDataStore.mapImg" alt="">
-            <p>{{ mapDataStore.mapDescription }}</p>
+           
+            {{ mapDataStore.mapDesc }}
+
           </div>
         </div>
 </template>
@@ -19,8 +21,6 @@ const mapDataStore = useMapDataStore();
 </script>
 
 <style lang="scss" scoped>
-
-
 
 
 </style>
