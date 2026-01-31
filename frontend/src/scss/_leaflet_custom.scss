@@ -42,7 +42,8 @@
 .leaflet-control-zoom-out,
 .leaflet-control-zoom-fullscreen,
 .get-location-toggle,
-.my-layers-toggle {
+.my-layers-toggle,
+.reset-map-toggle {
   width: 3rem !important;
   height: 3rem !important;
   line-height: 3rem !important;
@@ -81,5 +82,10 @@
 
 .get-location-toggle {
   background-image: url('/assets/location-crosshairs-icon.svg');
+  background-size: 70%;
+}
+
+.reset-map-toggle {
+  background-image: url('/assets/reset-icon.svg');
   background-size: 70%;
 }

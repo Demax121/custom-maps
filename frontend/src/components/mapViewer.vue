@@ -130,6 +130,34 @@ function closeCords() {
 }
 
 
+
+const resetMap= L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const btn = L.DomUtil.create('a', 'reset-map-toggle', container);
+    btn.href = '#';
+    btn.title = 'Reset map';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Reset map');
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      map.setView([0, 0], mapMinZoom.value);
+      map.viewreset();
+    });
+
+    return container;
+  }
+});
+const resetMapControl = new resetMap();
+
+
+
+
 function createOverlay(overlayMap, layerControl) {
   if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
     return;
@@ -177,7 +205,7 @@ const initializeMap = () => {
 
   map.value = L.map('map', {
     layers: [mapTiles],
-    zoomSnap: 0.25,
+    zoomSnap: 0.5,
     zoomControl: false,
     
   }).setView([0, 0], mapMinZoom.value);
@@ -187,8 +215,10 @@ const initializeMap = () => {
 		position: 'topright',
 		fullscreenElement: document.getElementById('app-container')
 	}));
+  resetMapControl.addTo(map.value);
   getLocationControl.addTo(map.value);
   myLayersControl.addTo(map.value);
+  
   layerControl.value = L.control
   .layers(null, null, { collapsed: true})
   .addTo(map.value)  
