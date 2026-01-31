@@ -7,7 +7,7 @@
       <div class="sidebar__pane-search-container">
         <input type="text" v-model="searchQuery" class="sidebar__pane-search-input"
           placeholder="Search markers..."
-          @focus="showResult = true" @blur="showResult = false"></input>
+          @input="showResult = true" ></input>
         <div class="sidebar__pane-search-result" v-show="showResult && searchQuery">
           <ul class="sidebar__overlay-list">
             <template v-for="marker in filteredMarkers" :key="marker.marker_name">
@@ -17,9 +17,18 @@
                   {{ marker.marker_name }}
                 </button>
                 <span class="sidebar__overlay-item-buttons-group">
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search" @click="saveMarker(marker.marker_name)">
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search"  
+                @click="saveMarker(marker.marker_name)"
+                v-show="!isLocationSaved(marker.marker_name)">
                   Bookmark
                 </button>
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search"
+                @click="removeSavedMarker(marker.marker_name)" title="Remove location from list"
+                v-show="isLocationSaved(marker.marker_name)">
+                Remove bookmark
+              </button>
+
+
                 </span>
               </li>
             </template>
