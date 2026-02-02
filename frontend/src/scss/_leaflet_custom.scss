@@ -1,10 +1,25 @@
 @use'@/scss/colors.scss' as *;
+@use'@/scss/mixins.scss' as *;
 
+
+$leaflet-control-icon-size-desktop: 3rem;
+$leaflet-control-line-height-desktop: 3rem;
+$leaflet-control-font-size-desktop: 1.75rem;
+
+
+$leaflet-control-icon-size-desktop-small: 2.25rem;
+$leaflet-control-line-height-desktop-small: 2.25rem;
+$leaflet-control-font-size-desktop-small: 1.75rem;
+
+
+$leaflet-control-icon-size-desktop-large: 3.25rem;
+$leaflet-control-line-height-desktop-large: 3.25rem;
+$leaflet-control-font-size-desktop-large: 1.75rem;
 
 
 :root {
-	--fullscreen-icon-enter: url('/assets/fullscreen-enter-icon.svg') !important;
-	--fullscreen-icon-exit: url('/assets/fullscreen-exit-icon.svg') !important;
+	--fullscreen-icon-enter: url('/assets/icons/fullscreen-enter-icon.svg') !important;
+	--fullscreen-icon-exit: url('/assets/icons/fullscreen-exit-icon.svg') !important;
 }
 
 .leaflet-bar a:last-child {
@@ -18,7 +33,7 @@
   background-color: $leaflet-control-bg-crl-primary !important;
   color: $leaflet-control-font-crl-primary !important;
   font-size: 1.15rem;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $leaflet-border-light-crl;
 }
 
 .leaflet-bar a:hover {
@@ -26,7 +41,8 @@
 }
 
 .leaflet-control-layers {
-  font-family: "abhaya_libreregular";
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
   background-color: $leaflet-control-bg-crl-primary !important;
   color: $leaflet-control-font-crl-primary !important;
   font-size: 1.15rem;
@@ -38,16 +54,7 @@
     overflow-y: auto;
 }
 
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out,
-.leaflet-control-zoom-fullscreen,
-.get-location-toggle,
-.my-layers-toggle {
-  width: 3rem !important;
-  height: 3rem !important;
-  line-height: 3rem !important;
-  font-size: 1.75rem !important;
-}
+
 
 .leaflet-control-layers-toggle{
   display: none !important;
@@ -65,7 +72,7 @@
 
 @media (max-width: 991px) {
   .leaflet-control-zoom-in,
-  .leaflet-control-zoom-out {
+  .leaflet-control-zoom-out{
     width: 0 !important;
     height: 0 !important;
     line-height: 0 !important;
@@ -73,13 +80,71 @@
   }
 }
 
+@media (min-width: 992px) {
+.marker-create-input-dialog-toggle{
+    width: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    display: none !important;
+  }
+}
+
+
 
 .my-layers-toggle {
-  background-image: url('/assets/layer-icon.svg');
+  background-image: url('/assets/icons/layer-icon.svg');
   background-size: 70%;
 }
 
 .get-location-toggle {
-  background-image: url('/assets/location-crosshairs-icon.svg');
+  background-image: url('/assets/icons/location-crosshairs-icon.svg');
   background-size: 70%;
+}
+
+.reset-map-toggle {
+  background-image: url('/assets/icons/reset-icon.svg');
+  background-size: 70%;
+}
+
+.marker-create-input-dialog-toggle {
+  background-image: url('/assets/icons/create-icon.svg');
+  background-size: 60%;
+}
+
+
+
+
+@include respond-to-desktop {
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-zoom-fullscreen,
+.get-location-toggle,
+.my-layers-toggle,
+.reset-map-toggle {
+  width: $leaflet-control-icon-size-desktop !important;
+  height: $leaflet-control-icon-size-desktop !important;
+  line-height: $leaflet-control-line-height-desktop !important;
+  font-size: $leaflet-control-font-size-desktop !important;
+}
+
+}
+
+@include respond-to-desktop-small {
+  .leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-zoom-fullscreen,
+.get-location-toggle,
+.my-layers-toggle,
+.reset-map-toggle {
+  width: $leaflet-control-icon-size-desktop-small !important;
+  height: $leaflet-control-icon-size-desktop-small !important;
+  line-height: $leaflet-control-line-height-desktop-small !important;
+  font-size: $leaflet-control-font-size-desktop-small !important;
+}
+}
+
+@include respond-to-desktop-large {
+
 }

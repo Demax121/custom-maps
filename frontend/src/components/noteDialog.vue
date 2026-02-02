@@ -1,6 +1,6 @@
 <template>
     <div class="note__dialog">
-        <p>Location: <span> {{ markerName }} </span></p>
+        <!-- <p class="note__dialog-location-name">Location: <span> {{ markerName }} </span></p> -->
 
 
         <div class="note__dialog-content">
@@ -73,47 +73,45 @@ const saveMarkerNote = (markerName, noteData) => {
 </script>
 
 <style lang="scss" scoped>
+
+@use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
+
 .note {
 
     &__icon {
         max-width: 1.25rem;
     }
 
-    $box-shadow-dialog: 0px 17px 49px 13px rgba(5, 5, 5, 1);
-
     &__dialog {
 
-        background-color: $sidebar-pane-crl-primary;
+        background-color: $note-dialog-bg-crl-primary;
         padding: 1rem;
         z-index: 1000;
-        -webkit-box-shadow: $box-shadow-dialog;
-        -moz-box-shadow: $box-shadow-dialog;
-        box-shadow: $box-shadow-dialog;
-
+        // @include box-shadow-dialog;
+        border-bottom: 2px solid $note-dialog-border-light-crl;
+        margin-bottom: 1rem;
 
         &-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin: 1rem 0rem;
+            @include flex-column(flex-start, stretch, 0.5rem);
+            margin-bottom: 1rem;
         }
 
         &-input-set {
-            display: flex;
-            flex-direction: row;
-            gap: 0.25rem;
+            @include flex-row(flex-start, center, 0.25rem);
         }
 
         &-input {
             flex-grow: 1;
+            font-size: 1rem;
             padding: 0.25rem 0.5rem;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid $note-dialog-border-light-crl;
+            background-color: $note-dialog-input-bg-crl;
             color: $font-crl-primary;
 
             &::placeholder {
-                color: rgba(255, 255, 255, 0.5);
+                color: $note-dialog-placeholder-crl;
             }
 
             &-tag {}
@@ -128,26 +126,45 @@ const saveMarkerNote = (markerName, noteData) => {
         }
 
         &-button-container {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: flex-end;
+            @include flex-row(flex-end, center, 0.5rem);
         }
 
         &-button {
-            padding: 0.5rem 0.25rem;
+            padding: 0.25rem 0.25rem;
             width: fit-content;
-            font-size: 1rem;
-            background-color: rgba(124, 124, 124, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            background-color: $note-dialog-button-bg-crl;
+            border: 1px solid $note-dialog-input-border-crl;
             border-radius: 0.25rem;
             color: $font-crl-primary;
             cursor: pointer;
 
             &:hover {
-                background-color: rgba(124, 124, 124, 0.5);
+                background-color: $note-dialog-button-hover-crl;
             }
         }
 
     }
 }
+
+
+@include respond-to-mobile{
+    .note__dialog-button{
+        font-size: 0.8rem;
+        padding: 0.25rem 0.25rem;
+    }
+
+    .note__dialog-location-name{
+        font-size: 0.8rem;
+    }
+
+    .note__dialog-input-label{
+        font-size: 0.9rem;
+    }
+
+    .note__dialog-input {
+        font-size: 0.9rem;
+    }
+}
+
 </style>

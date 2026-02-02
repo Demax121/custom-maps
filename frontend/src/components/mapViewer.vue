@@ -1,6 +1,6 @@
 <script setup>
 
-import { onMounted, shallowRef, watch } from 'vue';
+import { onMounted, shallowRef, watch, ref } from 'vue';
 import L from 'leaflet';
 import { useMapDataStore } from '../stores/mapDataStore';
 import { useOverlaysDataStore } from '../stores/overlaysDataStore';
@@ -8,10 +8,10 @@ import { storeToRefs } from 'pinia';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { FullScreen } from 'leaflet.fullscreen';
 import { usePaneNavigation } from '../composables/usePaneNavigation';
-import MarkerPopup from '../components/markerPopup.vue'
+import CreateMarker from './createMarker.vue'
 
 
-const emit = defineEmits(['changePane']);
+const emit = defineEmits(['changePane', 'closeCords', 'closeMarkerCreationDialog' ]);
 const { navigateToPane } = usePaneNavigation(emit);
 
 const overlaysDataStore = useOverlaysDataStore();
@@ -19,14 +19,18 @@ const { overlays } = storeToRefs(overlaysDataStore);
 const mapDataStore = useMapDataStore();
 const { mapTilesLink, mapMinZoom, mapMaxZoom } = storeToRefs(mapDataStore);
 const markersDataStore = useMarkersDataStore();
-const { markers, focusedMarker } = storeToRefs(markersDataStore);
+const { markers, focusedMarker, savedMarkers } = storeToRefs(markersDataStore);
 
 const map = shallowRef(null);
 let mapTiles = null;
 const layerControl = shallowRef(null);
 const overlayGroups = shallowRef({});
-
-
+const createMarkerDialog = ref(false);
+let Cords = null;
+let coordinates = ref('');
+let lat = ref('0');
+let lng = ref('0');
+let latLng = ref(null);
 
 const myLayers = L.Control.extend({
   options: {
@@ -36,7 +40,7 @@ const myLayers = L.Control.extend({
     const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'my-layers-toggle', container);
     btn.href = '#';
-    btn.title = 'Toggle layers';
+    btn.title = 'Show/hide map layers container';
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Toggle map layers');
     
@@ -64,39 +68,53 @@ const getLocation = L.Control.extend({
     const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
     const btn = L.DomUtil.create('a', 'get-location-toggle', container);
     btn.href = '#';
-    btn.title = 'get location';
+    btn.title = 'Create a custom marker ';
     btn.setAttribute('role', 'button');
     btn.setAttribute('aria-label', 'Get current location');
     
-    let Cords = null;
-    
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.on(btn, 'click', function(e) {
-      L.DomEvent.preventDefault(e);
+    L.DomEvent.preventDefault(e);
       
       if (Cords) {
         // If marker exists, remove it
         map.removeLayer(Cords);
         Cords = null;
+        createMarkerDialog.value = false;
+        toggleCreate.remove(map);
       } else {
         // If marker doesn't exist, create it
-        Cords = L.marker([7, 7], {
-          icon: createCustomIcon('leaf-red'),
+        Cords = L.marker([0, 0], {
+          icon: createCustomIcon('leaf-red.png'),
           draggable: true,
           zIndexOffset: 9998,
+          interactive: true,
+          
+        });
+        toggleCreate.addTo(map);
+        Cords.bindPopup("Get location");
+        Cords.bindTooltip('I`m draggable', {
+          permanent: false,
         });
 
-        Cords.bindPopup("");
+          latLng = Cords.getLatLng();
+          lat.value = latLng.lat.toFixed(2);
+          lng.value = latLng.lng.toFixed(2);
+          coordinates.value = `Lat: ${lat.value}, Lng: ${lng.value}`;
 
         Cords.on("dragend", () => {
-          let latLng = Cords.getLatLng();
-          let lat = latLng.lat.toFixed(2);
-          let lng = latLng.lng.toFixed(2);
-          let coordinates = `Latitude: ${lat}, Longitude: ${lng}`;
-          Cords.getPopup().setContent(coordinates).openOn(map);
+          latLng = Cords.getLatLng();
+          lat.value = latLng.lat.toFixed(2);
+          lng.value = latLng.lng.toFixed(2);
+          coordinates.value = `Lat: ${lat.value}, Lng: ${lng.value}`;
+          Cords.getPopup()
+          .setContent(coordinates.value)
+          .openOn(map);
         });
-        
+        Cords.on('mouseover', () => Cords.openTooltip());
+        Cords.on('mouseout', () => Cords.closeTooltip());
         Cords.addTo(map);
+        createMarkerDialog.value = true;
       }
     });
 
@@ -105,25 +123,89 @@ const getLocation = L.Control.extend({
 });
 const getLocationControl = new getLocation();
 
+function closeCords() {
+  if (Cords) {
+   map.value.removeLayer(Cords);
+    Cords = null;
+    createMarkerDialog.value = false;
+    toggleCreate.remove(map.value);
+  }
+}
 
+function closeMarkerCreationDialog() {
+  if(Cords){
+    createMarkerDialog.value = false;
+  }
+}
+
+const resetMap= L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const btn = L.DomUtil.create('a', 'reset-map-toggle', container);
+    btn.href = '#';
+    btn.title = 'Reset map view, remove visual bugs';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Reset map');
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      map.setView([0, 0], mapMinZoom.value);
+    });
+
+    return container;
+  }
+});
+const resetMapControl = new resetMap();
+
+
+const toggleCreateInputDialog = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const btn = L.DomUtil.create('a', 'marker-create-input-dialog-toggle', container);
+    btn.href = '#';
+    btn.title = 'Toggle create marker input dialog';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Toggle create marker input dialog');
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      createMarkerDialog.value = !createMarkerDialog.value;
+    });
+
+    return container;
+  }
+});
+
+const toggleCreate = new toggleCreateInputDialog();
 
 
 function createOverlay(overlayMap, layerControl) {
   if (!overlayMap || !layerControl || !overlays.value || overlays.value.length === 0) {
     return;
   }
-  overlayGroups.value = {};
+  // Don't reset overlayGroups to preserve Custom markers layer
   for (const overlay of overlays.value) {
-    const newLayerGroup = L.featureGroup([]).addTo(overlayMap);
-    layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
-    overlayGroups.value[overlay.overlay_name] = newLayerGroup;
+    // Only add if not already added
+    if (!overlayGroups.value[overlay.overlay_name]) {
+      const newLayerGroup = L.featureGroup([]).addTo(overlayMap);
+      layerControl.addOverlay(newLayerGroup, overlay.overlay_name);
+      overlayGroups.value[overlay.overlay_name] = newLayerGroup;
+    }
   }
 }
 
 
 const createCustomIcon = (shape) =>
   new L.Icon({
-    iconUrl: `http://127.0.0.1:8885/icons/${shape}.png`,
+    iconUrl: `${import.meta.env.VITE_ICONS_BASE_URL}${shape}`,
     iconSize: [38, 95],
     shadowSize: [50, 64],
     iconAnchor: [22, 94],
@@ -152,7 +234,7 @@ const initializeMap = () => {
 
   map.value = L.map('map', {
     layers: [mapTiles],
-    zoomSnap: 0.25,
+    zoomSnap: 0.5,
     zoomControl: false,
     
   }).setView([0, 0], mapMinZoom.value);
@@ -162,28 +244,40 @@ const initializeMap = () => {
 		position: 'topright',
 		fullscreenElement: document.getElementById('app-container')
 	}));
+  resetMapControl.addTo(map.value);
   getLocationControl.addTo(map.value);
   myLayersControl.addTo(map.value);
+  
   layerControl.value = L.control
   .layers(null, null, { collapsed: true})
   .addTo(map.value)  
   
   map.value.attributionControl.setPrefix(false);
 
-
+  const newLayerGroup = L.featureGroup([]).addTo(map.value);
+  layerControl.value.addOverlay(newLayerGroup, "Custom markers");
+  overlayGroups.value["Custom markers"] = newLayerGroup;
+  
 
 };
 
 
-function addMarkersToMap(mapOverlay) {
-  if (!markers.value || markers.value.length === 0) {
+function clearLayerMarkers(layerName) {
+  const targetGroup = overlayGroups.value[layerName];
+  if (targetGroup) {
+    targetGroup.clearLayers();
+  }
+}
+
+function addMarkersToMap(mapOverlay, markersTable) {
+  if (!markersTable || markersTable.length === 0) {
     return;
   }
 
-  for (const marker of markers.value) {
+  for (const marker of markersTable) {
     const markerIcon = createCustomIcon(marker.marker_icon);
     const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
-      title: marker.marker_name,
+      interactive: true,
       icon: markerIcon,
       draggable: false,
     });
@@ -195,17 +289,23 @@ function addMarkersToMap(mapOverlay) {
     } 
 
     newMarker.bindPopup(marker.marker_name || "No name available.");
+    newMarker.bindTooltip(marker.marker_name || "No name available.", {permanent: false});
     
     // Add click event listener to marker
     newMarker.on('click', () => {
       markersDataStore.selectedMarker(marker.marker_name);
       navigateToPane('MarkerDesc');
     });
-    
+
+  newMarker.on('mouseover', () => newMarker.openTooltip());
+  newMarker.on('mouseout', () => newMarker.closeTooltip());
+
     // Store reference to the marker
     markersDataStore.setMarkerRef(marker.marker_name, newMarker);
   }
 }
+
+
 
 
 onMounted(() => {
@@ -225,12 +325,12 @@ watch(mapTilesLink, (newValue) => {
 watch(overlays, (newValue) => {
   if (newValue && map.value && layerControl.value) {
     createOverlay(map.value, layerControl.value);
-    addMarkersToMap(map.value);
+    addMarkersToMap(map.value, markers.value);
   }
 });
 watch(markers, (newValue) => {
   if (newValue && map.value && Object.keys(overlayGroups.value).length > 0) {
-    addMarkersToMap(map.value);
+    addMarkersToMap(map.value, markers.value);
   }
 });
 
@@ -245,24 +345,37 @@ watch(focusedMarker, (markerName) => {
   }
 });
 
+
+watch(savedMarkers, (newValue) => {
+  if (map.value && overlayGroups.value["Custom markers"]) {
+    // Clear all existing custom markers from the layer
+    clearLayerMarkers("Custom markers");
+    
+    // Re-add all custom markers
+    if (newValue && newValue.length > 0) {
+      addMarkersToMap(map.value, savedMarkers.value);
+    }
+  }
+}, { deep: true });
+
 </script>
 
 
 <template>
     <div id="map">
     </div>
+   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" @closeMarkerCreationDialog="closeMarkerCreationDialog" :lat="lat" :lng="lng" />
 </template>
 
 
 
 <style lang="scss" scoped>
+@use '@/scss/colors.scss' as *;
+
 #map{
     width: 100%;
     height: 100dvh;
-    background-color: #1F1F1F;
+    background-color: $background-crl-primary;
 }
-
-
-
 
 </style>

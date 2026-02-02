@@ -1,11 +1,6 @@
 @use'@/scss/colors.scss' as *;
+@use '@/scss/mixins.scss' as *;
 
-
-
-$pane-width-1200: 470px;
-$pane-width-992: 350px;
-$pane-width-768: 265px;
-$pane-margin-desktop: 3rem;
 
 .sidebar {
 
@@ -14,15 +9,16 @@ $pane-margin-desktop: 3rem;
     right: 0;
     box-sizing: border-box;
     padding: 0rem 1rem 1rem 1rem;
+    width: 100%;
 
     &-title {
       width: 100%;
       display: inline-block;
+      font-size: 1.5rem;
     }
 
     &-header {
       width: 100%;
-      height: 1.75rem;
       border-bottom: 2px solid $font-crl-primary;
       text-align: center;
     }
@@ -30,9 +26,7 @@ $pane-margin-desktop: 3rem;
     &-body {
       margin-top: 1rem;
       overflow-y: auto;
-      max-height: calc(100vh - 8rem);
-      // scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
-      // scrollbar-width: thin;
+      max-height: calc(100dvh - 10rem);
       padding-right: 0.5rem;
     }
 
@@ -48,32 +42,36 @@ $pane-margin-desktop: 3rem;
 }
 
 
+@include respond-to-mobile {
+  .sidebar {
 
-@media (min-width: 768px) {
-  .sidebar__pane {}
+    &__pane {
+      padding: 0.5rem 0.75rem 0.75rem 0.75rem;
 
-  .sidebar__content {}
-}
+      &-title {
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+      }
 
-@media (min-width: 768px) and (max-width: 991px) {
-  .sidebar__pane {}
-
-  .sidebar__content {}
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .sidebar__pane {}
-
-  .sidebar__content {}
-}
-
-@media (min-width: 1200px) {
-  .sidebar__pane {
-    min-width: $pane-width-1200;
-    max-width: $pane-width-1200;
+      &-body {
+        max-height: calc(100dvh - 10rem);
+      }
+    }
   }
+}
 
-  .sidebar__content {
-    left: $pane-margin-desktop;
+@include respond-to-tablet {
+  .sidebar {
+
+    &__pane {
+      padding: 0.75rem 1rem 1rem 1rem;
+
+      &-title {
+        font-size: clamp(1.35rem, 3vw, 1.5rem);
+      }
+
+      &-body {
+        max-height: calc(100dvh - 10rem);
+      }
+    }
   }
 }

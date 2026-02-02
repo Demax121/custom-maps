@@ -1,4 +1,5 @@
 @use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
 
 .sidebar {
 
@@ -15,7 +16,7 @@
         font-size: 1.25rem;
 
         &:hover {
-            background-color: rgba(124, 124, 124, 0.3);
+            background-color: $button-hover-bg-crl;
         }
 
     }
@@ -45,13 +46,13 @@
         &--action {
             align-self: flex-end;
             font-size: 0.8rem;
-            background-color: rgba(124, 124, 124, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: $button-action-bg-crl;
+            border: 1px solid $button-action-border-crl;
             border-radius: 0.25rem;
             flex-grow: 0;
 
             &:hover {
-                background-color: rgba(124, 124, 124, 0.1);
+                background-color: $button-action-hover-crl;
                 text-decoration: none;
             }
         }
@@ -59,7 +60,25 @@
 }
 
 
+.remove-bookmark-button{
+    background-image: url('/assets/icons/bookmark-remove-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    background-size: 70%;
+}
 
+.add-bookmark-button{
+    background-image: url('/assets/icons/bookmark-add-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    background-size: 70%;
+}
 
 
 
@@ -71,4 +90,23 @@
 
 .item-button--search {
     font-size: 0.8rem;
+}
+
+@include respond-to-mobile {
+    .sidebar {
+
+        &__overlay-button {
+            height: 2.5rem;
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+
+        &__overlay-item-button {
+            font-size: 0.8rem;
+
+            &--action {
+                font-size: 0.7rem;
+            }
+        }
+    }
 }

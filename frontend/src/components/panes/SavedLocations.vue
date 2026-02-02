@@ -5,24 +5,20 @@
       <span class="sidebar__pane-close"></span>
     </div>
     <div class="sidebar__pane-buttons-container">
-      <button v-if="savedMarkers.length > 0" class="sidebar__pane-container-button"
+      <button v-if="savedMarkers.length > 0 " class="sidebar__pane-container-button"
         @click="markersDataStore.exportSavedMarkers()">
-        Export Saved Locations
+        Export Saved
       </button>
       <input type="file" ref="fileInput" accept="application/json" @change="handleFileImport" style="display: none;" />
       <button class="sidebar__pane-container-button" @click="$refs.fileInput.click()">
-        Import Saved Locations
+        Import Locations
       </button>
     </div>
     <div class="sidebar__pane-body">
-      <p v-if="savedMarkers.length === 0">
+      <p v-if="savedMarkers.length === 0 ">
         No saved locations.
       </p>
       <div class="sidebar__pane__locations-container" v-else>
-
-        <button class="sidebar__overlay-button" @click="toggleSavedLocations()">
-          Saved Locations
-        </button>
 
       <Transition name="slide-fade" >
       <ul class="sidebar__overlay-list sidebar__overlay-list-saved" v-show="savedLocationsBtn">
@@ -33,12 +29,11 @@
               {{ marker.marker_name }}
             </button>
             <span class="sidebar__overlay-item-buttons-group">
-              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="openNoteDialog(marker.marker_name)" title="Add/View Note">
-                <img src="/assets/note-icon.svg" alt="add note" class="note__icon"  />
+              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action note__button" @click="openNoteDialog(marker.marker_name)" title="Add/View Note">
               </button>
-              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
+              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action remove-bookmark-button"
                 @click="removeSavedMarker(marker.marker_name)" title="Remove location from list">
-                Remove Saved
+                
               </button>
             </span>
           </li>
@@ -47,33 +42,6 @@
           />
         </template>
       </ul>
-      </Transition>
-        <button class="sidebar__overlay-button" v-if="customMarkers.length > 0" @click="toggleCreatedLocations()">
-          Created Locations
-        </button>
-      <Transition name="slide-fade" >
-        <ul class="sidebar__overlay-list sidebar__overlay-list-custom" v-show="createdLocationsBtn">
-            <template v-for="marker in customMarkers" :key="marker.marker_name">
-              <li class="sidebar__overlay-list-item">
-                <button class="sidebar__overlay-item-button" @click="focusOnMarker(marker.marker_name);
-                openMarkerDescription(marker.marker_name);">
-                  {{ marker.marker_name }}
-                </button>
-                <span class="sidebar__overlay-item-buttons-group">
-                  <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="openNoteDialog(marker.marker_name)" title="Add/View Note">
-                    <img src="/assets/note-icon.svg" alt="add note" class="note__icon"  />
-                  </button>
-                  <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
-                    @click="removeCreatedMarker(marker.marker_name)" title="Remove location from list">
-                    Remove created
-                  </button>
-                </span>
-              </li>
-              <NoteDialog v-show="showNoteDialog.includes(marker.marker_name)" @closeNoteDialog="closeNoteDialog(marker.marker_name)"
-                  :markerName = marker.marker_name
-              />
-            </template>
-        </ul>
       </Transition>
 </div>
 
@@ -95,7 +63,6 @@ import NoteDialog from '../noteDialog.vue';
 
 const markersDataStore = useMarkersDataStore();
 const { savedMarkers } = storeToRefs(markersDataStore);
-const { customMarkers } = storeToRefs(markersDataStore);
 const showNoteDialog = ref([]);
 
 const markerNote = ref('');
@@ -108,6 +75,7 @@ const { navigateToPane } = usePaneNavigation(emit);
 
 const removeSavedMarker = (markerName) => {
   markersDataStore.removeSavedMarker(markerName);
+  markersDataStore.targetMarker = null;
 };
 const openMarkerDescription = (markerName) => {
   markersDataStore.selectedMarker(markerName);
@@ -135,9 +103,8 @@ const handleFileImport = (event) => {
   event.target.value = '';
 };
 
-
 function openNoteDialog(markerName) {
-  const marker = savedMarkers.value.find(marker => marker.marker_name === markerName);
+  const marker = savedMarkers.value.find(marker => marker.marker_name === markerName) 
   if (marker) {
     markerNote.value = markerName;
     markersDataStore.selectedMarker(markerName);
@@ -163,28 +130,23 @@ function toggleCreatedLocations() {
 </script>
 
 <style lang="scss" scoped>
+@use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
+
 .sidebar__overlay-list {
-  list-style: none;
+  @include list-reset;
   padding: 0.5rem;
-  margin: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: $saved-locations-overlay-bg-crl;
 }
 
 .sidebar__overlay-list-item {
   padding: 0.5rem 0rem 0 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  border-bottom: 1px solid $saved-locations-border-light-crl;
+  @include flex-row(space-between, flex-start);
 }
 
 .sidebar__pane-buttons-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  justify-content: space-around;
-  gap: 0.5rem;
+  @include flex-row(space-around, center, 0.5rem);
   margin-top: 0.5rem;
   padding: 0.5rem;
 }
@@ -198,46 +160,57 @@ function toggleCreatedLocations() {
   border: none;
   padding: 0.25rem 0.5rem;
   font-size: 1rem;
-  background-color: rgba(124, 124, 124, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: $saved-locations-button-bg-crl;
+  border: 1px solid $saved-locations-button-border-crl;
   border-radius: 0.25rem;
   flex-grow: 0;
   flex-shrink: 0;
 
   &:hover {
     text-decoration: none;
-    background-color: rgba(124, 124, 124, 0.1);
+    background-color: $saved-locations-button-hover-crl;
   }
 }
 
-.note__icon {
-  width: 1.25rem;
+
+.note__button {
+    background-image: url('/assets/icons/note-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    background-size: 70%;
 }
 
 
-.sidebar__overlay-list-saved,
-.sidebar__overlay-list-custom{
-  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-  padding-bottom: 1.25rem;
-}
 
+.sidebar__overlay-list-saved{
+  @include grid-row(1fr, 1fr, 0);
+}
 
 /* Transition styles */
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all 0.3s ease;
+  @include transition-slide-fade(0.3s);
 }
 
 .slide-fade-enter-from {
-  transform: translateY(-10px);
-  opacity: 0;
+  @include slide-fade-enter;
 }
 
 .slide-fade-leave-to {
-  transform: translateY(-10px);
-  opacity: 0;
+  @include slide-fade-enter;
 }
 
+
+@include respond-to-mobile{
+
+    .sidebar__pane-container-button{
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
 
 
 

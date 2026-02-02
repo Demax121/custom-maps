@@ -9,7 +9,6 @@ export const useMarkersDataStore = defineStore('markersData', {
         targetMarker: null,
         savedMarkers: [],
         savedMarkersSet: new Set(),
-        customMarkers: [],
         customMarkersSet: new Set(),
         }
      },
@@ -18,7 +17,8 @@ export const useMarkersDataStore = defineStore('markersData', {
     actions: {
         async getMarkersData() {
         try {
-          const response = await fetch('http://127.0.1:8884/getMarkersData.php?map_name=Barovia');
+          const markersDataUrl = `${import.meta.env.VITE_MARKERS_DATA_ENDPOINT}`;
+          const response = await fetch(markersDataUrl);
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -39,6 +39,9 @@ export const useMarkersDataStore = defineStore('markersData', {
         },
         selectedMarker(markerName) {
           this.targetMarker = this.markers.find(marker => marker.marker_name === markerName);
+          if (!this.targetMarker) {
+            this.targetMarker = this.savedMarkers.find(marker => marker.marker_name === markerName);
+          }
           return this.targetMarker;
         },
         saveMarker(markerName) {
@@ -116,6 +119,14 @@ export const useMarkersDataStore = defineStore('markersData', {
           const marker = this.savedMarkers.find(marker => marker.marker_name === markerName);
           if (marker && marker.note) {
             marker.note = '';
+          }
+        },
+        createLocation(marker){
+          if (marker && !this.customMarkersSet.has(marker.marker_name)) {
+            this.savedMarkers.push(marker);
+            this.customMarkersSet.add(marker.marker_name);
+          }else{
+            console.warn(`Marker with name ${marker.marker_name} already exists in custom markers.`);
           }
         },
 

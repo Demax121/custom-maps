@@ -12,7 +12,8 @@ export const useOverlaysDataStore = defineStore('overlaysData', {
     actions: {
       async getOverlaysData() {
         try {
-          const response = await fetch('http://127.0.0.1:8884/getOverlaysData.php?map_name=Barovia');
+          const overlaysDataUrl = `${import.meta.env.VITE_OVERLAYS_DATA_ENDPOINT}`;
+          const response = await fetch(overlaysDataUrl);
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

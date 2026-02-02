@@ -4,33 +4,28 @@
     <div class="sidebar__tabs">
       <ul role="tablist" class="sidebar__tab-list">
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MapDesc' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--map-desc" :class="{ 'sidebar__btn--active': activePane === 'MapDesc' && isVisible }"
             @click="togglePane('MapDesc')">
-            <img class="sidebar__btn-img" src="/assets/bars-icon.svg" alt="menu"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerList' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--marker-list" :class="{ 'sidebar__btn--active': activePane === 'MarkerList' && isVisible }"
             @click="togglePane('MarkerList')" >
-            <img class="sidebar__btn-img" src="/assets/map-icon.svg" alt="map"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerDesc' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--marker-desc" :class="{ 'sidebar__btn--active': activePane === 'MarkerDesc' && isVisible }"
             @click="togglePane('MarkerDesc')">
-            <img class="sidebar__btn-img" src="/assets/marker-icon.svg" alt="marker"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'SavedLocations' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--saved-locations" :class="{ 'sidebar__btn--active': activePane === 'SavedLocations' && isVisible }"
             @click="togglePane('SavedLocations')">
-            <img class="sidebar__btn-img" src="/assets/list-icon.svg" alt="list"></img>
           </button>
         </li>
          <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'SettingsPane' && isVisible }"
-            @click="togglePane('SettingsPane')">
-            <img class="sidebar__btn-img" src="/assets/settings-icon.svg" alt="settings"></img>
+          <button class="sidebar__btn sidebar__btn--settings-pane" :class="{ 'sidebar__btn--active': activePane === 'SettingsPane' && isVisible }"
+            @click="togglePane('SettingsPane')">->
           </button>
         </li>
       </ul>
@@ -44,7 +39,7 @@
       <div class="sidebar__content" v-show="isVisible">
         <div class="sidebar__content-header">
           <button class="sidebar__content-close" @click="togglePane(activePane)">
-            <img src="/assets/close-icon.svg" alt="Close">
+            <!-- <img src="/assets/icons/close-icon.svg" alt="Close"> -->
           </button>
         </div>
         <slot />
@@ -82,18 +77,33 @@ const togglePane = (pane) => {
 
 <style lang="scss" scoped>
 @use '@/scss/colors.scss' as *;
+@use '@/scss/mixins.scss' as *;
+@use '@/scss/fonts.scss' as *;
 
-$sidebar-sizing-desktop: 3rem;
-$sidebar-sizing-mobile: 2rem;
 $transition-speed: 0.5s;
+$sidebar-sizing-desktop: 3rem;
+$sidebar-sizing-desktop-small: 3rem;
+$sidebar-sizing-desktop-large: 4.25rem;
+$sidebar-sizing-mobile: 2.25rem;
+$sidebar-sizing-tablet: 2.25rem;
 
-$sidebar-position-1200: 470px;
-$sidebar-position-992: 400px;
-$sidebar-position-768: 315px;
+$sidebar-button-size-desktop: 3rem;
+$sidebar-button-size-desktop-small: 3rem;
+$sidebar-button-size-desktop-large: 4.25rem;
+$sidebar-button-size-mobile: 2.25rem;
+$sidebar-button-size-tablet: 2.25rem;
 
-$sidebar-width-1200: 400px;
-$sidebar-width-992: 390px;
-$sidebar-width-768: 305px;
+$content-margin-desktop: 3rem;
+$content-margin-desktop-small: 3rem;
+$content-margin-desktop-large: 4.25rem;
+$content-margin-mobile: 2.25rem;
+$content-margin-tablet: 2.25rem;
+
+$content-width-desktop: 26dvw;
+$content-width-desktop-small: 420px;
+$content-width-desktop-large: 32dvw;
+$content-width-mobile: calc(100dvw - #{$content-margin-mobile});
+$content-width-tablet: calc(100dvw - #{$content-margin-tablet});
 
 
 
@@ -108,7 +118,7 @@ $sidebar-width-768: 305px;
   background-color: $sidebar-bg-crl-primary;
   padding: 2rem 0rem;
   color: $font-crl-primary;
-
+  font-family: 'Cormorant Garamond';
 
   &__btn {
     cursor: pointer;
@@ -116,6 +126,27 @@ $sidebar-width-768: 305px;
     border: none;
     padding: 0.25rem;
     margin-bottom: 1rem;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+
+    &--map-desc{
+      background-image: url('/assets/icons/bars-icon.svg');
+    }
+    &--marker-list{
+      background-image: url('/assets/icons/map-icon.svg');
+    }
+
+    &--marker-desc{
+      background-image: url('/assets/icons/marker-icon.svg');
+    }
+    &--saved-locations{
+      background-image: url('/assets/icons/list-icon.svg');
+    }
+    &--settings-pane{
+      background-image: url('/assets/icons/settings-icon.svg');
+    }
 
 
     &:hover {
@@ -150,8 +181,14 @@ $sidebar-width-768: 305px;
     overflow-y: hidden;
 
     &-close{
-      max-width: 2.5rem;
-      background: none;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url('/assets/icons/close-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 3rem;
+    height: 3rem;
+    background-size: 70%;
       border: none;
       cursor: pointer;
       &:hover{
@@ -169,51 +206,106 @@ $sidebar-width-768: 305px;
 // Transition classes
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform $transition-speed ease, opacity $transition-speed ease;
+  @include transition-slide-horizontal($transition-speed);
 }
 
 .slide-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
+  @include slide-horizontal-enter;
 }
 
 .slide-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
+  @include slide-horizontal-enter;
 }
 
 
 
-
-@media (min-width: 768px) {
-  .sidebar {
-    top: 0;
-    bottom: 0;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .sidebar {
-    width: $sidebar-width-768;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .sidebar {
-    width: $sidebar-width-992;
-  }
-
-}
-
-@media (min-width: 1200px) {
-  .sidebar {
-    top: 0;
-    bottom: 0;
-    max-width: $sidebar-sizing-desktop;
+@include respond-to-mobile{
+  .sidebar{
+      max-width: $sidebar-sizing-mobile;
+      width: $sidebar-sizing-mobile;
+      &__btn {
+      width: $sidebar-button-size-mobile;
+      height: $sidebar-button-size-mobile;
+    }
 
     &__content{
-      left: $sidebar-sizing-desktop;
+      left: $content-margin-mobile;
+      width: $content-width-mobile;
     }
   }
 }
+
+
+@include respond-to-tablet {
+  .sidebar{
+      max-width: $sidebar-sizing-tablet;
+      width: $sidebar-sizing-tablet;
+
+      &__btn {
+      width: $sidebar-button-size-tablet;
+      height: $sidebar-button-size-tablet;
+    }
+
+    &__content{
+      left: $content-margin-tablet;
+      width: $content-width-tablet;
+    }
+  }
+}
+
+@include respond-to-desktop-small {
+  .sidebar {
+    max-width: $sidebar-sizing-desktop-small;
+    width: $sidebar-sizing-desktop-small;
+    &__btn {
+      width: $sidebar-button-size-desktop-small;
+      height: $sidebar-button-size-desktop-small;
+    }
+
+    &__content{
+      left: $content-margin-desktop-small;
+      width: $content-width-desktop-small;
+    }
+  }
+
+}
+
+@include respond-to-desktop {
+  .sidebar {
+    max-width: $sidebar-sizing-desktop;
+    width: $sidebar-sizing-desktop;
+
+    &__content{
+      width: $content-width-desktop;
+      left: $content-margin-desktop;
+    }
+
+    &__btn {
+      width: $sidebar-button-size-desktop;
+      height: $sidebar-button-size-desktop;
+    }
+
+  }
+}
+
+
+@include respond-to-desktop-large {
+  .sidebar {
+    max-width: $sidebar-sizing-desktop-large;
+    width: $sidebar-sizing-desktop-large;
+
+    &__content{
+      width: $content-width-desktop-large;
+      left: $content-margin-desktop-large;
+    }
+
+    &__btn {
+      width: $sidebar-button-size-desktop-large;
+      height: $sidebar-button-size-desktop-large;
+    }
+
+  }
+}
+
+
 </style>
