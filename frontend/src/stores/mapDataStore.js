@@ -19,7 +19,8 @@ export const useMapDataStore = defineStore('mapData', {
   actions: {
     async getMapData() {
       try {
-        const response = await fetch('http://192.168.1.2:8884/getMapData.php?map_name=Barovia');
+        const mapDataUrl = `${import.meta.env.VITE_MAP_DATA_ENDPOINT}`;
+        const response = await fetch(mapDataUrl);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

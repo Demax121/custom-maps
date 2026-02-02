@@ -205,7 +205,7 @@ function createOverlay(overlayMap, layerControl) {
 
 const createCustomIcon = (shape) =>
   new L.Icon({
-    iconUrl: `http://127.0.0.1:8885/icons/${shape}`,
+    iconUrl: `${import.meta.env.VITE_ICONS_BASE_URL}${shape}`,
     iconSize: [38, 95],
     shadowSize: [50, 64],
     iconAnchor: [22, 94],

@@ -17,7 +17,8 @@ export const useMarkersDataStore = defineStore('markersData', {
     actions: {
         async getMarkersData() {
         try {
-          const response = await fetch('http://192.168.1.2:8884/getMarkersData.php?map_name=Barovia');
+          const markersDataUrl = `${import.meta.env.VITE_MARKERS_DATA_ENDPOINT}`;
+          const response = await fetch(markersDataUrl);
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
