@@ -237,4 +237,6 @@ const removeSavedMarker = (markerName) => {
   font-size: 0.7rem;
 }
 
+
+
 </style>
