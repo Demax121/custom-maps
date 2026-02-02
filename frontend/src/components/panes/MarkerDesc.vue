@@ -3,8 +3,6 @@
         <div class="sidebar__pane">
           <div class="sidebar__pane-header sidebar__pane-header--desc">
             <h1 class="sidebar__pane-title">{{ locationName }}</h1>
-          </div>
-           <div class="sidebar__pane-desc-buttons">
             <span class="sidebar__overlay-item-buttons-group sidebar__overlay-item-buttons-group--desc" v-show="markersDataStore.targetMarker !== null">
               <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc add-bookmark-button" 
                 @click="saveMarker(locationName)"
@@ -15,7 +13,10 @@
                 v-show="isLocationSaved(locationName)">
               </button>
             </span>
-            </div>
+          </div>
+           <!-- <div class="sidebar__pane-desc-buttons">
+            
+            </div> -->
           <div class="sidebar__pane-body sidebar__pane-body--desc">
             <img class="sidebar__pane-img" alt="" :src="markersDataStore.targetMarker?.marker_img"></img>
             <div class="sidebar__pane-body-container">
@@ -96,6 +97,7 @@ const locationDesc = computed(() => {
 
 .sidebar__pane-header--desc{
   margin-top: 1rem;
+  display: flex;
 }
 
 .button-desc{
@@ -109,6 +111,10 @@ const locationDesc = computed(() => {
 
 .sidebar__pane-body-description{
   padding-bottom: 1.25rem;
+}
+
+.sidebar__overlay-item-buttons-group--desc{
+  display: inline-block;
 }
 
 
