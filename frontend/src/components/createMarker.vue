@@ -31,7 +31,8 @@
         </span>
 
         <div class="custom__marker-button-container">
-            <button class="custom__marker-button" @click="$emit('closeCords')">Close</button>
+            <button class="custom__marker-button" @click="$emit('closeMarkerCreationDialog')">Close</button>
+            <button class="custom__marker-button" @click="$emit('closeCords')">Cancel creation</button>
             <button class="custom__marker-button" @click="createMarker()">Save marker</button>
         </div>
 
@@ -51,7 +52,7 @@ const customLocationIconName = ref('');
 const customLocationImg = ref('');
 const dropdownRef = ref(null);
 
-const emit = defineEmits(['closeCords', 'toggleListVisibility']);
+const emit = defineEmits(['closeCords', 'toggleListVisibility', 'closeMarkerCreationDialog']);
 
 
 function handleItemSelected(item) {
@@ -182,5 +183,10 @@ const createMarker = () => {
     color: $create-marker-placeholder-crl;
     display: block;
 }
+
+
+
+
+
 
 </style>

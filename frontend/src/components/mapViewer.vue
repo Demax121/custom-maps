@@ -11,7 +11,7 @@ import { usePaneNavigation } from '../composables/usePaneNavigation';
 import CreateMarker from './createMarker.vue'
 
 
-const emit = defineEmits(['changePane', 'closeCords', ]);
+const emit = defineEmits(['changePane', 'closeCords', 'closeMarkerCreationDialog' ]);
 const { navigateToPane } = usePaneNavigation(emit);
 
 const overlaysDataStore = useOverlaysDataStore();
@@ -81,6 +81,7 @@ const getLocation = L.Control.extend({
         map.removeLayer(Cords);
         Cords = null;
         createMarkerDialog.value = false;
+        toggleCreate.remove(map);
       } else {
         // If marker doesn't exist, create it
         Cords = L.marker([0, 0], {
@@ -88,8 +89,9 @@ const getLocation = L.Control.extend({
           draggable: true,
           zIndexOffset: 9998,
           interactive: true,
+          
         });
-
+        toggleCreate.addTo(map);
         Cords.bindPopup("Get location");
         Cords.bindTooltip('I`m draggable', {
           permanent: false,
@@ -126,10 +128,15 @@ function closeCords() {
    map.value.removeLayer(Cords);
     Cords = null;
     createMarkerDialog.value = false;
+    toggleCreate.remove(map.value);
   }
 }
 
-
+function closeMarkerCreationDialog() {
+  if(Cords){
+    createMarkerDialog.value = false;
+  }
+}
 
 const resetMap= L.Control.extend({
   options: {
@@ -155,6 +162,29 @@ const resetMap= L.Control.extend({
 const resetMapControl = new resetMap();
 
 
+const toggleCreateInputDialog = L.Control.extend({
+  options: {
+    position: 'topright',
+  },
+  onAdd: function (map) {
+    const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    const btn = L.DomUtil.create('a', 'marker-create-input-dialog-toggle', container);
+    btn.href = '#';
+    btn.title = 'Toggle create marker input dialog';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('aria-label', 'Toggle create marker input dialog');
+    
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(btn, 'click', function(e) {
+      L.DomEvent.preventDefault(e);
+      createMarkerDialog.value = !createMarkerDialog.value;
+    });
+
+    return container;
+  }
+});
+
+const toggleCreate = new toggleCreateInputDialog();
 
 
 function createOverlay(overlayMap, layerControl) {
@@ -334,7 +364,7 @@ watch(savedMarkers, (newValue) => {
 <template>
     <div id="map">
     </div>
-   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" :lat="lat" :lng="lng" />
+   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" @closeMarkerCreationDialog="closeMarkerCreationDialog" :lat="lat" :lng="lng" />
 </template>
 
 

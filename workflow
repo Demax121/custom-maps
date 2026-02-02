@@ -20,7 +20,7 @@
 19. Marker get location - dodaje lokacje do saved locations 
 (nazwa lokacji, warstwa do jakiej należy (dropdown), koordynaty lat lng, ikona markera (dropdown))
 20. Saved locations mają notatki użytkownika - zrobione
-
+21. Sektory, najechanie na sektor podświetla go
 
 
 Wrzucić dozwolony markdown

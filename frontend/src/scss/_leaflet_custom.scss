@@ -72,13 +72,24 @@ $leaflet-control-font-size-desktop-large: 1.75rem;
 
 @media (max-width: 991px) {
   .leaflet-control-zoom-in,
-  .leaflet-control-zoom-out {
+  .leaflet-control-zoom-out{
     width: 0 !important;
     height: 0 !important;
     line-height: 0 !important;
     font-size: 0 !important;
   }
 }
+
+@media (min-width: 992px) {
+.marker-create-input-dialog-toggle{
+    width: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+    display: none !important;
+  }
+}
+
 
 
 .my-layers-toggle {
@@ -96,11 +107,15 @@ $leaflet-control-font-size-desktop-large: 1.75rem;
   background-size: 70%;
 }
 
+.marker-create-input-dialog-toggle {
+  background-image: url('/assets/icons/create-icon.svg');
+  background-size: 60%;
+}
+
 
 
 
 @include respond-to-desktop {
-
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out,
