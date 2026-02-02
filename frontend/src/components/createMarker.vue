@@ -98,30 +98,25 @@ const createMarker = () => {
 </script>
 
 <style lang="scss" scoped>
-$box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
+@use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
 
 .custom__marker__container {
     color: $font-crl-primary;
     bottom: 10%;
     right: 5%;
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    @include flex-column(flex-start, stretch, 0.5rem);
     margin: 1rem 0rem;
 
     background-color: $custom-marker-bg-crl-primary;
     padding: 1rem;
     z-index: 1000;
-    -webkit-box-shadow: $box-shadow-custom-marker;
-    -moz-box-shadow: $box-shadow-custom-marker;
-    box-shadow: $box-shadow-custom-marker;
+    @include box-shadow-dialog;
 }
 
 .custom__marker-container-input-set {
-    display: flex;
-    flex-direction: row;
-    gap: 0.25rem;
+    @include flex-row(flex-start, center, 0.25rem);
 }
 
 
@@ -130,20 +125,18 @@ $box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
     padding: 0.5rem 0.25rem;
     width: fit-content;
     font-size: 1rem;
-    background-color: rgba(124, 124, 124, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: $create-marker-button-bg-crl;
+    border: 1px solid $create-marker-input-border-crl;
     border-radius: 0.25rem;
     color: $font-crl-primary;
     cursor: pointer;
 
     &:hover {
-        background-color: rgba(124, 124, 124, 0.5);
+        background-color: $create-marker-button-hover-crl;
     }
 
     &-container {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
+        @include flex-row(flex-end, center, 0.5rem);
     }
 }
 
@@ -152,17 +145,17 @@ $box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
     flex-grow: 1;
     padding: 0.25rem 0.5rem;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid $create-marker-border-light-crl;
+    background-color: $create-marker-input-bg-crl;
     color: $font-crl-primary;
 
     &::placeholder {
-        color: rgba(255, 255, 255, 0.5);
+        color: $create-marker-placeholder-crl;
     }
 
     &:focus {
         outline: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        border-bottom: 1px solid $create-marker-input-focus-border-crl;
     }
 
     &-label{
@@ -186,7 +179,7 @@ $box-shadow-custom-marker: 0px 17px 49px 13px rgba(5, 5, 5, 1);
 .custom__marker-container-input-select{
     cursor: pointer;
     text-align: left;
-    color: rgba(255, 255, 255, 0.5);
+    color: $create-marker-placeholder-crl;
     display: block;
 }
 

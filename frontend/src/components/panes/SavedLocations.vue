@@ -131,28 +131,23 @@ function toggleCreatedLocations() {
 </script>
 
 <style lang="scss" scoped>
+@use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
+
 .sidebar__overlay-list {
-  list-style: none;
+  @include list-reset;
   padding: 0.5rem;
-  margin: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: $saved-locations-overlay-bg-crl;
 }
 
 .sidebar__overlay-list-item {
   padding: 0.5rem 0rem 0 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  border-bottom: 1px solid $saved-locations-border-light-crl;
+  @include flex-row(space-between, flex-start);
 }
 
 .sidebar__pane-buttons-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  justify-content: space-around;
-  gap: 0.5rem;
+  @include flex-row(space-around, center, 0.5rem);
   margin-top: 0.5rem;
   padding: 0.5rem;
 }
@@ -166,15 +161,15 @@ function toggleCreatedLocations() {
   border: none;
   padding: 0.25rem 0.5rem;
   font-size: 1rem;
-  background-color: rgba(124, 124, 124, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: $saved-locations-button-bg-crl;
+  border: 1px solid $saved-locations-button-border-crl;
   border-radius: 0.25rem;
   flex-grow: 0;
   flex-shrink: 0;
 
   &:hover {
     text-decoration: none;
-    background-color: rgba(124, 124, 124, 0.1);
+    background-color: $saved-locations-button-hover-crl;
   }
 }
 
@@ -186,17 +181,15 @@ function toggleCreatedLocations() {
 /* Transition styles */
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all 0.3s ease;
+  @include transition-slide-fade(0.3s);
 }
 
 .slide-fade-enter-from {
-  transform: translateY(-10px);
-  opacity: 0;
+  @include slide-fade-enter;
 }
 
 .slide-fade-leave-to {
-  transform: translateY(-10px);
-  opacity: 0;
+  @include slide-fade-enter;
 }
 
 

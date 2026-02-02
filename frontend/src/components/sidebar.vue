@@ -4,33 +4,28 @@
     <div class="sidebar__tabs">
       <ul role="tablist" class="sidebar__tab-list">
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MapDesc' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--map-desc" :class="{ 'sidebar__btn--active': activePane === 'MapDesc' && isVisible }"
             @click="togglePane('MapDesc')">
-            <img class="sidebar__btn-img" src="/assets/bars-icon.svg" alt="menu"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerList' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--marker-list" :class="{ 'sidebar__btn--active': activePane === 'MarkerList' && isVisible }"
             @click="togglePane('MarkerList')" >
-            <img class="sidebar__btn-img" src="/assets/map-icon.svg" alt="map"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'MarkerDesc' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--marker-desc" :class="{ 'sidebar__btn--active': activePane === 'MarkerDesc' && isVisible }"
             @click="togglePane('MarkerDesc')">
-            <img class="sidebar__btn-img" src="/assets/marker-icon.svg" alt="marker"></img>
           </button>
         </li>
         <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'SavedLocations' && isVisible }"
+          <button class="sidebar__btn sidebar__btn--saved-locations" :class="{ 'sidebar__btn--active': activePane === 'SavedLocations' && isVisible }"
             @click="togglePane('SavedLocations')">
-            <img class="sidebar__btn-img" src="/assets/list-icon.svg" alt="list"></img>
           </button>
         </li>
          <li class="sidebar__tab-item">
-          <button class="sidebar__btn" :class="{ 'sidebar__btn--active': activePane === 'SettingsPane' && isVisible }"
-            @click="togglePane('SettingsPane')">
-            <img class="sidebar__btn-img" src="/assets/settings-icon.svg" alt="settings"></img>
+          <button class="sidebar__btn sidebar__btn--settings-pane" :class="{ 'sidebar__btn--active': activePane === 'SettingsPane' && isVisible }"
+            @click="togglePane('SettingsPane')">->
           </button>
         </li>
       </ul>
@@ -82,6 +77,7 @@ const togglePane = (pane) => {
 
 <style lang="scss" scoped>
 @use '@/scss/colors.scss' as *;
+@use '@/scss/mixins.scss' as *;
 
 $sidebar-sizing-desktop: 3rem;
 $sidebar-sizing-mobile: 2rem;
@@ -95,8 +91,13 @@ $sidebar-width-1200: 400px;
 $sidebar-width-992: 390px;
 $sidebar-width-768: 305px;
 
+$sidebar-button-size-desktop: 3rem;
 
 
+$content-width-1200: 470px;
+$content-width-992: 350px;
+$content-width-768: 265px;
+$content-margin-desktop: 3rem;
 
 .sidebar {
   position: absolute;
@@ -116,6 +117,27 @@ $sidebar-width-768: 305px;
     border: none;
     padding: 0.25rem;
     margin-bottom: 1rem;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+
+    &--map-desc{
+      background-image: url('/assets/bars-icon.svg');
+    }
+    &--marker-list{
+      background-image: url('/assets/map-icon.svg');
+    }
+
+    &--marker-desc{
+      background-image: url('/assets/marker-icon.svg');
+    }
+    &--saved-locations{
+      background-image: url('/assets/list-icon.svg');
+    }
+    &--settings-pane{
+      background-image: url('/assets/settings-icon.svg');
+    }
 
 
     &:hover {
@@ -169,51 +191,59 @@ $sidebar-width-768: 305px;
 // Transition classes
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform $transition-speed ease, opacity $transition-speed ease;
+  @include transition-slide-horizontal($transition-speed);
 }
 
 .slide-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
+  @include slide-horizontal-enter;
 }
 
 .slide-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
+  @include slide-horizontal-enter;
 }
 
 
 
 
-@media (min-width: 768px) {
+
+@include respond-to-tablet {
   .sidebar {
     top: 0;
     bottom: 0;
   }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@include respond-to-tablet-only {
   .sidebar {
     width: $sidebar-width-768;
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@include respond-to-desktop-small {
   .sidebar {
     width: $sidebar-width-992;
   }
 
 }
 
-@media (min-width: 1200px) {
+@include respond-to-desktop {
   .sidebar {
     top: 0;
     bottom: 0;
     max-width: $sidebar-sizing-desktop;
+    width: $sidebar-sizing-desktop;
 
     &__content{
       left: $sidebar-sizing-desktop;
+      width: $content-width-1200;
+      left: $content-margin-desktop;
     }
+
+    &__btn {
+      width: $sidebar-button-size-desktop;
+      height: $sidebar-button-size-desktop;
+    }
+
   }
 }
 </style>

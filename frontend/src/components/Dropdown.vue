@@ -40,6 +40,8 @@ let items = [
 </script>
 
 <style lang="scss" scoped>
+@use '@/scss/colors' as *;
+
 .dropdown {
     &__container {
 
@@ -53,7 +55,7 @@ let items = [
     &__combobox {
         list-style: none;
         overflow-y: auto;
-        background-color: rgba(48, 48, 48, 1);
+        background-color: $create-marker-dropdown-bg-crl;
         
         width: 100%;
         max-height: 6rem;
@@ -63,7 +65,7 @@ let items = [
             width: 100%;
             &:hover{
                 
-                background-color: rgba(124, 124, 124, 1);
+                background-color: $create-marker-dropdown-hover-crl;
                 cursor: pointer;
             }
         }

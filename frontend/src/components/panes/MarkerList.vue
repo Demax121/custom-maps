@@ -106,7 +106,7 @@ const filteredMarkers = computed(() => {
 });
 
 const activeColor = reactive({
-  backgroundColor: 'rgba(124, 124, 124, 0.5)'
+  backgroundColor: '$marker-list-active-bg-crl'
 });
 
 const toggleOverlay = (overlayId) => {
@@ -136,6 +136,7 @@ const removeSavedMarker = (markerName) => {
 
 <style lang="scss" scoped>
 @use '@/scss/colors.scss' as *;
+@use '@/scss/mixins.scss' as *;
 
 .sidebar__overlay {
   width: 100%;
@@ -143,21 +144,17 @@ const removeSavedMarker = (markerName) => {
 }
 
 .sidebar__overlay-list {
-  list-style: none;
+  @include list-reset;
   padding: 0.5rem;
-  margin: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  background-color: $marker-list-overlay-bg-crl;
+  border-bottom: 2px solid $marker-list-border-heavy-crl;
 }
 
 
 .sidebar__overlay-list-item {
   padding: 0.5rem 0rem 0 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  border-bottom: 1px solid $marker-list-border-light-crl;
+  @include flex-row(space-between, flex-start);
     
 
   &:last-child {
@@ -172,46 +169,44 @@ const removeSavedMarker = (markerName) => {
 /* Transition styles */
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all 0.3s ease;
+  @include transition-slide-fade(0.3s);
 }
 
 .slide-fade-enter-from {
-  transform: translateY(-10px);
-  opacity: 0;
+  @include slide-fade-enter;
 }
 
 .slide-fade-leave-to {
-  transform: translateY(-10px);
-  opacity: 0;
+  @include slide-fade-enter;
 }
 
 
 .sidebar__pane-search-container {
-  justify-content: space-between;
+  @include flex-row(space-between);
   margin-bottom: 1rem;
 }
 
 .sidebar__pane-search-input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid $marker-list-input-border-crl;
+  background-color: $marker-list-input-bg-crl;
   color: $font-crl-primary;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: $marker-list-placeholder-crl;
   }
 
   &:active,
   &:focus {
     outline: none;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid $marker-list-input-border-crl;
   }
 }
 
 .sidebar__pane-search-result {
   color: $font-crl-primary;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid $marker-list-input-border-crl;
   max-height: 15rem;
   overflow-y: auto;
   // scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);

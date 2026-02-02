@@ -25,3 +25,50 @@ $markdown-blockquote-border-crl: $font-crl-primary;
 $markdown-hr-crl: $font-crl-primary;
 $markdown-table-bg-crl: rgba(106, 106, 106, 0.7);
 $markdown-table-border-crl: rgba(106, 106, 106, 0.5);
+
+// MarkerList component colors
+$marker-list-active-bg-crl: rgba(124, 124, 124, 0.5);
+$marker-list-overlay-bg-crl: rgba(0, 0, 0, 0.2);
+$marker-list-border-heavy-crl: rgba(255, 255, 255, 0.2);
+$marker-list-border-light-crl: rgba(255, 255, 255, 0.1);
+$marker-list-input-bg-crl: rgba(0, 0, 0, 0.3);
+$marker-list-input-border-crl: rgba(255, 255, 255, 0.2);
+$marker-list-placeholder-crl: rgba(255, 255, 255, 0.5);
+
+// SavedLocations component colors
+$saved-locations-overlay-bg-crl: rgba(0, 0, 0, 0.2);
+$saved-locations-border-light-crl: rgba(255, 255, 255, 0.1);
+$saved-locations-button-bg-crl: rgba(124, 124, 124, 0.3);
+$saved-locations-button-border-crl: rgba(255, 255, 255, 0.2);
+$saved-locations-button-hover-crl: rgba(124, 124, 124, 0.1);
+
+// SettingsPane component colors
+$settings-border-crl: rgba(255, 255, 255, 0.2);
+
+// noteDialog component colors
+$note-dialog-border-light-crl: rgba(255, 255, 255, 0.1);
+$note-dialog-input-bg-crl: rgba(0, 0, 0, 0.3);
+$note-dialog-input-border-crl: rgba(255, 255, 255, 0.2);
+$note-dialog-placeholder-crl: rgba(255, 255, 255, 0.5);
+$note-dialog-button-bg-crl: rgba(124, 124, 124, 0.3);
+$note-dialog-button-hover-crl: rgba(124, 124, 124, 0.5);
+
+// createMarker component colors
+$create-marker-dropdown-bg-crl: rgba(48, 48, 48, 1);
+$create-marker-dropdown-hover-crl: rgba(124, 124, 124, 1);
+$create-marker-border-light-crl: rgba(255, 255, 255, 0.1);
+$create-marker-input-bg-crl: rgba(0, 0, 0, 0.3);
+$create-marker-input-border-crl: rgba(255, 255, 255, 0.2);
+$create-marker-placeholder-crl: rgba(255, 255, 255, 0.5);
+$create-marker-input-focus-border-crl: rgba(255, 255, 255, 0.5);
+$create-marker-button-bg-crl: rgba(124, 124, 124, 0.3);
+$create-marker-button-hover-crl: rgba(124, 124, 124, 0.5);
+
+// Buttons (shared) colors
+$button-hover-bg-crl: rgba(124, 124, 124, 0.3);
+$button-action-bg-crl: rgba(124, 124, 124, 0.3);
+$button-action-border-crl: rgba(255, 255, 255, 0.2);
+$button-action-hover-crl: rgba(124, 124, 124, 0.1);
+
+// Leaflet custom colors
+$leaflet-border-light-crl: #ccc;

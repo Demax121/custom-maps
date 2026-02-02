@@ -1,0 +1,113 @@
+// Responsive breakpoint mixins
+
+@mixin respond-to-mobile {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin respond-to-tablet {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin respond-to-tablet-only {
+  @media (min-width: 768px) and (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin respond-to-desktop-small {
+  @media (min-width: 992px) and (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin respond-to-desktop {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+// Transition mixins
+@mixin transition-slide-fade($duration: 0.3s) {
+  transition: all $duration ease;
+}
+
+@mixin slide-fade-enter {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+@mixin transition-slide-horizontal($duration: 0.5s) {
+  transition: transform $duration ease, opacity $duration ease;
+}
+
+@mixin slide-horizontal-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+// Box shadow mixins
+@mixin box-shadow-dialog {
+  -webkit-box-shadow: 0px 17px 49px 13px rgba(5, 5, 5, 1);
+  -moz-box-shadow: 0px 17px 49px 13px rgba(5, 5, 5, 1);
+  box-shadow: 0px 17px 49px 13px rgba(5, 5, 5, 1);
+}
+
+// Button mixins
+@mixin button-base {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+@mixin button-action {
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  width: fit-content;
+  border-radius: 0.25rem;
+  @include button-base;
+}
+
+// Input mixins
+@mixin input-base {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: inherit;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+// Flexbox mixins
+@mixin flex-row($justify: flex-start, $align: center, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify;
+  align-items: $align;
+  @if $gap > 0 {
+    gap: $gap;
+  }
+}
+
+@mixin flex-column($justify: flex-start, $align: stretch, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  align-items: $align;
+  @if $gap > 0 {
+    gap: $gap;
+  }
+}
+
+// List reset mixin
+@mixin list-reset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

@@ -48,6 +48,7 @@ const appSettingsStore = useAppSettingsStore();
 
 <style lang="scss" scoped>
 @use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
 
 .settings {
 
@@ -55,7 +56,7 @@ const appSettingsStore = useAppSettingsStore();
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
     margin-top: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid $settings-border-crl;
     padding-bottom: 0.25rem;
 
   }
@@ -98,8 +99,7 @@ const appSettingsStore = useAppSettingsStore();
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
+  @include flex-row(flex-start, center);
 }
 
 .checkbox-label {

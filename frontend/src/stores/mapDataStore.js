@@ -19,7 +19,7 @@ export const useMapDataStore = defineStore('mapData', {
   actions: {
     async getMapData() {
       try {
-        const response = await fetch('http://127.0.0.1:8884/getMapData.php?map_name=Barovia');
+        const response = await fetch('http://192.168.1.2:8884/getMapData.php?map_name=Barovia');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

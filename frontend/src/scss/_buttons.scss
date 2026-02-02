@@ -15,7 +15,7 @@
         font-size: 1.25rem;
 
         &:hover {
-            background-color: rgba(124, 124, 124, 0.3);
+            background-color: $button-hover-bg-crl;
         }
 
     }
@@ -45,13 +45,13 @@
         &--action {
             align-self: flex-end;
             font-size: 0.8rem;
-            background-color: rgba(124, 124, 124, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: $button-action-bg-crl;
+            border: 1px solid $button-action-border-crl;
             border-radius: 0.25rem;
             flex-grow: 0;
 
             &:hover {
-                background-color: rgba(124, 124, 124, 0.1);
+                background-color: $button-action-hover-crl;
                 text-decoration: none;
             }
         }

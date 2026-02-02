@@ -12,7 +12,7 @@ export const useOverlaysDataStore = defineStore('overlaysData', {
     actions: {
       async getOverlaysData() {
         try {
-          const response = await fetch('http://127.0.0.1:8884/getOverlaysData.php?map_name=Barovia');
+          const response = await fetch('http://192.168.1.2:8884/getOverlaysData.php?map_name=Barovia');
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
