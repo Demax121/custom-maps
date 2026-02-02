@@ -9,7 +9,7 @@
           placeholder="Search markers..."
           @input="showResult = true" ></input>
         <div class="sidebar__pane-search-result" v-show="showResult && searchQuery">
-          <ul class="sidebar__overlay-list">
+          <ul class="sidebar__overlay-list ">
             <template v-for="marker in filteredMarkers" :key="marker.marker_name">
               <li class="sidebar__overlay-list-item">
                 <button class="sidebar__overlay-item-button item-button--search" @click="focusOnMarker(marker.marker_name);
@@ -17,15 +17,13 @@
                   {{ marker.marker_name }}
                 </button>
                 <span class="sidebar__overlay-item-buttons-group">
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search"  
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search add-bookmark-button"  
                 @click="saveMarker(marker.marker_name)"
                 v-show="!isLocationSaved(marker.marker_name)">
-                  Bookmark
                 </button>
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search"
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action action-button--search remove-bookmark-button"
                 @click="removeSavedMarker(marker.marker_name)" title="Remove location from list"
                 v-show="isLocationSaved(marker.marker_name)">
-                Remove bookmark
               </button>
 
 
@@ -50,15 +48,13 @@
                   {{ marker.marker_name }}
                 </button>
                 <span class="sidebar__overlay-item-buttons-group">
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" 
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action add-bookmark-button" 
                 @click="saveMarker(marker.marker_name)"
                 v-show="!isLocationSaved(marker.marker_name)">
-                  Bookmark
                 </button>
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action remove-bookmark-button"
                 @click="removeSavedMarker(marker.marker_name)" title="Remove location from list"
                 v-show="isLocationSaved(marker.marker_name)">
-                Remove bookmark
               </button>
                 </span>
               </li>
@@ -182,8 +178,9 @@ const removeSavedMarker = (markerName) => {
 
 
 .sidebar__pane-search-container {
-  @include flex-row(space-between);
-  margin-bottom: 1rem;
+  @include grid-row(1fr, 1fr, 0);
+
+
 }
 
 .sidebar__pane-search-input {
@@ -192,6 +189,8 @@ const removeSavedMarker = (markerName) => {
   border: 1px solid $marker-list-input-border-crl;
   background-color: $marker-list-input-bg-crl;
   color: $font-crl-primary;
+  display: block;
+  max-height: fit-content;
 
   &::placeholder {
     color: $marker-list-placeholder-crl;
@@ -209,9 +208,10 @@ const removeSavedMarker = (markerName) => {
   border: 1px solid $marker-list-input-border-crl;
   max-height: 15rem;
   overflow-y: auto;
-  // scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.1);
-  // scrollbar-width: thin;
   padding-right: 0.5rem;
+  width: 100%;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .item-button--search{
@@ -223,5 +223,18 @@ const removeSavedMarker = (markerName) => {
 }
 
 
+
+
+@include respond-to-mobile{
+
+
+.item-button--search{
+  font-size: 0.8rem;
+
+
+}
+}.action-button--search{
+  font-size: 0.7rem;
+}
 
 </style>

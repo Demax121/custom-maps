@@ -1,6 +1,6 @@
 <template>
     <div class="note__dialog">
-        <p>Location: <span> {{ markerName }} </span></p>
+        <!-- <p class="note__dialog-location-name">Location: <span> {{ markerName }} </span></p> -->
 
 
         <div class="note__dialog-content">
@@ -88,12 +88,13 @@ const saveMarkerNote = (markerName, noteData) => {
         background-color: $note-dialog-bg-crl-primary;
         padding: 1rem;
         z-index: 1000;
-        @include box-shadow-dialog;
-
+        // @include box-shadow-dialog;
+        border-bottom: 2px solid $note-dialog-border-light-crl;
+        margin-bottom: 1rem;
 
         &-content {
             @include flex-column(flex-start, stretch, 0.5rem);
-            margin: 1rem 0rem;
+            margin-bottom: 1rem;
         }
 
         &-input-set {
@@ -102,6 +103,7 @@ const saveMarkerNote = (markerName, noteData) => {
 
         &-input {
             flex-grow: 1;
+            font-size: 1rem;
             padding: 0.25rem 0.5rem;
             border: none;
             border-bottom: 1px solid $note-dialog-border-light-crl;
@@ -128,9 +130,9 @@ const saveMarkerNote = (markerName, noteData) => {
         }
 
         &-button {
-            padding: 0.5rem 0.25rem;
+            padding: 0.25rem 0.25rem;
             width: fit-content;
-            font-size: 1rem;
+            font-size: 0.9rem;
             background-color: $note-dialog-button-bg-crl;
             border: 1px solid $note-dialog-input-border-crl;
             border-radius: 0.25rem;
@@ -144,4 +146,25 @@ const saveMarkerNote = (markerName, noteData) => {
 
     }
 }
+
+
+@include respond-to-mobile{
+    .note__dialog-button{
+        font-size: 0.8rem;
+        padding: 0.25rem 0.25rem;
+    }
+
+    .note__dialog-location-name{
+        font-size: 0.8rem;
+    }
+
+    .note__dialog-input-label{
+        font-size: 0.9rem;
+    }
+
+    .note__dialog-input {
+        font-size: 0.9rem;
+    }
+}
+
 </style>

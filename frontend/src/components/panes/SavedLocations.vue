@@ -29,12 +29,11 @@
               {{ marker.marker_name }}
             </button>
             <span class="sidebar__overlay-item-buttons-group">
-              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action" @click="openNoteDialog(marker.marker_name)" title="Add/View Note">
-                <img src="/assets/note-icon.svg" alt="add note" class="note__icon"  />
+              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action note__button" @click="openNoteDialog(marker.marker_name)" title="Add/View Note">
               </button>
-              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action"
+              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action remove-bookmark-button"
                 @click="removeSavedMarker(marker.marker_name)" title="Remove location from list">
-                Remove bookmark
+                
               </button>
             </span>
           </li>
@@ -173,10 +172,22 @@ function toggleCreatedLocations() {
   }
 }
 
-.note__icon {
-  width: 1.25rem;
+
+.note__button {
+    background-image: url('/assets/note-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    background-size: 70%;
 }
 
+
+
+.sidebar__overlay-list-saved{
+  @include grid-row(1fr, 1fr, 0);
+}
 
 /* Transition styles */
 .slide-fade-enter-active,
@@ -192,6 +203,17 @@ function toggleCreatedLocations() {
   @include slide-fade-enter;
 }
 
+
+@include respond-to-mobile{
+
+  .sidebar__pane-buttons-container{
+    @include flex-column(space-around, center, 0.5rem);
+  }
+    .sidebar__pane-container-button{
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
 
 
 

@@ -1,4 +1,5 @@
 @use '@/scss/colors' as *;
+@use '@/scss/mixins' as *;
 
 .sidebar {
 
@@ -59,7 +60,25 @@
 }
 
 
+.remove-bookmark-button{
+    background-image: url('/assets/bookmark-remove-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    background-size: 70%;
+}
 
+.add-bookmark-button{
+    background-image: url('/assets/bookmark-add-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    background-size: 70%;
+}
 
 
 
@@ -71,4 +90,23 @@
 
 .item-button--search {
     font-size: 0.8rem;
+}
+
+@include respond-to-mobile {
+    .sidebar {
+
+        &__overlay-button {
+            height: 2.5rem;
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+
+        &__overlay-item-button {
+            font-size: 0.8rem;
+
+            &--action {
+                font-size: 0.7rem;
+            }
+        }
+    }
 }

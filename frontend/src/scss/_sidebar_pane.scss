@@ -2,11 +2,6 @@
 @use '@/scss/mixins.scss' as *;
 
 
-$pane-width-1200: 470px;
-$pane-width-992: 350px;
-$pane-width-768: 265px;
-$pane-margin-desktop: 3rem;
-
 .sidebar {
 
   &__pane {
@@ -47,29 +42,19 @@ $pane-margin-desktop: 3rem;
 }
 
 
+@include respond-to-mobile {
+  .sidebar {
 
+    &__pane {
+      padding: 0.5rem 0.75rem 0.75rem 0.75rem;
 
-@media (min-width: 768px) {
-  .sidebar__pane {}
+      &-title {
+        font-size: 1rem;
+      }
 
-  .sidebar__content {}
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .sidebar__pane {}
-
-  .sidebar__content {}
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .sidebar__pane {}
-
-  .sidebar__content {}
-}
-
-@media (min-width: 1200px) {
-  .sidebar__pane {
-
+      &-body {
+        max-height: calc(100vh - 7rem);
+      }
+    }
   }
-
 }

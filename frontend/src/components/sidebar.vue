@@ -80,7 +80,7 @@ const togglePane = (pane) => {
 @use '@/scss/mixins.scss' as *;
 
 $sidebar-sizing-desktop: 3rem;
-$sidebar-sizing-mobile: 2rem;
+$sidebar-sizing-mobile: 2.25rem;
 $transition-speed: 0.5s;
 
 $sidebar-position-1200: 470px;
@@ -92,12 +92,15 @@ $sidebar-width-992: 390px;
 $sidebar-width-768: 305px;
 
 $sidebar-button-size-desktop: 3rem;
-
+$sidebar-button-size-mobile: 2.25rem;
 
 $content-width-1200: 470px;
 $content-width-992: 350px;
 $content-width-768: 265px;
 $content-margin-desktop: 3rem;
+$content-margin-mobile: 2.25rem;
+$content-width-mobile: calc(100dvw - #{$content-margin-mobile});
+
 
 .sidebar {
   position: absolute;
@@ -204,6 +207,20 @@ $content-margin-desktop: 3rem;
 
 
 
+@include respond-to-mobile{
+  .sidebar{
+
+      &__btn {
+      width: $sidebar-button-size-mobile;
+      height: $sidebar-button-size-mobile;
+    }
+
+    &__content{
+      left: $content-margin-mobile;
+      width: $content-width-mobile;
+    }
+  }
+}
 
 
 @include respond-to-tablet {

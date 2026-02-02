@@ -6,19 +6,17 @@
           </div>
            <div class="sidebar__pane-desc-buttons">
             <span class="sidebar__overlay-item-buttons-group sidebar__overlay-item-buttons-group--desc" v-show="markersDataStore.targetMarker !== null">
-              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc" 
+              <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc add-bookmark-button" 
                 @click="saveMarker(locationName)"
                 v-show="!isLocationSaved(locationName)">
-                  Bookmark
                 </button>
-                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc"
+                <button class="sidebar__overlay-item-button sidebar__overlay-item-button--action button-desc remove-bookmark-button" 
                 @click="removeSavedMarker(locationName)" title="Remove location from list"
                 v-show="isLocationSaved(locationName)">
-                Remove bookmark
               </button>
             </span>
             </div>
-          <div class="sidebar__pane-body">
+          <div class="sidebar__pane-body sidebar__pane-body--desc">
             <img class="sidebar__pane-img" alt="" :src="markersDataStore.targetMarker?.marker_img"></img>
             <div class="sidebar__pane-body-container">
            <div class="sidebar__pane-body-description" v-html="locationDesc"></div>
@@ -101,7 +99,13 @@ const locationDesc = computed(() => {
 }
 
 .button-desc{
-  font-size: 1rem;
+  margin-top: 0.5rem;
 }
+
+
+.sidebar__pane-body--desc{
+  padding-top: 0rem;
+}
+
 
 </style>
