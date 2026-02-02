@@ -14,7 +14,7 @@
       <div class="sidebar__mapViewer-settings sidebar__pane-settings-content">
         <h2 class="settings-title">Map Viewer Settings</h2>
         <p class="settings-description">
-          Here you can adjust measurement units and values.
+          Here you can adjust measurement units and values. - Future work
         </p>
       </div>
 

@@ -4,6 +4,7 @@
 .sidebar__pane-body-description {
   line-height: 1.6;
   color: $font-crl-primary;
+  font-weight: 400;
 
   :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(h5), :deep(h6) {
     margin-top: 1.5rem;
