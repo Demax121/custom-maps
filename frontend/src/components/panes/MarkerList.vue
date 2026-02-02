@@ -179,7 +179,7 @@ const removeSavedMarker = (markerName) => {
 
 .sidebar__pane-search-container {
   @include grid-row(1fr, 1fr, 0);
-
+  margin-bottom: 1rem;
 
 }
 
