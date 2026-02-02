@@ -6,6 +6,17 @@ $leaflet-control-icon-size-desktop: 3rem;
 $leaflet-control-line-height-desktop: 3rem;
 $leaflet-control-font-size-desktop: 1.75rem;
 
+
+$leaflet-control-icon-size-desktop-small: 2.25rem;
+$leaflet-control-line-height-desktop-small: 2.25rem;
+$leaflet-control-font-size-desktop-small: 1.75rem;
+
+
+$leaflet-control-icon-size-desktop-large: 3.25rem;
+$leaflet-control-line-height-desktop-large: 3.25rem;
+$leaflet-control-font-size-desktop-large: 1.75rem;
+
+
 :root {
 	--fullscreen-icon-enter: url('/assets/icons/fullscreen-enter-icon.svg') !important;
 	--fullscreen-icon-exit: url('/assets/icons/fullscreen-exit-icon.svg') !important;
@@ -30,7 +41,8 @@ $leaflet-control-font-size-desktop: 1.75rem;
 }
 
 .leaflet-control-layers {
-  font-family: monospace;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
   background-color: $leaflet-control-bg-crl-primary !important;
   color: $leaflet-control-font-crl-primary !important;
   font-size: 1.15rem;
@@ -102,5 +114,22 @@ $leaflet-control-font-size-desktop: 1.75rem;
   font-size: $leaflet-control-font-size-desktop !important;
 }
 
+}
+
+@include respond-to-desktop-small {
+  .leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-zoom-fullscreen,
+.get-location-toggle,
+.my-layers-toggle,
+.reset-map-toggle {
+  width: $leaflet-control-icon-size-desktop-small !important;
+  height: $leaflet-control-icon-size-desktop-small !important;
+  line-height: $leaflet-control-line-height-desktop-small !important;
+  font-size: $leaflet-control-font-size-desktop-small !important;
+}
+}
+
+@include respond-to-desktop-large {
 
 }

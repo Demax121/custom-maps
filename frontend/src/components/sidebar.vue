@@ -80,24 +80,28 @@ const togglePane = (pane) => {
 @use '@/scss/mixins.scss' as *;
 @use '@/scss/fonts.scss' as *;
 
+$transition-speed: 0.5s;
 $sidebar-sizing-desktop: 3rem;
 $sidebar-sizing-desktop-small: 3rem;
+$sidebar-sizing-desktop-large: 4.25rem;
 $sidebar-sizing-mobile: 2.25rem;
 $sidebar-sizing-tablet: 2.25rem;
-$transition-speed: 0.5s;
 
 $sidebar-button-size-desktop: 3rem;
 $sidebar-button-size-desktop-small: 3rem;
+$sidebar-button-size-desktop-large: 4.25rem;
 $sidebar-button-size-mobile: 2.25rem;
 $sidebar-button-size-tablet: 2.25rem;
 
 $content-margin-desktop: 3rem;
 $content-margin-desktop-small: 3rem;
+$content-margin-desktop-large: 4.25rem;
 $content-margin-mobile: 2.25rem;
 $content-margin-tablet: 2.25rem;
 
 $content-width-desktop: 26dvw;
-$content-width-desktop-small: 21dvw;
+$content-width-desktop-small: 420px;
+$content-width-desktop-large: 32dvw;
 $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
 $content-width-tablet: calc(100dvw - #{$content-margin-tablet});
 
@@ -283,4 +287,25 @@ $content-width-tablet: calc(100dvw - #{$content-margin-tablet});
 
   }
 }
+
+
+@include respond-to-desktop-large {
+  .sidebar {
+    max-width: $sidebar-sizing-desktop-large;
+    width: $sidebar-sizing-desktop-large;
+
+    &__content{
+      width: $content-width-desktop-large;
+      left: $content-margin-desktop-large;
+    }
+
+    &__btn {
+      width: $sidebar-button-size-desktop-large;
+      height: $sidebar-button-size-desktop-large;
+    }
+
+  }
+}
+
+
 </style>

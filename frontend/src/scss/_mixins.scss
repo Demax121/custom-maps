@@ -25,8 +25,8 @@
   }
 }
 
-@mixin respond-to-large-desktop {
-  @media (min-width: 1600px) {
+@mixin respond-to-desktop-large {
+  @media (min-width: 2560px) {
     @content;
   }
 }
