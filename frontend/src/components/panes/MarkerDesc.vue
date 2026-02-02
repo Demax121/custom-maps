@@ -107,5 +107,9 @@ const locationDesc = computed(() => {
   padding-top: 0rem;
 }
 
+.sidebar__pane-body-description{
+  padding-bottom: 1.25rem;
+}
+
 
 </style>
