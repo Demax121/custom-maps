@@ -39,7 +39,7 @@
       <div class="sidebar__content" v-show="isVisible">
         <div class="sidebar__content-header">
           <button class="sidebar__content-close" @click="togglePane(activePane)">
-            <img src="/assets/close-icon.svg" alt="Close">
+            <!-- <img src="/assets/icons/close-icon.svg" alt="Close"> -->
           </button>
         </div>
         <slot />
@@ -78,28 +78,30 @@ const togglePane = (pane) => {
 <style lang="scss" scoped>
 @use '@/scss/colors.scss' as *;
 @use '@/scss/mixins.scss' as *;
+@use '@/scss/fonts.scss' as *;
 
 $sidebar-sizing-desktop: 3rem;
+$sidebar-sizing-desktop-small: 3rem;
 $sidebar-sizing-mobile: 2.25rem;
+$sidebar-sizing-tablet: 2.25rem;
 $transition-speed: 0.5s;
 
-$sidebar-position-1200: 470px;
-$sidebar-position-992: 400px;
-$sidebar-position-768: 315px;
-
-$sidebar-width-1200: 400px;
-$sidebar-width-992: 390px;
-$sidebar-width-768: 305px;
-
 $sidebar-button-size-desktop: 3rem;
+$sidebar-button-size-desktop-small: 3rem;
 $sidebar-button-size-mobile: 2.25rem;
+$sidebar-button-size-tablet: 2.25rem;
 
-$content-width-1200: 470px;
-$content-width-992: 350px;
-$content-width-768: 265px;
 $content-margin-desktop: 3rem;
+$content-margin-desktop-small: 3rem;
 $content-margin-mobile: 2.25rem;
+$content-margin-tablet: 2.25rem;
+
+$content-width-desktop: 26dvw;
+$content-width-desktop-small: 21dvw;
 $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
+$content-width-tablet: calc(100dvw - #{$content-margin-tablet});
+
+
 
 
 .sidebar {
@@ -112,7 +114,7 @@ $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
   background-color: $sidebar-bg-crl-primary;
   padding: 2rem 0rem;
   color: $font-crl-primary;
-
+  font-family: 'Cormorant Garamond';
 
   &__btn {
     cursor: pointer;
@@ -126,20 +128,20 @@ $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
 
 
     &--map-desc{
-      background-image: url('/assets/bars-icon.svg');
+      background-image: url('/assets/icons/bars-icon.svg');
     }
     &--marker-list{
-      background-image: url('/assets/map-icon.svg');
+      background-image: url('/assets/icons/map-icon.svg');
     }
 
     &--marker-desc{
-      background-image: url('/assets/marker-icon.svg');
+      background-image: url('/assets/icons/marker-icon.svg');
     }
     &--saved-locations{
-      background-image: url('/assets/list-icon.svg');
+      background-image: url('/assets/icons/list-icon.svg');
     }
     &--settings-pane{
-      background-image: url('/assets/settings-icon.svg');
+      background-image: url('/assets/icons/settings-icon.svg');
     }
 
 
@@ -175,8 +177,14 @@ $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
     overflow-y: hidden;
 
     &-close{
-      max-width: 2.5rem;
-      background: none;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url('/assets/icons/close-icon.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 3rem;
+    height: 3rem;
+    background-size: 70%;
       border: none;
       cursor: pointer;
       &:hover{
@@ -209,7 +217,8 @@ $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
 
 @include respond-to-mobile{
   .sidebar{
-
+      max-width: $sidebar-sizing-mobile;
+      width: $sidebar-sizing-mobile;
       &__btn {
       width: $sidebar-button-size-mobile;
       height: $sidebar-button-size-mobile;
@@ -224,35 +233,46 @@ $content-width-mobile: calc(100dvw - #{$content-margin-mobile});
 
 
 @include respond-to-tablet {
-  .sidebar {
-    top: 0;
-    bottom: 0;
-  }
-}
+  .sidebar{
+      max-width: $sidebar-sizing-tablet;
+      width: $sidebar-sizing-tablet;
 
-@include respond-to-tablet-only {
-  .sidebar {
-    width: $sidebar-width-768;
+      &__btn {
+      width: $sidebar-button-size-tablet;
+      height: $sidebar-button-size-tablet;
+    }
+
+    &__content{
+      left: $content-margin-tablet;
+      width: $content-width-tablet;
+    }
   }
 }
 
 @include respond-to-desktop-small {
   .sidebar {
-    width: $sidebar-width-992;
+    max-width: $sidebar-sizing-desktop-small;
+    width: $sidebar-sizing-desktop-small;
+    &__btn {
+      width: $sidebar-button-size-desktop-small;
+      height: $sidebar-button-size-desktop-small;
+    }
+
+    &__content{
+      left: $content-margin-desktop-small;
+      width: $content-width-desktop-small;
+    }
   }
 
 }
 
 @include respond-to-desktop {
   .sidebar {
-    top: 0;
-    bottom: 0;
     max-width: $sidebar-sizing-desktop;
     width: $sidebar-sizing-desktop;
 
     &__content{
-      left: $sidebar-sizing-desktop;
-      width: $content-width-1200;
+      width: $content-width-desktop;
       left: $content-margin-desktop;
     }
 

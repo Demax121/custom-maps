@@ -174,7 +174,7 @@ function toggleCreatedLocations() {
 
 
 .note__button {
-    background-image: url('/assets/note-icon.svg');
+    background-image: url('/assets/icons/note-icon.svg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

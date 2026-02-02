@@ -7,8 +7,8 @@ $leaflet-control-line-height-desktop: 3rem;
 $leaflet-control-font-size-desktop: 1.75rem;
 
 :root {
-	--fullscreen-icon-enter: url('/assets/fullscreen-enter-icon.svg') !important;
-	--fullscreen-icon-exit: url('/assets/fullscreen-exit-icon.svg') !important;
+	--fullscreen-icon-enter: url('/assets/icons/fullscreen-enter-icon.svg') !important;
+	--fullscreen-icon-exit: url('/assets/icons/fullscreen-exit-icon.svg') !important;
 }
 
 .leaflet-bar a:last-child {
@@ -30,7 +30,7 @@ $leaflet-control-font-size-desktop: 1.75rem;
 }
 
 .leaflet-control-layers {
-  font-family: "abhaya_libreregular";
+  font-family: monospace;
   background-color: $leaflet-control-bg-crl-primary !important;
   color: $leaflet-control-font-crl-primary !important;
   font-size: 1.15rem;
@@ -70,17 +70,17 @@ $leaflet-control-font-size-desktop: 1.75rem;
 
 
 .my-layers-toggle {
-  background-image: url('/assets/layer-icon.svg');
+  background-image: url('/assets/icons/layer-icon.svg');
   background-size: 70%;
 }
 
 .get-location-toggle {
-  background-image: url('/assets/location-crosshairs-icon.svg');
+  background-image: url('/assets/icons/location-crosshairs-icon.svg');
   background-size: 70%;
 }
 
 .reset-map-toggle {
-  background-image: url('/assets/reset-icon.svg');
+  background-image: url('/assets/icons/reset-icon.svg');
   background-size: 70%;
 }
 

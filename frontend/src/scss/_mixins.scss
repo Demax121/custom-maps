@@ -12,11 +12,6 @@
   }
 }
 
-@mixin respond-to-tablet-only {
-  @media (min-width: 768px) and (max-width: 991px) {
-    @content;
-  }
-}
 
 @mixin respond-to-desktop-small {
   @media (min-width: 992px) and (max-width: 1199px) {
@@ -26,6 +21,12 @@
 
 @mixin respond-to-desktop {
   @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin respond-to-large-desktop {
+  @media (min-width: 1600px) {
     @content;
   }
 }

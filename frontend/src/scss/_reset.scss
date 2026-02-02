@@ -1,3 +1,4 @@
+
 /* Box sizing rules */
 *,
 *::before,
@@ -41,7 +42,7 @@ body {
 body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  
+  font-family: 'Cormorant Garamond', serif;
 }
 /* A elements that don't have a class get default styles */
 a:not([class]) {
