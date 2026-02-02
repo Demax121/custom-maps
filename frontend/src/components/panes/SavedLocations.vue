@@ -7,11 +7,11 @@
     <div class="sidebar__pane-buttons-container">
       <button v-if="savedMarkers.length > 0 " class="sidebar__pane-container-button"
         @click="markersDataStore.exportSavedMarkers()">
-        Export Saved Locations
+        Export Saved
       </button>
       <input type="file" ref="fileInput" accept="application/json" @change="handleFileImport" style="display: none;" />
       <button class="sidebar__pane-container-button" @click="$refs.fileInput.click()">
-        Import Saved Locations
+        Import Locations
       </button>
     </div>
     <div class="sidebar__pane-body">
@@ -206,9 +206,6 @@ function toggleCreatedLocations() {
 
 @include respond-to-mobile{
 
-  .sidebar__pane-buttons-container{
-    @include flex-column(space-around, center, 0.5rem);
-  }
     .sidebar__pane-container-button{
         font-size: 0.8rem;
         padding: 0.25rem 0.5rem;
