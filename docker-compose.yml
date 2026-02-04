@@ -8,7 +8,7 @@ services:
         DB_PASSWORD: ${POSTGRES_PASSWORD}
     container_name: custom_maps_db
     environment:
-      POSTGRES_DB: maps_db
+      POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
     networks:
       - custom_maps_network

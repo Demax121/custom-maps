@@ -31,7 +31,7 @@
         </span>
 
         <div class="custom__marker-button-container">
-            <button class="custom__marker-button" @click="$emit('closeMarkerCreationDialog')">Close</button>
+            <button class="custom__marker-button custom__marker-button--close " @click="$emit('closeMarkerCreationDialog')">Close</button>
             <button class="custom__marker-button" @click="$emit('closeCords')">Cancel creation</button>
             <button class="custom__marker-button" @click="createMarker()">Save marker</button>
         </div>
@@ -183,7 +183,6 @@ const createMarker = () => {
     color: $create-marker-placeholder-crl;
     display: block;
 }
-
 
 
 

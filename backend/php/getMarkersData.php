@@ -10,7 +10,8 @@ marker_name,
 marker_lat, 
 marker_lng, 
 marker_desc, 
-marker_icon, 
+map_icons.icon_name,
+map_icons.icon_link,
 marker_img,
 overlays.overlay_name
 FROM markers
@@ -18,6 +19,8 @@ JOIN overlays
     ON markers.overlay_id = overlays.overlay_id
 JOIN maps
     ON maps.map_id = markers.map_id
+JOIN map_icons
+    ON map_icons.icon_id = markers.icon_id    
 WHERE maps.map_name = ?;
 ";
 
