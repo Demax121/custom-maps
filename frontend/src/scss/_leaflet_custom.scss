@@ -80,16 +80,6 @@ $leaflet-control-font-size-desktop-large: 1.75rem;
   }
 }
 
-@media (min-width: 992px) {
-.marker-create-input-dialog-toggle{
-    width: 0 !important;
-    height: 0 !important;
-    line-height: 0 !important;
-    font-size: 0 !important;
-    display: none !important;
-  }
-}
-
 
 
 .my-layers-toggle {
@@ -122,7 +112,8 @@ $leaflet-control-font-size-desktop-large: 1.75rem;
 .leaflet-control-zoom-fullscreen,
 .get-location-toggle,
 .my-layers-toggle,
-.reset-map-toggle {
+.reset-map-toggle,
+.marker-create-input-dialog-toggle {
   width: $leaflet-control-icon-size-desktop !important;
   height: $leaflet-control-icon-size-desktop !important;
   line-height: $leaflet-control-line-height-desktop !important;

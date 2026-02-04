@@ -85,7 +85,7 @@ const getLocation = L.Control.extend({
       } else {
         // If marker doesn't exist, create it
         Cords = L.marker([0, 0], {
-          icon: createCustomIcon('dead-eye.svg'),
+          icon: createCustomIcon('/assets/icons/dead-eye-icon.svg'),
           draggable: true,
           zIndexOffset: 9998,
           interactive: true,
@@ -205,7 +205,7 @@ function createOverlay(overlayMap, layerControl) {
 
 const createCustomIcon = (shape) =>
   new L.Icon({
-    iconUrl: `${import.meta.env.VITE_ICONS_BASE_URL}${shape}`,
+    iconUrl: shape,
     iconSize: [40, 40],
     iconAnchor: [24, 24],
     popupAnchor: [0, -24],
@@ -273,7 +273,7 @@ function addMarkersToMap(mapOverlay, markersTable) {
   }
 
   for (const marker of markersTable) {
-    const markerIcon = createCustomIcon(marker.marker_icon);
+    const markerIcon = createCustomIcon(marker.icon_link);
     const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
       interactive: true,
       icon: markerIcon,

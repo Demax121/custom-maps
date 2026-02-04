@@ -5,7 +5,7 @@ frontend/env
 # Environment files
 .env.local
 .env.*.local
-
+.env
 # IDE files
 .vscode/
 *.swp
