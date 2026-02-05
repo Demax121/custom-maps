@@ -301,10 +301,13 @@ function addMarkersToMap(mapOverlay, markersTable) {
 }
 
 
-function addMarkesonFlight(mapOverlay, marker){
+function addMarkesonFlight(map, marker){
   if (!marker) {
     return;
   }
+  map.dragging.disable();
+  map.scrollWheelZoom.disable();
+  map.doubleClickZoom.disable();
     const markerIcon = createCustomIcon(marker.icon_link);
     const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
       interactive: true,
@@ -332,6 +335,13 @@ function addMarkesonFlight(mapOverlay, marker){
 
     // Store reference to the marker
     markersDataStore.setMarkerRef(marker.marker_name, newMarker);
+
+  setTimeout(() => {
+    map.dragging.enable();
+    map.scrollWheelZoom.enable();
+    map.doubleClickZoom.enable();
+  }, 200);
+
 }
 
 
