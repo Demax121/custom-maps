@@ -3,6 +3,9 @@
         <span class="custom__marker__container-coordinates">
             Coordinates: {{ coordinates }}
         </span>
+        <span v-if="showWarningNoName" class="custom__marker-warning">
+            <b>Please provide a location name</b>
+        </span>
         <span class="custom__marker-container-input-set">
             <label for="marker-label" class="custom__marker-container-input-label">Location name:</label>
             <input name="marker-label" type="text" class="custom__marker-container-input"
@@ -10,15 +13,14 @@
         </span>
         <span class="custom__marker-container-input-set">
             <label for="marker-icon" class="custom__marker-container-input-label ">Location icon:</label>
-            <button name="marker-icon" type="text" 
-            class="custom__marker-container-input custom__marker-container-input-select"
-            @click="dropdownRef?.toggleListVisibility()">
-                <span v-if="!customLocationIcon">Select marker icon</span>
-                <span v-else>{{ customLocationIconName }}</span>
-            </button>
+            <input type="text" name="marker-icon" 
+            class="custom__marker-container-input custom__marker-container-input-select" placeholder="Select location icon"
+            @focus="dropdownRef?.toggleListVisibility(true)" @blur="handleInputBlur"
+            v-model="customLocationIconName">  
+            </input>
             
         </span>
-        <Dropdown ref="dropdownRef" @itemSelected="handleItemSelected" />
+        <Dropdown ref="dropdownRef" @itemSelected="handleItemSelected" :searchQuery="customLocationIconName" />
         <span class="custom__marker-container-input-set">
             <label for="marker-img" class="custom__marker-container-input-label">Location img:</label>
             <input name="marker-img" type="text" class="custom__marker-container-input"
@@ -35,15 +37,16 @@
             <button class="custom__marker-button" @click="$emit('closeCords')">Cancel creation</button>
             <button class="custom__marker-button" @click="createMarker()">Save marker</button>
         </div>
-
     </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed } from 'vue';
 import { useMarkersDataStore } from '../stores/markersDataStore';
-import Dropdown from './Dropdown.vue'
+import { useIconsDataStore } from '../stores/iconsDataStore';
+import Dropdown from './iconsDropdown.vue'
 const markersDataStore = useMarkersDataStore();
+const iconsDataStore = useIconsDataStore();
 
 const customLocationName = ref('');
 const customLocationDescription = ref('');
@@ -51,13 +54,20 @@ const customLocationIcon = ref('');
 const customLocationIconName = ref('');
 const customLocationImg = ref('');
 const dropdownRef = ref(null);
+const showWarningNoName = ref(false);
+
+const handleInputBlur = () => {
+    setTimeout(() => {
+        dropdownRef.value?.toggleListVisibility(false);
+    }, 200);
+}
 
 const emit = defineEmits(['closeCords', 'toggleListVisibility', 'closeMarkerCreationDialog']);
 
 
 function handleItemSelected(item) {
-    customLocationIcon.value = item.value;
-    customLocationIconName.value = item.text;
+    customLocationIcon.value = item.icon_link;
+    customLocationIconName.value = item.icon_name;
 }
 
 const props = defineProps({
@@ -74,21 +84,29 @@ const props = defineProps({
 const coordinates = computed(() => `Lat: ${props.lat}, Lng: ${props.lng}`);
 
 const createMarker = () => {
+
+if(!customLocationName.value){
+    showWarningNoName.value = true;
+    return;
+}else{
+    showWarningNoName.value = false;
+}
+
     const customMarker = {
         marker_name: customLocationName.value,
         marker_lat: props.lat,
         marker_lng: props.lng,
         marker_desc: customLocationDescription.value,
-        marker_icon: customLocationIcon.value,
+        icon_link: iconsDataStore.selectedIcon.icon_link,
         marker_img: customLocationImg.value,
         overlay_name: "Custom markers",
         note: null,
     };
-    
+    console.log('Creating marker:', customMarker);
     markersDataStore.createLocation(customMarker);
     customLocationName.value = '';
     customLocationDescription.value = '';
-    customLocationIcon.value = '';
+    iconsDataStore.clearSelectedIcon();
     customLocationIconName.value = '';
     customLocationImg.value = '';
     dropdownRef.value = null;
@@ -180,12 +198,16 @@ const createMarker = () => {
 .custom__marker-container-input-select{
     cursor: pointer;
     text-align: left;
-    color: $create-marker-placeholder-crl;
     display: block;
 }
 
+.custom__marker-button-container{
+    margin-top: 0.5rem;
+}
 
-
-
+.custom__marker-warning{
+    color: rgb(176, 255, 29);
+    font-size: 1rem;
+}
 
 </style>

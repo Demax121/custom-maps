@@ -5,6 +5,8 @@ export const useIconsDataStore = defineStore('iconsData', {
     state: () => {
         return  {
         icons: [],
+        defaultIcon: null,
+        selectedIcon: null,
         }
      },
     getters: { 
@@ -26,5 +28,16 @@ export const useIconsDataStore = defineStore('iconsData', {
           throw error;
         }
         },
+        async getDefaultIcon() { 
+          this.defaultIcon = this.icons.find(icon => icon.icon_name === 'default-icon');
+          this.selectedIcon = this.defaultIcon;
+        },
+        setSelectedIcon(icon) {
+          const targetIcon = this.icons.find(i => i.icon_name === icon.icon_name);
+          this.selectedIcon = targetIcon;
+        },
+      clearSelectedIcon() { 
+        this.selectedIcon = this.defaultIcon;
+      }
     },
 })

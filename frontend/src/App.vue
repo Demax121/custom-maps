@@ -12,6 +12,7 @@ import { useMapDataStore } from './stores/mapDataStore'
 import { useOverlaysDataStore } from './stores/overlaysDataStore'
 import { useMarkersDataStore } from './stores/markersDataStore'
 import { useAppSettingsStore } from './stores/appSettingsStore'
+import { useIconsDataStore } from './stores/iconsDataStore'
 
 const currentPane = ref('MapDesc');
 const panes = {
@@ -30,10 +31,13 @@ const mapDataStore = useMapDataStore();
 const overlaysDataStore = useOverlaysDataStore();
 const markersDataStore = useMarkersDataStore();
 const appSettingsStore = useAppSettingsStore();
+const iconsDataStore = useIconsDataStore();
 onMounted(async () => {
     await mapDataStore.getMapData();
     await overlaysDataStore.getOverlaysData();
     await markersDataStore.getMarkersData();
+    await iconsDataStore.getIconsData();
+    await iconsDataStore.getDefaultIcon();
 });
 
 

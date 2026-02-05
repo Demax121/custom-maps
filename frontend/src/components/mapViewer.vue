@@ -203,9 +203,9 @@ function createOverlay(overlayMap, layerControl) {
 }
 
 
-const createCustomIcon = (shape) =>
+const createCustomIcon = (url) =>
   new L.Icon({
-    iconUrl: shape,
+    iconUrl: url,
     iconSize: [40, 40],
     iconAnchor: [24, 24],
     popupAnchor: [0, -24],
@@ -302,8 +302,6 @@ function addMarkersToMap(mapOverlay, markersTable) {
     markersDataStore.setMarkerRef(marker.marker_name, newMarker);
   }
 }
-
-
 
 
 onMounted(() => {
