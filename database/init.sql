@@ -47,14 +47,14 @@ CREATE TABLE public.map_overlays (
 
 CREATE TABLE public.markers (
     marker_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    map_id integer NOT NULL,
-    overlay_id integer NOT NULL,
     marker_name varchar(128) NOT NULL,
     marker_lat real NOT NULL,
     marker_lng real NOT NULL,
     marker_desc text,
     marker_img text,
     icon_id integer,
+    map_id integer NOT NULL,
+    overlay_id integer NOT NULL,
     FOREIGN KEY (map_id) REFERENCES public.maps(map_id) ON DELETE CASCADE,
     FOREIGN KEY (overlay_id) REFERENCES public.overlays(overlay_id) ON DELETE CASCADE,
     CONSTRAINT markers_icons
@@ -98,28 +98,39 @@ COPY public.overlays (overlay_id, overlay_name) FROM stdin;
 7	Mountains
 8	Mines
 9	Dungeons
-10	Lakes
+10	Taverns
 \.
 
 COPY public.maps (map_id, map_name, map_min_zoom, map_max_zoom, map_tiles_link, map_description, map_img) FROM stdin;
-2	Merges	2	4	http://127.0.0.1:8884/maps/Merges/{z}/{y}/{x}.webp	...	https://images.alphacoders.com/900/thumb-1920-900186.jpg
+1	Merges	2	4	http://127.0.0.1:8884/maps/Merges/{z}/{y}/{x}.webp	...	https://images.alphacoders.com/900/thumb-1920-900186.jpg
 \.
 
 COPY public.map_overlays (map_id, overlay_id) FROM stdin;
-2	1
-2	2
-2	3
-2	4
-2	5
-2	6
-2	7
-2	8
-2	9
-2	10
+1	1
+1	2
+1	3
+1	4
+1	5
+1	6
+1	7
+1	8
+1	9
+1	10
 \.
 
-COPY public.markers (marker_id, map_id, overlay_id, marker_name, marker_lat, marker_lng, marker_desc, marker_img, icon_id) FROM stdin;
--- (data unchanged, omitted here for brevity)
+COPY public.markers (marker_id, marker_name, marker_lat, marker_lng, marker_desc, marker_img, icon_id, map_id, overlay_id) FROM stdin;
+1	Nestal	-35.90	27.82	\N	\N	2	1	4
+2	Tarantez	-33.86	-75.84	\N	\N	16	1	1
+3	Verdin	22.07	-12.45	\N	\N	15	1	10
+4	Bridge of the dead horse	27.27	33.29	\N	\N	1	1	6
+5	Old Hector Mines	20.22	67.60	\N	\N	5	1	9
+6	The Silverstone Mines	5.79	68.38	\N	\N	9	1	8
+7	The Spruce Village	-30.93	8.68	\N	\N	17	1	2
+8	The Forest Enclave	-13.28	-19.16	\N	\N	13	1	2
+9	Moonshine Lake	-23.87	-26.87	\N	\N	18	1	6
+10	The Raven Woods	-44.34	-29.36	\N	\N	7	1	3
+11	Deceptive Wetlands	47.87	-63.98	\N	\N	8	1	3
+12	The Creaking Forest	33.28	-36.39	\N	\N	10	1	3
 \.
 
 -- =========================================================
@@ -127,6 +138,6 @@ COPY public.markers (marker_id, map_id, overlay_id, marker_name, marker_lat, mar
 -- =========================================================
 
 SELECT setval('public.map_icons_icon_id_seq', 1, false);
-SELECT setval('public.maps_map_id_seq', 2, true);
+SELECT setval('public.maps_map_id_seq', 1, true);
 SELECT setval('public.markers_marker_id_seq', 14, true);
 SELECT setval('public.overlays_overlay_id_seq', 10, true);
