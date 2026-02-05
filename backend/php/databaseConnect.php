@@ -1,15 +1,32 @@
 <?php
 
 abstract class Db {
-private static $username ="postgresAdmin";
-private static $password ="postgres123";
-private static $dsn ="pgsql:host=custom_maps_db;port=5432;dbname=maps_db;";
-public static $affected_rows;
+    private static $username;
+    private static $password;
+    private static $dsn;
+    public static $affected_rows;
 
+    private static function init() {
+        if (self::$dsn === null) {
+            $db_host = getenv('POSTGRES_HOST');
+            $db_name = getenv('POSTGRES_DB');
+            $db_port = '5432';
+            
+            self::$username = getenv('POSTGRES_USER');
+            self::$password = getenv('POSTGRES_PASSWORD');
+            
+            if (!$db_host || !$db_name || !self::$username || !self::$password) {
+                throw new Exception("Database configuration missing from environment variables.");
+            }
 
-public static function connectToDatabase() {
-    try {
-        $pdo = new PDO(self::$dsn, self::$username, self::$password);
+            self::$dsn = "pgsql:host=$db_host;port=$db_port;dbname=$db_name;";
+        }
+    }
+
+    public static function connectToDatabase() {
+        self::init();
+        try {
+            $pdo = new PDO(self::$dsn, self::$username, self::$password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     } catch (PDOException $e) {

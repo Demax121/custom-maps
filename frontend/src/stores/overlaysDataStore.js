@@ -5,6 +5,8 @@ export const useOverlaysDataStore = defineStore('overlaysData', {
     state: () => {
         return  {
         overlays: [],
+        defaultOverlay: { overlay_name: 'Custom Locations' },
+        selectedOverlay: null,
         }
      },
     getters: { 
@@ -20,11 +22,18 @@ export const useOverlaysDataStore = defineStore('overlaysData', {
           }
             const data = await response.json();
             this.overlays = data;
+            this.overlays.push(this.defaultOverlay);
             return data;
         } catch (error) {
           console.error('Error fetching overlays data:', error);
           throw error;
         }
+        },
+        async setDefaultOverlay(){
+          this.selectedOverlay = this.defaultOverlay;
+        },
+        setSelectedOverlay(overlay) {
+            this.selectedOverlay = overlay;
         },
     },
 })

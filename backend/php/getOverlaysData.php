@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 $sql =
 "
-SELECT public.overlays.overlay_name, public.overlays.overlay_id
+SELECT public.overlays.overlay_name
 FROM public.map_overlays
 JOIN public.maps
     ON public.maps.map_id = public.map_overlays.map_id

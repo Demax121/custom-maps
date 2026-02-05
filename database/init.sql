@@ -47,14 +47,14 @@ CREATE TABLE public.map_overlays (
 
 CREATE TABLE public.markers (
     marker_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    map_id integer NOT NULL,
-    overlay_id integer NOT NULL,
     marker_name varchar(128) NOT NULL,
     marker_lat real NOT NULL,
     marker_lng real NOT NULL,
     marker_desc text,
     marker_img text,
     icon_id integer,
+    map_id integer NOT NULL,
+    overlay_id integer NOT NULL,
     FOREIGN KEY (map_id) REFERENCES public.maps(map_id) ON DELETE CASCADE,
     FOREIGN KEY (overlay_id) REFERENCES public.overlays(overlay_id) ON DELETE CASCADE,
     CONSTRAINT markers_icons
@@ -68,24 +68,24 @@ CREATE TABLE public.markers (
 -- =========================================================
 
 COPY public.map_icons (icon_id, icon_name, icon_link) FROM stdin;
-1	bridge-icon	http://127.0.0.1:8885/icons/bridge-icon.svg
-2	castle-icon	http://127.0.0.1:8885/icons/castle-icon.svg
-3	cave-icon	http://127.0.0.1:8885/icons/cave-icon.svg
-4	dead-eye-icon	http://127.0.0.1:8885/icons/dead-eye-icon.svg
-5	dungeon-icon	http://127.0.0.1:8885/icons/dungeon-icon.svg
-6	forest-camp-icon	http://127.0.0.1:8885/icons/forest-camp-icon.svg
-7	forest-icon	http://127.0.0.1:8885/icons/forest-icon.svg
-8	meadows-icon	http://127.0.0.1:8885/icons/meadows-icon.svg
-9	mines-icon	http://127.0.0.1:8885/icons/mines-icon.svg
-10	monsters-icon	http://127.0.0.1:8885/icons/monsters-icon.svg
-11	mountain-road-icon	http://127.0.0.1:8885/icons/mountain-road-icon.svg
-12	mountains-icon	http://127.0.0.1:8885/icons/mountains-icon.svg
-13	religion-icon	http://127.0.0.1:8885/icons/religion-icon.svg
-14	ruins-icon	http://127.0.0.1:8885/icons/ruins-icon.svg
-15	tavern-icon	http://127.0.0.1:8885/icons/tavern-icon.svg
-16	town-icon	http://127.0.0.1:8885/icons/town-icon.svg
-17	village-icon	http://127.0.0.1:8885/icons/village-icon.svg
-18	default-icon	http://127.0.0.1:8885/icons/default-icon.svg
+1	bridge-icon	http://127.0.0.1:8884/icons/bridge-icon.svg
+2	castle-icon	http://127.0.0.1:8884/icons/castle-icon.svg
+3	cave-icon	http://127.0.0.1:8884/icons/cave-icon.svg
+4	dead-eye-icon	http://127.0.0.1:8884/icons/dead-eye-icon.svg
+5	dungeon-icon	http://127.0.0.1:8884/icons/dungeon-icon.svg
+6	forest-camp-icon	http://127.0.0.1:8884/icons/forest-camp-icon.svg
+7	forest-icon	http://127.0.0.1:8884/icons/forest-icon.svg
+8	meadows-icon	http://127.0.0.1:8884/icons/meadows-icon.svg
+9	mines-icon	http://127.0.0.1:8884/icons/mines-icon.svg
+10	monsters-icon	http://127.0.0.1:8884/icons/monsters-icon.svg
+11	mountain-road-icon	http://127.0.0.1:8884/icons/mountain-road-icon.svg
+12	mountains-icon	http://127.0.0.1:8884/icons/mountains-icon.svg
+13	religion-icon	http://127.0.0.1:8884/icons/religion-icon.svg
+14	ruins-icon	http://127.0.0.1:8884/icons/ruins-icon.svg
+15	tavern-icon	http://127.0.0.1:8884/icons/tavern-icon.svg
+16	town-icon	http://127.0.0.1:8884/icons/town-icon.svg
+17	village-icon	http://127.0.0.1:8884/icons/village-icon.svg
+18	default-icon	http://127.0.0.1:8884/icons/default-icon.svg
 \.
 
 COPY public.overlays (overlay_id, overlay_name) FROM stdin;
@@ -98,28 +98,39 @@ COPY public.overlays (overlay_id, overlay_name) FROM stdin;
 7	Mountains
 8	Mines
 9	Dungeons
-10	Lakes
+10	Taverns
 \.
 
 COPY public.maps (map_id, map_name, map_min_zoom, map_max_zoom, map_tiles_link, map_description, map_img) FROM stdin;
-2	Merges	2	4	http://127.0.0.1:8885/maps/Merges/{z}/{y}/{x}.webp	...	https://images.alphacoders.com/900/thumb-1920-900186.jpg
+1	Merges	2	4	http://127.0.0.1:8884/maps/Merges/{z}/{y}/{x}.webp	...	https://images.alphacoders.com/900/thumb-1920-900186.jpg
 \.
 
 COPY public.map_overlays (map_id, overlay_id) FROM stdin;
-2	1
-2	2
-2	3
-2	4
-2	5
-2	6
-2	7
-2	8
-2	9
-2	10
+1	1
+1	2
+1	3
+1	4
+1	5
+1	6
+1	7
+1	8
+1	9
+1	10
 \.
 
-COPY public.markers (marker_id, map_id, overlay_id, marker_name, marker_lat, marker_lng, marker_desc, marker_img, icon_id) FROM stdin;
--- (data unchanged, omitted here for brevity)
+COPY public.markers (marker_id, marker_name, marker_lat, marker_lng, marker_desc, marker_img, icon_id, map_id, overlay_id) FROM stdin;
+1	Nestal	-35.90	27.82	\N	\N	2	1	4
+2	Tarantez	-33.86	-75.84	\N	\N	16	1	1
+3	Verdin	22.07	-12.45	\N	\N	15	1	10
+4	Bridge of the dead horse	27.27	33.29	\N	\N	1	1	6
+5	Old Hector Mines	20.22	67.60	\N	\N	5	1	9
+6	The Silverstone Mines	5.79	68.38	\N	\N	9	1	8
+7	The Spruce Village	-30.93	8.68	\N	\N	17	1	2
+8	The Forest Enclave	-13.28	-19.16	\N	\N	13	1	2
+9	Moonshine Lake	-23.87	-26.87	\N	\N	18	1	6
+10	The Raven Woods	-44.34	-29.36	\N	\N	7	1	3
+11	Deceptive Wetlands	47.87	-63.98	\N	\N	8	1	3
+12	The Creaking Forest	33.28	-36.39	\N	\N	10	1	3
 \.
 
 -- =========================================================
@@ -127,6 +138,6 @@ COPY public.markers (marker_id, map_id, overlay_id, marker_name, marker_lat, mar
 -- =========================================================
 
 SELECT setval('public.map_icons_icon_id_seq', 1, false);
-SELECT setval('public.maps_map_id_seq', 2, true);
+SELECT setval('public.maps_map_id_seq', 1, true);
 SELECT setval('public.markers_marker_id_seq', 14, true);
 SELECT setval('public.overlays_overlay_id_seq', 10, true);

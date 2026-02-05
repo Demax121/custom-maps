@@ -203,9 +203,9 @@ function createOverlay(overlayMap, layerControl) {
 }
 
 
-const createCustomIcon = (shape) =>
+const createCustomIcon = (url) =>
   new L.Icon({
-    iconUrl: shape,
+    iconUrl: url,
     iconSize: [40, 40],
     iconAnchor: [24, 24],
     popupAnchor: [0, -24],
@@ -253,9 +253,6 @@ const initializeMap = () => {
   map.value.attributionControl.setPrefix(false);
 
   const newLayerGroup = L.featureGroup([]).addTo(map.value);
-  layerControl.value.addOverlay(newLayerGroup, "Custom markers");
-  overlayGroups.value["Custom markers"] = newLayerGroup;
-  
 
 };
 
@@ -304,6 +301,49 @@ function addMarkersToMap(mapOverlay, markersTable) {
 }
 
 
+function addMarkesonFlight(map, marker){
+  if (!marker) {
+    return;
+  }
+  map.dragging.disable();
+  map.scrollWheelZoom.disable();
+  map.doubleClickZoom.disable();
+    const markerIcon = createCustomIcon(marker.icon_link);
+    const newMarker = L.marker([marker.marker_lat, marker.marker_lng], {
+      interactive: true,
+      icon: markerIcon,
+      draggable: false,
+    });
+
+    // Add marker to the correct feature group based on overlay_name
+    const targetGroup = overlayGroups.value[marker.overlay_name];
+    if (targetGroup) {
+      newMarker.addTo(targetGroup);
+    } 
+
+    newMarker.bindPopup(marker.marker_name || "No name available.");
+    newMarker.bindTooltip(marker.marker_name || "No name available.", {permanent: false});
+    
+    // Add click event listener to marker
+    newMarker.on('click', () => {
+      markersDataStore.selectedMarker(marker.marker_name);
+      navigateToPane('MarkerDesc');
+    });
+
+  newMarker.on('mouseover', () => newMarker.openTooltip());
+  newMarker.on('mouseout', () => newMarker.closeTooltip());
+
+    // Store reference to the marker
+    markersDataStore.setMarkerRef(marker.marker_name, newMarker);
+
+  setTimeout(() => {
+    map.dragging.enable();
+    map.scrollWheelZoom.enable();
+    map.doubleClickZoom.enable();
+  }, 200);
+
+}
+
 
 
 onMounted(() => {
@@ -343,18 +383,37 @@ watch(focusedMarker, (markerName) => {
   }
 });
 
+watch([markers, savedMarkers], () => {
+  // Combine markers, prioritizing savedMarkers (user saved/custom) over default markers
+  const allMarkers = [...savedMarkers.value, ...markers.value];
+  const validNames = new Set(allMarkers.map(m => m.marker_name));
 
-watch(savedMarkers, (newValue) => {
-  if (map.value && overlayGroups.value["Custom markers"]) {
-    // Clear all existing custom markers from the layer
-    clearLayerMarkers("Custom markers");
-    
-    // Re-add all custom markers
-    if (newValue && newValue.length > 0) {
-      addMarkersToMap(map.value, savedMarkers.value);
-    }
-  }
+  // Remove markers
+  Object.keys(markersDataStore.markerRefs).forEach(markerName => {
+      if (!validNames.has(markerName)) {
+          const marker = markersDataStore.markerRefs[markerName];
+          if (marker) {
+              marker.remove();
+              delete markersDataStore.markerRefs[markerName];
+          }
+      }
+  });
+
+  // Add new markers
+  allMarkers.forEach(marker => {
+      if (!markersDataStore.markerRefs[marker.marker_name]) {
+           addMarkesonFlight(map.value, marker);
+      }
+  });
 }, { deep: true });
+
+
+function addCustomMarker(marker) {
+  addMarkesonFlight(map.value, marker);
+}
+
+
+
 
 </script>
 
@@ -362,7 +421,7 @@ watch(savedMarkers, (newValue) => {
 <template>
     <div id="map">
     </div>
-   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" @closeMarkerCreationDialog="closeMarkerCreationDialog" :lat="lat" :lng="lng" />
+   <CreateMarker v-show="createMarkerDialog" @close-cords="closeCords" @closeMarkerCreationDialog="closeMarkerCreationDialog" @markerCreated="addCustomMarker" :lat="lat" :lng="lng" />
 </template>
 
 
