@@ -9,7 +9,7 @@ export const useMarkersDataStore = defineStore('markersData', {
         targetMarker: null,
         savedMarkers: [],
         savedMarkersSet: new Set(),
-        customMarkersSet: new Set(),
+        baseMarkersSet: new Set(),
         }
      },
     getters: { 
@@ -25,6 +25,7 @@ export const useMarkersDataStore = defineStore('markersData', {
           }
             const data = await response.json();
             this.markers = data;
+            this.baseMarkersSet = new Set(data.map(marker => marker.marker_name));
             return data;
         } catch (error) {
           console.error('Error fetching markers data:', error);
@@ -122,13 +123,19 @@ export const useMarkersDataStore = defineStore('markersData', {
           }
         },
         createLocation(marker){
-          if (marker && !this.customMarkersSet.has(marker.marker_name)) {
+          if (marker && !this.savedMarkersSet.has(marker.marker_name)) {
             this.savedMarkers.push(marker);
-            this.customMarkersSet.add(marker.marker_name);
+            this.savedMarkersSet.add(marker.marker_name);
           }else{
             console.warn(`Marker with name ${marker.marker_name} already exists in custom markers.`);
           }
         },
+        checkMarkerNameExists(markerName) { 
+          if( this.baseMarkersSet.has(markerName) || this.savedMarkersSet.has(markerName)) {
+            return true;
+          };
+          return false;
+        }
 
     },
 });

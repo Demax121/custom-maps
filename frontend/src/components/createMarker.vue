@@ -6,6 +6,9 @@
         <span v-if="showWarningNoName" class="custom__marker-warning">
             <b>Please provide a location name</b>
         </span>
+        <span v-if="showWarningNameExists" class="custom__marker-warning">
+            <b>Location name already exists</b>
+        </span>
         <span class="custom__marker-container-input-set">
             <label for="marker-label" class="custom__marker-container-input-label">Location name:</label>
             <input name="marker-label" type="text" class="custom__marker-container-input"
@@ -41,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { useIconsDataStore } from '../stores/iconsDataStore';
 import Dropdown from './iconsDropdown.vue'
@@ -55,6 +58,19 @@ const customLocationIconName = ref('');
 const customLocationImg = ref('');
 const dropdownRef = ref(null);
 const showWarningNoName = ref(false);
+const showWarningNameExists = ref(false);
+
+onMounted(() => {
+    if (iconsDataStore.selectedIcon) {
+        customLocationIconName.value = iconsDataStore.selectedIcon.icon_name;
+    }
+});
+
+watch(() => iconsDataStore.selectedIcon, (newIcon) => {
+    if (newIcon) {
+        customLocationIconName.value = newIcon.icon_name;
+    }
+});
 
 const handleInputBlur = () => {
     setTimeout(() => {
@@ -91,6 +107,12 @@ if(!customLocationName.value){
 }else{
     showWarningNoName.value = false;
 }
+if(markersDataStore.checkMarkerNameExists(customLocationName.value)){
+    showWarningNameExists.value = true;
+    return;
+}else{
+    showWarningNameExists.value = false;
+}
 
     const customMarker = {
         marker_name: customLocationName.value,
@@ -102,12 +124,10 @@ if(!customLocationName.value){
         overlay_name: "Custom markers",
         note: null,
     };
-    console.log('Creating marker:', customMarker);
     markersDataStore.createLocation(customMarker);
     customLocationName.value = '';
     customLocationDescription.value = '';
     iconsDataStore.clearSelectedIcon();
-    customLocationIconName.value = '';
     customLocationImg.value = '';
     dropdownRef.value = null;
     emit('toggleListVisibility');
