@@ -68,24 +68,24 @@ CREATE TABLE public.markers (
 -- =========================================================
 
 COPY public.map_icons (icon_id, icon_name, icon_link) FROM stdin;
-1	bridge-icon	http://127.0.0.1:8885/icons/bridge-icon.svg
-2	castle-icon	http://127.0.0.1:8885/icons/castle-icon.svg
-3	cave-icon	http://127.0.0.1:8885/icons/cave-icon.svg
-4	dead-eye-icon	http://127.0.0.1:8885/icons/dead-eye-icon.svg
-5	dungeon-icon	http://127.0.0.1:8885/icons/dungeon-icon.svg
-6	forest-camp-icon	http://127.0.0.1:8885/icons/forest-camp-icon.svg
-7	forest-icon	http://127.0.0.1:8885/icons/forest-icon.svg
-8	meadows-icon	http://127.0.0.1:8885/icons/meadows-icon.svg
-9	mines-icon	http://127.0.0.1:8885/icons/mines-icon.svg
-10	monsters-icon	http://127.0.0.1:8885/icons/monsters-icon.svg
-11	mountain-road-icon	http://127.0.0.1:8885/icons/mountain-road-icon.svg
-12	mountains-icon	http://127.0.0.1:8885/icons/mountains-icon.svg
-13	religion-icon	http://127.0.0.1:8885/icons/religion-icon.svg
-14	ruins-icon	http://127.0.0.1:8885/icons/ruins-icon.svg
-15	tavern-icon	http://127.0.0.1:8885/icons/tavern-icon.svg
-16	town-icon	http://127.0.0.1:8885/icons/town-icon.svg
-17	village-icon	http://127.0.0.1:8885/icons/village-icon.svg
-18	default-icon	http://127.0.0.1:8885/icons/default-icon.svg
+1	bridge-icon	http://127.0.0.1:8884/icons/bridge-icon.svg
+2	castle-icon	http://127.0.0.1:8884/icons/castle-icon.svg
+3	cave-icon	http://127.0.0.1:8884/icons/cave-icon.svg
+4	dead-eye-icon	http://127.0.0.1:8884/icons/dead-eye-icon.svg
+5	dungeon-icon	http://127.0.0.1:8884/icons/dungeon-icon.svg
+6	forest-camp-icon	http://127.0.0.1:8884/icons/forest-camp-icon.svg
+7	forest-icon	http://127.0.0.1:8884/icons/forest-icon.svg
+8	meadows-icon	http://127.0.0.1:8884/icons/meadows-icon.svg
+9	mines-icon	http://127.0.0.1:8884/icons/mines-icon.svg
+10	monsters-icon	http://127.0.0.1:8884/icons/monsters-icon.svg
+11	mountain-road-icon	http://127.0.0.1:8884/icons/mountain-road-icon.svg
+12	mountains-icon	http://127.0.0.1:8884/icons/mountains-icon.svg
+13	religion-icon	http://127.0.0.1:8884/icons/religion-icon.svg
+14	ruins-icon	http://127.0.0.1:8884/icons/ruins-icon.svg
+15	tavern-icon	http://127.0.0.1:8884/icons/tavern-icon.svg
+16	town-icon	http://127.0.0.1:8884/icons/town-icon.svg
+17	village-icon	http://127.0.0.1:8884/icons/village-icon.svg
+18	default-icon	http://127.0.0.1:8884/icons/default-icon.svg
 \.
 
 COPY public.overlays (overlay_id, overlay_name) FROM stdin;
@@ -102,7 +102,7 @@ COPY public.overlays (overlay_id, overlay_name) FROM stdin;
 \.
 
 COPY public.maps (map_id, map_name, map_min_zoom, map_max_zoom, map_tiles_link, map_description, map_img) FROM stdin;
-2	Merges	2	4	http://127.0.0.1:8885/maps/Merges/{z}/{y}/{x}.webp	...	https://images.alphacoders.com/900/thumb-1920-900186.jpg
+2	Merges	2	4	http://127.0.0.1:8884/maps/Merges/{z}/{y}/{x}.webp	...	https://images.alphacoders.com/900/thumb-1920-900186.jpg
 \.
 
 COPY public.map_overlays (map_id, overlay_id) FROM stdin;
