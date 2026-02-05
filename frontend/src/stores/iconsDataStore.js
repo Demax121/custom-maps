@@ -36,8 +36,5 @@ export const useIconsDataStore = defineStore('iconsData', {
           const targetIcon = this.icons.find(i => i.icon_name === icon.icon_name);
           this.selectedIcon = targetIcon;
         },
-      clearSelectedIcon() { 
-        this.selectedIcon = this.defaultIcon;
-      }
     },
 })

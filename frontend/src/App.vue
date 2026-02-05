@@ -38,6 +38,7 @@ onMounted(async () => {
     await markersDataStore.getMarkersData();
     await iconsDataStore.getIconsData();
     await iconsDataStore.getDefaultIcon();
+    await overlaysDataStore.setDefaultOverlay();
 });
 
 

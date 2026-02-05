@@ -14,21 +14,31 @@
             <input name="marker-label" type="text" class="custom__marker-container-input"
                 placeholder="Enter location name" maxlength="50" v-model="customLocationName" />
         </span>
+
+
+
         <span class="custom__marker-container-input-set">
             <label for="marker-icon" class="custom__marker-container-input-label ">Location icon:</label>
             <input type="text" name="marker-icon" 
             class="custom__marker-container-input custom__marker-container-input-select" placeholder="Select location icon"
-            @focus="dropdownRef?.toggleListVisibility(true)" @blur="handleInputBlur"
+            @focus="iconsDropdownRef?.toggleIconsList(true)" @blur="handleInputBlur"
             v-model="customLocationIconName">  
             </input>
-            
         </span>
-        <Dropdown ref="dropdownRef" @itemSelected="handleItemSelected" :searchQuery="customLocationIconName" />
+        <iconsDropdown ref="iconsDropdownRef" @iconSelected="handleIconSelected" :searchQueryIcons="customLocationIconName" />
+
+
         <span class="custom__marker-container-input-set">
-            <label for="marker-img" class="custom__marker-container-input-label">Location img:</label>
-            <input name="marker-img" type="text" class="custom__marker-container-input"
-                placeholder="Enter location img link" v-model="customLocationImg" />
+            <label for="marker-overlay" class="custom__marker-container-input-label">Overlay:</label>
+            <input name="marker-overlay" type="text" class="custom__marker-container-input custom__marker-container-input-select"
+                placeholder="Enter location overlay"
+                @focus="overlaysDropdownRef?.toggleOverlaysList(true)" @blur="handleInputBlur"
+                v-model="customLocationOverlay" />
         </span>
+        <OverlaysDropdown ref="overlaysDropdownRef" @overlaySelected="handleOverlaySelected" :searchQueryOverlays="customLocationOverlay" />
+        
+        
+        
         <span class="custom__marker-container-input-set">
             <label for="marker-description" class="custom__marker-container-input-label custom__marker-container-input-label--desc">Location description:</label>
             <textarea name="marker-description" type="text" class="custom__marker-container-input custom__marker-container-input--desc"
@@ -47,22 +57,30 @@
 import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { useMarkersDataStore } from '../stores/markersDataStore';
 import { useIconsDataStore } from '../stores/iconsDataStore';
-import Dropdown from './iconsDropdown.vue'
+import { useOverlaysDataStore } from '../stores/overlaysDataStore';
+import iconsDropdown from './iconsDropdown.vue'
+import OverlaysDropdown from './overlaysDropdown.vue'
 const markersDataStore = useMarkersDataStore();
 const iconsDataStore = useIconsDataStore();
+const overlaysDataStore = useOverlaysDataStore();
+
 
 const customLocationName = ref('');
 const customLocationDescription = ref('');
 const customLocationIcon = ref('');
 const customLocationIconName = ref('');
-const customLocationImg = ref('');
-const dropdownRef = ref(null);
+const customLocationOverlay = ref('');
+const iconsDropdownRef = ref(null);
+const overlaysDropdownRef = ref(null);
 const showWarningNoName = ref(false);
 const showWarningNameExists = ref(false);
 
 onMounted(() => {
     if (iconsDataStore.selectedIcon) {
         customLocationIconName.value = iconsDataStore.selectedIcon.icon_name;
+    }
+    if (!overlaysDataStore.selectedOverlay) {
+        overlaysDataStore.selectedOverlay = overlaysDataStore.defaultOverlay.overlay_name;
     }
 });
 
@@ -72,18 +90,29 @@ watch(() => iconsDataStore.selectedIcon, (newIcon) => {
     }
 });
 
+watch(()=> overlaysDataStore.selectedOverlay, (newOverlay) => {
+    if(newOverlay){
+        customLocationOverlay.value = newOverlay.overlay_name;
+    }
+});
+
 const handleInputBlur = () => {
     setTimeout(() => {
-        dropdownRef.value?.toggleListVisibility(false);
+        iconsDropdownRef.value?.toggleIconsList(false);
+        overlaysDropdownRef.value?.toggleOverlaysList(false);
     }, 200);
 }
 
-const emit = defineEmits(['closeCords', 'toggleListVisibility', 'closeMarkerCreationDialog']);
+const emit = defineEmits(['closeCords', 'toggleIconsList', 'closeMarkerCreationDialog', 'markerCreated']);
 
 
-function handleItemSelected(item) {
-    customLocationIcon.value = item.icon_link;
-    customLocationIconName.value = item.icon_name;
+function handleIconSelected(icon) {
+    customLocationIcon.value = icon.icon_link;
+    customLocationIconName.value = icon.icon_name;
+}
+
+function handleOverlaySelected(overlay) {
+    customLocationOverlay.value = overlay.overlay_name;
 }
 
 const props = defineProps({
@@ -119,18 +148,20 @@ if(markersDataStore.checkMarkerNameExists(customLocationName.value)){
         marker_lat: props.lat,
         marker_lng: props.lng,
         marker_desc: customLocationDescription.value,
+        icon_name: iconsDataStore.selectedIcon.icon_name,
         icon_link: iconsDataStore.selectedIcon.icon_link,
-        marker_img: customLocationImg.value,
-        overlay_name: "Custom markers",
+        marker_img: null,
+        overlay_name: overlaysDataStore.selectedOverlay.overlay_name,
         note: null,
     };
     markersDataStore.createLocation(customMarker);
+    emit('markerCreated', customMarker);
     customLocationName.value = '';
     customLocationDescription.value = '';
-    iconsDataStore.clearSelectedIcon();
-    customLocationImg.value = '';
-    dropdownRef.value = null;
-    emit('toggleListVisibility');
+    iconsDataStore.selectedIcon = iconsDataStore.defaultIcon;
+    overlaysDataStore.selectedOverlay = overlaysDataStore.defaultOverlay.overlay_name;
+    iconsDropdownRef.value = null;
+    emit('toggleIconsList');
 }
 
 
