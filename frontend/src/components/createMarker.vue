@@ -159,7 +159,7 @@ if(markersDataStore.checkMarkerNameExists(customLocationName.value)){
     customLocationName.value = '';
     customLocationDescription.value = '';
     iconsDataStore.selectedIcon = iconsDataStore.defaultIcon;
-    overlaysDataStore.selectedOverlay = overlaysDataStore.defaultOverlay.overlay_name;
+    overlaysDataStore.selectedOverlay = overlaysDataStore.defaultOverlay;
     iconsDropdownRef.value = null;
     emit('toggleIconsList');
 }

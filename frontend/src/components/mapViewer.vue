@@ -374,11 +374,11 @@ watch(focusedMarker, (markerName) => {
 });
 
 watch([markers, savedMarkers], () => {
-  const validNames = new Set([
-      ...markers.value.map(m => m.marker_name),
-      ...savedMarkers.value.map(m => m.marker_name)
-  ]);
+  // Combine markers, prioritizing savedMarkers (user saved/custom) over default markers
+  const allMarkers = [...savedMarkers.value, ...markers.value];
+  const validNames = new Set(allMarkers.map(m => m.marker_name));
 
+  // Remove markers
   Object.keys(markersDataStore.markerRefs).forEach(markerName => {
       if (!validNames.has(markerName)) {
           const marker = markersDataStore.markerRefs[markerName];
@@ -386,6 +386,13 @@ watch([markers, savedMarkers], () => {
               marker.remove();
               delete markersDataStore.markerRefs[markerName];
           }
+      }
+  });
+
+  // Add new markers
+  allMarkers.forEach(marker => {
+      if (!markersDataStore.markerRefs[marker.marker_name]) {
+           addMarkesonFlight(map.value, marker);
       }
   });
 }, { deep: true });
