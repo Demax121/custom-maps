@@ -1,0 +1,17 @@
+[
+  {
+    "marker_name": "Mythar",
+    "marker_lat": "40.58",
+    "marker_lng": "-72.42",
+    "marker_desc": "### Mythar, The Sunken Ruin\n\n**\"We don't live in Mythar. We survive it.\"**\n-- *Old Man Hemlock, scavenger of the Second Tier.*\n\nMythar was once an architectural marvel, a city built in defiance of the wetlands. Now, it is a testament to the earth's patience. The lower half of the city has completely succumbed to the bog, leaving only the upper spires, cathedral roofs, and highest tower floors piercing the murky surface like the skeletal fingers of a drowning giant.\n\nYet, life stubbornly clings to these ruins. A desperate population of scavengers, outcasts, and those with nowhere else to go inhabit the crumbling upper levels. They navigate their precarious world via a chaotic web of rotting rope bridges and creaking wooden walkways suspended above the deadly muck. The air is perpetually thick with the smell of mildew, sulfur, and stagnant water.\n\nLife here revolves around \"The Dive\"—the dangerous act of descending into the submerged lower districts to retrieve artifacts, waterproof chests, and sealed casks from a wealthier time. It is a city of ghosts, and the loudest sound at night is often the groan of ancient stone foundations finally giving way, sending another section of history sinking into the depths.\n\n#### Survival Protocol in Mythar\n\n| Rule | Reason | Consequence of Failure |\n| :--- | :----- | :--------------------- |\n| **Trust the Rope, Not the Wood** | The bridges are maintained; the old floorboards are rotting from beneath. | A fifty-foot drop into deep sludge. |\n| **Never Dive Alone** | Something needs to pull on the rope if you get stuck... or grabbed. | Becoming a permanent resident of the lower districts. |\n| **Watch the Water Level** | The swamp rises unpredictably after rains in the mountains. | Waking up with swamp water in your lungs. |",
+    "icon_name": "ruins-icon",
+    "icon_link": "https://cdn.custommapsproject.cc/icons/ruins_icon.svg",
+    "marker_img": null,
+    "overlay_name": "Ruins",
+    "note": {
+      "note_tag": "Quest",
+      "note_title": "Test quest",
+      "note_content": "This is a test quest note"
+    }
+  }
+]
