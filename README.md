@@ -4,9 +4,13 @@
 
 Unlike simple map viewers, this is an advanced, full-stack project that comes pre-packaged with a complete database structure, a PHP backend API, and a modern frontend ecosystem. It allows you to host deep-zoomable maps with markers, overlays, and custom locations with minimal configuration.
 
-Wiki: https://github.com/Demax121/custom-maps/wiki
-Demo: https://custommapsproject.cc/
+Demo and wiki
+---
+*Wiki*: https://github.com/Demax121/custom-maps/wiki
 
+*Demo*: https://custommapsproject.cc/
+
+---
 ## 🚀 Key Features
 
 - **Interactive Map Viewer**: Based on Leaflet, allowing for deep zoom and smooth navigation.
@@ -21,7 +25,7 @@ Demo: https://custommapsproject.cc/
 
 This project is designed to work seamlessly with the **Pyvips Tile Cutter**. You do not need to manually slice your map images. 
 
-Use the cutter to generate the necessary tile structure (`/z/x/y`) from your high-resolution images in seconds. No installation required.
+Use the cutter to generate the necessary tile structure (`/z/x/y`) from your high-resolution images in seconds. No installation required, the layout for this project is Google.
 
 - **Project Link**: [Pyvips Tile Cutter GitHub](https://github.com/Demax121/pyvips-tile-cutter)
 - **Download Latest Release**: [Release v2](https://github.com/Demax121/pyvips-tile-cutter/releases/tag/%23v2)
