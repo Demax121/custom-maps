@@ -14,6 +14,7 @@ frontend/env
 # OS files
 .DS_Store
 Thumbs.db
+workflow
 
 # Build outputs
 dist/
