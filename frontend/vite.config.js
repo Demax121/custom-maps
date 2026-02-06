@@ -14,9 +14,6 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    viteStaticCopy({
-      targets: [{ src: '@/scripts/*', dest: 'scripts' }]
-    }),
     vueDevTools(),
   ],
   css: {
