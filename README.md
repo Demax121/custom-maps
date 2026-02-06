@@ -4,6 +4,9 @@
 
 Unlike simple map viewers, this is an advanced, full-stack project that comes pre-packaged with a complete database structure, a PHP backend API, and a modern frontend ecosystem. It allows you to host deep-zoomable maps with markers, overlays, and custom locations with minimal configuration.
 
+Wiki: https://github.com/Demax121/custom-maps/wiki
+Demo: https://custommapsproject.cc/
+
 ## 🚀 Key Features
 
 - **Interactive Map Viewer**: Based on Leaflet, allowing for deep zoom and smooth navigation.
@@ -36,7 +39,7 @@ Use the cutter to generate the necessary tile structure (`/z/x/y`) from your hig
 - `backend/` - PHP API scripts handling database connections and logic.
 - `database/` - SQL initialization scripts and Dockerfiles for the DB.
 - `cdn/` - Serves static assets (generated map tiles, icons, images).
-- `docs/` - Screenshots of ui elements can delete [See Architecture Wiki](docs/WIKI.md).
+- `docs/` - Screenshots of ui elements can delete.
 
 ## 🏁 Getting Started
 
